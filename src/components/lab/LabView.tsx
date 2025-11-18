@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import NeuralScene from './NeuralScene'
+import EnhancedNeuralScene from './EnhancedNeuralScene'
 import ControlPanel from './ControlPanel'
 import Dashboard from './Dashboard'
 import InfoPanel from './InfoPanel'
@@ -14,7 +14,7 @@ export default function LabView({ onClose }: LabViewProps) {
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-6 right-6 z-50 p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/20 transition-all duration-200"
+        className="absolute top-6 right-6 z-50 p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/20 transition-all duration-200 hover:scale-110"
         aria-label="Close Lab"
       >
         <X className="w-6 h-6" />
@@ -33,19 +33,19 @@ export default function LabView({ onClose }: LabViewProps) {
       {/* Main grid layout */}
       <div className="w-full h-full grid grid-cols-12 grid-rows-12 gap-4 p-6 pt-24">
         {/* Left sidebar - Controls */}
-        <div className="col-span-3 row-span-12 overflow-y-auto">
+        <div className="col-span-3 row-span-12 overflow-y-auto custom-scrollbar">
           <ControlPanel />
         </div>
 
         {/* Center - 3D Scene */}
         <div className="col-span-6 row-span-8">
-          <div className="w-full h-full rounded-lg overflow-hidden border border-white/10">
-            <NeuralScene />
+          <div className="w-full h-full rounded-lg overflow-hidden border border-white/10 shadow-2xl shadow-neural-accent/10">
+            <EnhancedNeuralScene />
           </div>
         </div>
 
         {/* Right sidebar - Info */}
-        <div className="col-span-3 row-span-12 overflow-y-auto">
+        <div className="col-span-3 row-span-12 overflow-y-auto custom-scrollbar">
           <InfoPanel />
         </div>
 
