@@ -1,14 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.(glsl|vs|fs|vert|frag)$/,
-      exclude: /node_modules/,
-      use: ['raw-loader', 'glslify-loader'],
-    })
-    return config
-  },
+  // Turbopack config (Next.js 16+)
+  turbopack: {},
 }
 
 module.exports = nextConfig
