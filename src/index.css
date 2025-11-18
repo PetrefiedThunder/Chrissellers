@@ -47,15 +47,18 @@
   }
 
   .studio-heading {
-    @apply font-display font-bold text-4xl md:text-6xl lg:text-7xl tracking-tight;
+    @apply font-display font-bold tracking-tight;
+    font-size: clamp(2.25rem, 4vw + 1rem, 6rem);
   }
 
   .studio-subheading {
-    @apply font-display font-medium text-xl md:text-2xl lg:text-3xl tracking-tight;
+    @apply font-display font-medium tracking-tight;
+    font-size: clamp(1.25rem, 2vw + 0.5rem, 3rem);
   }
 
   .studio-body {
-    @apply font-sans text-base md:text-lg text-studio-stone leading-relaxed;
+    @apply font-sans text-studio-stone leading-relaxed;
+    font-size: clamp(1rem, 0.5vw + 0.875rem, 1.25rem);
   }
 
   .studio-link {
