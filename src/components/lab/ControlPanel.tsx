@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * Control Panel Component
  *

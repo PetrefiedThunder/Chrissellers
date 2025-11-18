@@ -1,20 +1,22 @@
+'use client'
+
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import Hero from './components/hero/Hero'
-import Footer from './components/layout/Footer'
-import LoadingScreen from './components/layout/LoadingScreen'
-import CustomCursor from './components/effects/CustomCursor'
-import MobileNav from './components/layout/MobileNav'
-import HowItWorks from './components/sections/HowItWorks'
-import ImpactMetrics from './components/sections/ImpactMetrics'
+import Hero from '@/src/components/hero/Hero'
+import Footer from '@/src/components/layout/Footer'
+import LoadingScreen from '@/src/components/layout/LoadingScreen'
+import CustomCursor from '@/src/components/effects/CustomCursor'
+import MobileNav from '@/src/components/layout/MobileNav'
+import HowItWorks from '@/src/components/sections/HowItWorks'
+import ImpactMetrics from '@/src/components/sections/ImpactMetrics'
 
 // Lazy load heavy components
-const EnhancedProjectGrid = lazy(() => import('./components/studio/EnhancedProjectGrid'))
-const LabView = lazy(() => import('./components/lab/LabView'))
+const EnhancedProjectGrid = lazy(() => import('@/src/components/studio/EnhancedProjectGrid'))
+const LabView = lazy(() => import('@/src/components/lab/LabView'))
 
 type View = 'studio' | 'lab'
 
-function App() {
+export default function Home() {
   const [currentView, setCurrentView] = useState<View>('studio')
   const [isLoading, setIsLoading] = useState(true)
 
@@ -86,5 +88,3 @@ function App() {
     </>
   )
 }
-
-export default App

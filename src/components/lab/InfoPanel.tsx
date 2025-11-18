@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * Info Panel Component
  *

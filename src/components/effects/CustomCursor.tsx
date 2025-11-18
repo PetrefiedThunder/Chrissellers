@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * Custom Cursor Component
  *

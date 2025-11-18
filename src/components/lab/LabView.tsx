@@ -1,3 +1,5 @@
+'use client'
+
 import { X } from 'lucide-react'
 import EnhancedNeuralScene from './EnhancedNeuralScene'
 import ControlPanel from './ControlPanel'

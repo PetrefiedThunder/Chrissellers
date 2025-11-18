@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * How It Works Section
  *

@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * Neuron Component
  *
