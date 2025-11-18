@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * Impact Metrics Section
  *

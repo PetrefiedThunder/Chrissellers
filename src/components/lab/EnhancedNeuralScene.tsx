@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * Enhanced Neural Scene Component
  *

@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * Connection Component
  *
