@@ -4,11 +4,7 @@ import { useRef } from 'react'
 import AnimatedBackground from './AnimatedBackground'
 import HeroVisual from './HeroVisual'
 
-interface HeroProps {
-  onOpenLab: () => void
-}
-
-export default function Hero({ onOpenLab }: HeroProps) {
+export default function Hero() {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -91,10 +87,13 @@ export default function Hero({ onOpenLab }: HeroProps) {
           transition={{ duration: 0.6, delay: 0.6 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={onOpenLab}
-          className="group relative inline-flex items-center gap-3 px-8 py-4 text-lg font-medium bg-studio-charcoal text-white rounded-lg hover:shadow-2xl hover:shadow-neural-accent/20"
+          onClick={() => {
+            const projectsSection = document.getElementById('projects')
+            projectsSection?.scrollIntoView({ behavior: 'smooth' })
+          }}
+          className="group relative inline-flex items-center gap-3 px-8 py-4 text-lg font-medium bg-gradient-to-r from-dreamy-lavender via-dreamy-mauve to-dreamy-teal text-studio-charcoal rounded-lg hover:shadow-2xl hover:shadow-dreamy-purple/30"
         >
-          <span className="relative z-10">Open Neural Night Sky Lab</span>
+          <span className="relative z-10 font-semibold">Explore Work</span>
           <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 relative z-10" />
           {/* Animated glow effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-neural-accent to-neural-highlight opacity-0 group-hover:opacity-20 rounded-lg transition-opacity duration-300" />

@@ -54,16 +54,14 @@ const projects: Project[] = [
   },
 ]
 
-interface EnhancedProjectGridProps {
-  onOpenLab: () => void
-}
-
-export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridProps) {
+export default function EnhancedProjectGrid() {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
 
   const handleProjectClick = (project: Project) => {
     if (project.action === 'lab') {
-      onOpenLab()
+      // Neural lab is always active in the background
+      // Users can interact via the floating panel (bottom-right)
+      return
     } else if (project.action === 'external' && project.url) {
       window.open(project.url, '_blank')
     }

@@ -18,6 +18,17 @@ module.exports = {
           'cream': '#fafaf9',
           'stone': '#57534e',
           'charcoal': '#1c1917',
+        },
+        'dreamy': {
+          'lavender': '#e0d5f3',
+          'mauve': '#d4c5e2',
+          'teal': '#b8d4d4',
+          'sage': '#c8d5c8',
+          'peach': '#f5e6dc',
+          'slate': '#d4d8dd',
+          'mist': '#e8ebef',
+          'purple': '#baa5d0',
+          'blue': '#a5c4d4',
         }
       },
       fontFamily: {

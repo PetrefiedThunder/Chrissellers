@@ -6,13 +6,9 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Sparkles } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 
-interface MobileNavProps {
-  onOpenLab: () => void
-}
-
-export default function MobileNav({ onOpenLab }: MobileNavProps) {
+export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false)
 
   const menuVariants = {
@@ -32,11 +28,6 @@ export default function MobileNav({ onOpenLab }: MobileNavProps) {
         ease: [0.25, 0.4, 0.25, 1] as const,
       },
     },
-  }
-
-  const handleOpenLab = () => {
-    setIsOpen(false)
-    onOpenLab()
   }
 
   return (
@@ -72,24 +63,13 @@ export default function MobileNav({ onOpenLab }: MobileNavProps) {
                 Studio
               </motion.a>
 
-              <motion.button
-                onClick={handleOpenLab}
-                className="group flex items-center gap-3 px-8 py-4 text-2xl font-display font-semibold bg-studio-charcoal text-white rounded-lg hover:shadow-2xl hover:shadow-neural-accent/20 transition-all duration-300"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <Sparkles className="w-6 h-6" />
-                Open Lab
-              </motion.button>
-
               <motion.a
                 href="#how-it-works"
                 onClick={() => setIsOpen(false)}
                 className="text-3xl font-display font-semibold hover:text-gradient transition-colors duration-300"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.2 }}
               >
                 How It Works
               </motion.a>
@@ -100,7 +80,7 @@ export default function MobileNav({ onOpenLab }: MobileNavProps) {
                 className="text-3xl font-display font-semibold hover:text-gradient transition-colors duration-300"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 0.3 }}
               >
                 Projects
               </motion.a>
@@ -111,7 +91,7 @@ export default function MobileNav({ onOpenLab }: MobileNavProps) {
                 className="text-2xl font-sans text-studio-stone hover:text-studio-charcoal transition-colors duration-300"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
+                transition={{ delay: 0.4 }}
               >
                 Contact
               </motion.a>
