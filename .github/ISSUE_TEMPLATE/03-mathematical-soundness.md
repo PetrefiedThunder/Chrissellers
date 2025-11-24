@@ -158,7 +158,8 @@ Optimizer: Stochastic Gradient Descent (SGD)
     dLdA: Vector, // Gradient from next layer
     activation: Vector, // Current layer activation
     preActivation: Vector, // Pre-activation values (z)
-    weights: Matrix
+    weights: Matrix,
+    previousActivation: Vector // Input from previous layer
   ): boolean {
     // ∂a/∂z (activation derivative)
     const dAdZ = preActivation.map(z => 
@@ -170,8 +171,14 @@ Optimizer: Stochastic Gradient Descent (SGD)
     
     // ∂z/∂w = input from previous layer
     // ∂L/∂w = ∂L/∂z × input^T (outer product)
+    const dLdW = outerProduct(dLdZ, previousActivation)
     
-    return true // Verification logic
+    // Verify dimensions and values are reasonable
+    const isValidShape = dLdW.length === weights.length && 
+                         dLdW[0].length === weights[0].length
+    const hasNoNaN = dLdW.flat().every(v => !isNaN(v) && isFinite(v))
+    
+    return isValidShape && hasNoNaN
   }
   ```
 
@@ -227,7 +234,21 @@ Optimizer: Stochastic Gradient Descent (SGD)
    */
   function xavierInitialize(inputSize: number, outputSize: number): Matrix {
     const std = Math.sqrt(2.0 / (inputSize + outputSize))
-    // Similar to He init but different variance
+    const weights: Matrix = []
+    
+    for (let i = 0; i < outputSize; i++) {
+      const row: number[] = []
+      for (let j = 0; j < inputSize; j++) {
+        // Box-Muller transform for normal distribution
+        const u1 = Math.random()
+        const u2 = Math.random()
+        const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2)
+        row.push(z * std)
+      }
+      weights.push(row)
+    }
+    
+    return weights
   }
   ```
 
