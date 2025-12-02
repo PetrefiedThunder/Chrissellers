@@ -9,6 +9,7 @@ import LoadingScreen from '@/src/components/layout/LoadingScreen'
 import CustomCursor from '@/src/components/effects/CustomCursor'
 import MobileNav from '@/src/components/layout/MobileNav'
 import ImpactMetrics from '@/src/components/sections/ImpactMetrics'
+import KineticBackground from '@/src/components/canvas/KineticBackground'
 
 // Lazy load heavy components
 const EnhancedProjectGrid = lazy(() => import('@/src/components/studio/EnhancedProjectGrid'))
@@ -34,6 +35,7 @@ export default function Home() {
     <>
       <CustomCursor />
       <MobileNav />
+      <KineticBackground />
 
       <div className="relative w-full">
         {/* Hero Section */}
