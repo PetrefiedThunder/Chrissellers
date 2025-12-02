@@ -66,16 +66,16 @@ export default function EnhancedProjectGrid() {
   }
 
   return (
-    <section className="studio-section bg-gradient-to-b from-white/50 to-white/30">
+    <section className="studio-section bg-transparent">
       <div className="max-w-5xl w-full mx-auto">
         {/* Section header */}
         <div className="mb-20">
           <div className="flex items-center gap-3 mb-4">
-            <h2 className="studio-subheading">Studio / Lab</h2>
-            <div className="flex-1 h-px bg-gradient-to-r from-studio-stone/20 to-transparent" />
+            <h2 className="studio-subheading text-studio-ink">Selected Work</h2>
+            <div className="flex-1 h-px bg-gradient-to-r from-studio-concrete/20 to-transparent" />
           </div>
           <p className="studio-body max-w-2xl">
-            Exploring systems design, regulatory technology, and equitable infrastructure.
+            Systems design that delivers measurable value.
           </p>
         </div>
 
@@ -84,14 +84,10 @@ export default function EnhancedProjectGrid() {
           {projects.map((project, index) => (
             <article
               key={project.id}
-              className={`group relative cursor-pointer rounded-2xl border transition-all duration-500 ${
+              className={`group relative cursor-pointer rounded-2xl glass-panel transition-all duration-500 ${
                 hoveredProject === project.id
-                  ? 'border-neural-accent/40 shadow-xl shadow-neural-accent/10 -translate-y-1'
-                  : 'border-studio-stone/10 hover:border-studio-stone/30'
-              } ${
-                project.featured
-                  ? 'bg-gradient-to-br from-neural-dark/5 via-white to-white'
-                  : 'bg-white/80 backdrop-blur-sm'
+                  ? 'shadow-xl -translate-y-1 border-studio-sage/40'
+                  : 'hover:border-studio-concrete/40'
               }`}
               onClick={() => handleProjectClick(project)}
               onMouseEnter={() => setHoveredProject(project.id)}
@@ -103,42 +99,36 @@ export default function EnhancedProjectGrid() {
                   <div className="flex-1">
                     {/* Category and status badges */}
                     <div className="flex items-center gap-3 mb-4">
-                      <span className="text-xs font-semibold tracking-wider uppercase text-studio-stone/60">
+                      <span className="text-xs font-semibold tracking-wider uppercase text-studio-concrete">
                         {project.category}
                       </span>
                       {project.featured && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-neural-accent/10 text-neural-accent text-xs font-medium">
+                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-studio-sage/20 text-studio-sage text-xs font-medium">
                           <Sparkles className="w-3 h-3" />
                           Featured
                         </span>
                       )}
                       {project.action === 'soon' && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-studio-stone/10 text-studio-stone/60 text-xs font-medium">
+                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-studio-concrete/10 text-studio-concrete text-xs font-medium">
                           <Clock className="w-3 h-3" />
                           Coming Soon
                         </span>
                       )}
                       {project.action === 'lab' && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-600 text-xs font-medium">
+                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-studio-water/20 text-studio-water text-xs font-medium">
                           <Rocket className="w-3 h-3" />
                           Live
                         </span>
                       )}
                     </div>
 
-                    {/* Title with gradient effect on hover */}
-                    <h3
-                      className={`font-display text-3xl font-semibold tracking-tight mb-3 transition-all duration-300 ${
-                        hoveredProject === project.id && project.action !== 'soon'
-                          ? 'text-gradient'
-                          : 'text-studio-charcoal'
-                      }`}
-                    >
+                    {/* Title */}
+                    <h3 className="font-display text-3xl font-semibold tracking-tight mb-3 transition-all duration-300 text-studio-ink">
                       {project.title}
                     </h3>
 
                     {/* Subtitle */}
-                    <p className="studio-body text-studio-stone/80 mb-4 leading-relaxed">
+                    <p className="studio-body mb-4 leading-relaxed">
                       {project.subtitle}
                     </p>
 
@@ -148,7 +138,7 @@ export default function EnhancedProjectGrid() {
                         {project.tech.map((tech) => (
                           <span
                             key={tech}
-                            className="px-3 py-1 rounded-full bg-studio-stone/5 text-xs font-medium text-studio-stone/70 border border-studio-stone/10"
+                            className="px-3 py-1 rounded-full bg-studio-concrete/10 text-xs font-medium text-studio-concrete border border-studio-concrete/20"
                           >
                             {tech}
                           </span>
@@ -166,17 +156,17 @@ export default function EnhancedProjectGrid() {
                           : 'opacity-30 -translate-x-2 translate-y-2'
                       }`}
                     >
-                      <div className="w-12 h-12 rounded-full bg-neural-accent/10 flex items-center justify-center group-hover:bg-neural-accent/20 transition-colors duration-300">
-                        <ArrowUpRight className="w-6 h-6 text-neural-accent" />
+                      <div className="w-12 h-12 rounded-full bg-studio-sage/10 flex items-center justify-center group-hover:bg-studio-sage/20 transition-colors duration-300">
+                        <ArrowUpRight className="w-6 h-6 text-studio-sage" />
                       </div>
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Bottom shine effect */}
+              {/* Bottom accent effect */}
               <div
-                className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-neural-accent via-neural-highlight to-neural-accent transition-opacity duration-500 rounded-b-2xl ${
+                className={`absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-studio-sage to-transparent transition-opacity duration-500 rounded-b-2xl ${
                   hoveredProject === project.id ? 'opacity-100' : 'opacity-0'
                 }`}
               />

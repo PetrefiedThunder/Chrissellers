@@ -39,9 +39,9 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="studio-heading mb-8 text-studio-ink"
+          className="studio-heading mb-8 text-studio-ink tracking-tight"
         >
-          Christopher Sellers
+          The Architect of Value
         </motion.h1>
 
         {/* Subheading */}
@@ -51,7 +51,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="studio-subheading mb-12 text-studio-concrete"
         >
-          Systems & impact designer
+          Christopher Sellers
         </motion.h2>
 
         {/* Short description */}
@@ -62,10 +62,10 @@ export default function Hero() {
           className="max-w-2xl space-y-6 mb-16"
         >
           <p className="studio-body leading-relaxed">
-            Bridging regulation, equity, and technology through elegant systems design.
+            Bridging chaotic market forces with elegant systems design.
           </p>
           <p className="studio-body leading-relaxed">
-            Building tools that make complex compliance landscapes accessible and fair.
+            Transforming regulatory complexity into strategic advantage.
           </p>
         </motion.div>
 
