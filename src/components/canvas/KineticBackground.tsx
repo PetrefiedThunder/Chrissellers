@@ -1,7 +1,7 @@
 'use client'
 
 import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, Environment, SoftShadows } from '@react-three/drei'
 import { useRef, useMemo } from 'react'
 import * as THREE from 'three'
 import { useViewStore } from '@/src/state/viewStore'
@@ -167,9 +167,20 @@ export default function KineticBackground() {
         camera={{ position: [0, 0, 20], fov: 50 }}
         style={{ background: '#F4F4F0' }}
       >
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={0.8} />
-        <directionalLight position={[-10, -10, -5]} intensity={0.3} />
+        {/* Lighting */}
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[10, 10, 5]} intensity={0.6} castShadow />
+        <directionalLight position={[-10, -10, -5]} intensity={0.2} />
+
+        {/* Soft shadows for depth */}
+        <SoftShadows size={25} samples={10} focus={0} />
+
+        {/* Studio environment lighting */}
+        <Environment preset="studio" />
+
+        {/* Fog matching background color */}
+        <fog attach="fog" args={['#F4F4F0', 15, 35]} />
+
         <Particles />
         <OrbitControls
           enableZoom={false}
