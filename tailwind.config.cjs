@@ -7,17 +7,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'neural': {
-          'dark': '#0a0a0f',
-          'night': '#12121a',
-          'accent': '#6366f1',
-          'glow': '#818cf8',
-          'highlight': '#c084fc',
-        },
         'studio': {
-          'cream': '#fafaf9',
-          'stone': '#57534e',
-          'charcoal': '#1c1917',
+          'paper': '#F4F4F0',
+          'ink': '#2B2B2B',
+          'concrete': '#9A9A9A',
+          'sage': '#8A9A8A',
+          'clay': '#B58E7E',
+          'water': '#8DA3B0',
         }
       },
       fontFamily: {
