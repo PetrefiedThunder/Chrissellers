@@ -1,24 +1,21 @@
 'use client'
 
 import { useState, useEffect, lazy, Suspense } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { useViewStore } from '@/src/state/viewStore'
 import Hero from '@/src/components/hero/Hero'
 import Footer from '@/src/components/layout/Footer'
 import LoadingScreen from '@/src/components/layout/LoadingScreen'
 import CustomCursor from '@/src/components/effects/CustomCursor'
 import MobileNav from '@/src/components/layout/MobileNav'
-import HowItWorks from '@/src/components/sections/HowItWorks'
 import ImpactMetrics from '@/src/components/sections/ImpactMetrics'
 
 // Lazy load heavy components
 const EnhancedProjectGrid = lazy(() => import('@/src/components/studio/EnhancedProjectGrid'))
-const LabView = lazy(() => import('@/src/components/lab/LabView'))
-
-type View = 'studio' | 'lab'
 
 export default function Home() {
-  const [currentView, setCurrentView] = useState<View>('studio')
   const [isLoading, setIsLoading] = useState(true)
+  const setSection = useViewStore((state) => state.setSection)
 
   useEffect(() => {
     // Simulate initial load
@@ -29,16 +26,6 @@ export default function Home() {
     return () => clearTimeout(timer)
   }, [])
 
-  const handleOpenLab = () => {
-    setCurrentView('lab')
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  const handleCloseLab = () => {
-    setCurrentView('studio')
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
   if (isLoading) {
     return <LoadingScreen />
   }
@@ -46,45 +33,50 @@ export default function Home() {
   return (
     <>
       <CustomCursor />
-      <MobileNav onOpenLab={handleOpenLab} />
+      <MobileNav />
 
-      <AnimatePresence mode="wait">
-        {currentView === 'studio' ? (
-          <motion.div
-            key="studio"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="relative w-full min-h-screen"
-          >
-            <Hero onOpenLab={handleOpenLab} />
-            <HowItWorks />
-            <ImpactMetrics />
-            <Suspense fallback={<div className="min-h-screen" />}>
-              <div id="projects">
-                <EnhancedProjectGrid onOpenLab={handleOpenLab} />
-              </div>
-            </Suspense>
-            <div id="contact">
-              <Footer />
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="lab"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.5 }}
-            className="relative w-full min-h-screen"
-          >
-            <Suspense fallback={<LoadingScreen />}>
-              <LabView onClose={handleCloseLab} />
-            </Suspense>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="relative w-full">
+        {/* Hero Section */}
+        <motion.section
+          onViewportEnter={() => setSection('hero')}
+          viewport={{ amount: 0.3 }}
+          className="min-h-screen bg-transparent"
+        >
+          <Hero />
+        </motion.section>
+
+        {/* Work Section */}
+        <motion.section
+          onViewportEnter={() => setSection('work')}
+          viewport={{ amount: 0.3 }}
+          className="min-h-screen bg-transparent"
+          id="projects"
+        >
+          <Suspense fallback={<div className="min-h-screen" />}>
+            <EnhancedProjectGrid />
+          </Suspense>
+        </motion.section>
+
+        {/* Impact Section */}
+        <motion.section
+          onViewportEnter={() => setSection('impact')}
+          viewport={{ amount: 0.3 }}
+          className="min-h-screen bg-transparent"
+          id="impact"
+        >
+          <ImpactMetrics />
+        </motion.section>
+
+        {/* Contact Section */}
+        <motion.section
+          onViewportEnter={() => setSection('contact')}
+          viewport={{ amount: 0.3 }}
+          className="bg-transparent"
+          id="contact"
+        >
+          <Footer />
+        </motion.section>
+      </div>
     </>
   )
 }

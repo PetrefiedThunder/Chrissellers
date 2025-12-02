@@ -26,7 +26,7 @@ const projects: Project[] = [
     title: 'Neural Night Sky Lab',
     subtitle: 'Regulatory compliance & social impact network simulator',
     category: 'Interactive Visualization',
-    action: 'lab',
+    action: 'soon',
     featured: true,
     tech: ['React', 'Three.js', 'TypeScript', 'Neural Networks'],
   },
@@ -56,17 +56,11 @@ const projects: Project[] = [
   },
 ]
 
-interface EnhancedProjectGridProps {
-  onOpenLab: () => void
-}
-
-export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridProps) {
+export default function EnhancedProjectGrid() {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
 
   const handleProjectClick = (project: Project) => {
-    if (project.action === 'lab') {
-      onOpenLab()
-    } else if (project.action === 'external' && project.url) {
+    if (project.action === 'external' && project.url) {
       window.open(project.url, '_blank')
     }
   }
