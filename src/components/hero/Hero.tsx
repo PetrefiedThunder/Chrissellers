@@ -68,7 +68,7 @@ export default function Hero({ onOpenLab }: HeroProps) {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="studio-subheading mb-12 text-studio-stone"
         >
-          Systems & impact designer
+          Technical Evangelist | Founding Operator | 0-to-1 Architect
         </motion.h2>
 
         {/* Short description - very minimal */}
@@ -79,10 +79,11 @@ export default function Hero({ onOpenLab }: HeroProps) {
           className="max-w-2xl space-y-6 mb-16"
         >
           <p className="studio-body leading-relaxed">
-            Bridging regulation, equity, and technology through elegant systems design.
+            Bridging human struggle and technical solution. From the U.S. Senate to hyper-growth tech to 
+            building infrastructure by truck headlights—building regulatory systems that are both elegant and equitable.
           </p>
-          <p className="studio-body leading-relaxed">
-            Building tools that make complex compliance landscapes accessible and fair.
+          <p className="studio-body leading-relaxed italic text-studio-sage">
+            "I Build the Stage & I Fill the Seats."
           </p>
         </motion.div>
 

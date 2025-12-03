@@ -9,10 +9,12 @@ import CustomCursor from '@/src/components/effects/CustomCursor'
 import MobileNav from '@/src/components/layout/MobileNav'
 import HowItWorks from '@/src/components/sections/HowItWorks'
 import ImpactMetrics from '@/src/components/sections/ImpactMetrics'
+import ProfessionalExperience from '@/src/components/sections/ProfessionalExperience'
 
 // Lazy load heavy components
 const EnhancedProjectGrid = lazy(() => import('@/src/components/studio/EnhancedProjectGrid'))
-const LabView = lazy(() => import('@/src/components/lab/LabView'))
+// TODO: Lab component not yet implemented
+// const LabView = lazy(() => import('@/src/components/lab/LabView'))
 
 type View = 'studio' | 'lab'
 
@@ -66,6 +68,9 @@ export default function Home() {
                 <EnhancedProjectGrid onOpenLab={handleOpenLab} />
               </div>
             </Suspense>
+            <div id="experience">
+              <ProfessionalExperience />
+            </div>
             <div id="contact">
               <Footer />
             </div>
@@ -77,11 +82,17 @@ export default function Home() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.5 }}
-            className="relative w-full min-h-screen"
+            className="relative w-full min-h-screen flex items-center justify-center"
           >
-            <Suspense fallback={<LoadingScreen />}>
-              <LabView onClose={handleCloseLab} />
-            </Suspense>
+            <div className="text-center">
+              <h2 className="text-2xl font-bold mb-4">Lab Coming Soon</h2>
+              <button
+                onClick={handleCloseLab}
+                className="px-6 py-3 bg-studio-sage text-white rounded-lg hover:opacity-90 transition-opacity"
+              >
+                Back to Studio
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

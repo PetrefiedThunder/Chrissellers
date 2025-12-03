@@ -7,7 +7,7 @@
  */
 
 import { ArrowUpRight, Sparkles, Clock, Rocket } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 interface Project {
   id: string
@@ -20,7 +20,8 @@ interface Project {
   tech?: string[]
 }
 
-const projects: Project[] = [
+// Base curated projects (kept minimal). GitHub repos are fetched dynamically below.
+const baseProjects: Project[] = [
   {
     id: 'neural-lab',
     title: 'Neural Night Sky Lab',
@@ -30,31 +31,43 @@ const projects: Project[] = [
     featured: true,
     tech: ['React', 'Three.js', 'TypeScript', 'Neural Networks'],
   },
-  {
-    id: 'prepchef',
-    title: 'PrepChef',
-    subtitle: 'Shared kitchen compliance infrastructure',
-    category: 'Food Safety Systems',
-    action: 'soon',
-    tech: ['Compliance', 'Infrastructure', 'Public Health'],
-  },
-  {
-    id: 'supportcarr',
-    title: 'SupportCarr',
-    subtitle: 'Micromobility resilience & community logistics',
-    category: 'Urban Systems',
-    action: 'soon',
-    tech: ['Logistics', 'Community', 'Equity'],
-  },
-  {
-    id: 'mathforge',
-    title: 'MathForge',
-    subtitle: 'Collaborative mathematical proof systems',
-    category: 'Knowledge Infrastructure',
-    action: 'soon',
-    tech: ['Mathematics', 'Collaboration', 'Verification'],
-  },
 ]
+
+interface GitHubRepo {
+  name: string
+  full_name: string
+  description: string | null
+  fork: boolean
+  html_url: string
+  language: string | null
+  topics?: string[]
+}
+
+function mapRepoToProject(repo: GitHubRepo): Project {
+  const name = repo.name
+  const title = name
+    .replace(/-/g, ' ')
+    .replace(/_/g, ' ')
+  const categoryMap: Record<string, string> = {
+    Prep: 'Food Safety Systems',
+    SupportCarr: 'Urban Systems',
+    RegEngine: 'Compliance Systems',
+    PopFact: 'Data Analysis',
+    'GrannScraperV1-BIG': 'Data Engineering',
+    Chrissellers: 'Personal Site',
+  }
+  const category = categoryMap[name] ?? 'GitHub Repo'
+  const tech = [repo.language ?? 'Code']
+  return {
+    id: name.toLowerCase(),
+    title,
+    subtitle: repo.description ?? 'Open-source repository',
+    category,
+    action: 'external',
+    url: repo.html_url,
+    tech,
+  }
+}
 
 interface EnhancedProjectGridProps {
   onOpenLab: () => void
@@ -62,12 +75,45 @@ interface EnhancedProjectGridProps {
 
 export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridProps) {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
+  const [repos, setRepos] = useState<Project[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+
+  useEffect(() => {
+    let cancelled = false
+    async function fetchRepos() {
+      try {
+        const res = await fetch('https://api.github.com/users/PetrefiedThunder/repos?per_page=100&type=owner&sort=updated', {
+          headers: { Accept: 'application/vnd.github+json' },
+        })
+        const data: GitHubRepo[] = await res.json()
+        if (cancelled) return
+        const projects = data
+          .filter((r) => !r.fork)
+          .map(mapRepoToProject)
+          // de-duplicate any that might overlap with curated IDs
+          .filter((p) => !baseProjects.some((bp) => bp.id === p.id))
+        setRepos(projects)
+      } catch (e) {
+        // Fail silently; show just curated projects
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+    fetchRepos()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const projects: Project[] = useMemo(() => {
+    return [...baseProjects, ...repos]
+  }, [repos])
 
   const handleProjectClick = (project: Project) => {
     if (project.action === 'lab') {
       onOpenLab()
     } else if (project.action === 'external' && project.url) {
-      window.open(project.url, '_blank')
+      window.open(project.url, '_blank', 'noopener,noreferrer')
     }
   }
 
@@ -77,11 +123,12 @@ export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridPr
         {/* Section header */}
         <div className="mb-20">
           <div className="flex items-center gap-3 mb-4">
-            <h2 className="studio-subheading">Studio / Lab</h2>
+            <h2 className="studio-subheading">Creative & Technical Work</h2>
             <div className="flex-1 h-px bg-gradient-to-r from-studio-stone/20 to-transparent" />
           </div>
           <p className="studio-body max-w-2xl">
-            Exploring systems design, regulatory technology, and equitable infrastructure.
+            Open-source projects exploring systems design, regulatory technology, and equitable infrastructure. 
+            Each repository represents an experiment in making complex systems more accessible and human-centered.
           </p>
         </div>
 
@@ -188,6 +235,11 @@ export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridPr
               />
             </article>
           ))}
+
+          {/* Loading state (only shown until repos load) */}
+          {loading && (
+            <div className="text-sm text-studio-stone/60">Loading GitHub repositories…</div>
+          )}
         </div>
       </div>
     </section>
