@@ -43,10 +43,12 @@ export default function Hero({ onOpenLab }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full bg-white/5 border border-white/10 backdrop-blur"
+          className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full bg-studio-charcoal/50 border border-white/10 backdrop-blur-sm"
         >
           <Sparkles className="w-4 h-4 text-neural-accent" />
-          <span className="text-sm font-medium text-studio-cream">Trusted systems in chaos</span>
+          <span className="text-sm font-medium text-white/80">
+            Building trusted systems when stakes are highest
+          </span>
         </motion.div>
 
         {/* Main heading with gradient */}
@@ -54,9 +56,9 @@ export default function Hero({ onOpenLab }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="studio-heading mb-8 bg-gradient-to-r from-neural-accent via-studio-cream to-neural-highlight bg-clip-text text-transparent"
+          className="studio-heading mb-6 bg-gradient-to-br from-neural-highlight via-neural-accent to-white bg-clip-text text-transparent"
         >
-          I design calm out of crisis.
+          Trusted systems in chaos
         </motion.h1>
 
         {/* Subheading */}
@@ -64,9 +66,9 @@ export default function Hero({ onOpenLab }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="studio-subheading mb-12 text-studio-stone"
+          className="studio-subheading mb-10 text-studio-stone max-w-3xl"
         >
-          Resilient systems, compliant rails, and AI safeguards that hold when the lights flicker.
+          Navigating failure, scrutiny, and speed to deliver infrastructure that is resilient, humane, and verifiable.
         </motion.h2>
 
         {/* Short description - very minimal */}
@@ -74,23 +76,26 @@ export default function Hero({ onOpenLab }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="max-w-2xl space-y-6 mb-16"
+          className="max-w-3xl space-y-5 mb-14 text-studio-stone"
         >
           <p className="studio-body leading-relaxed">
-            I build trusted environments for the messiest problems: coordinating human teams, product velocity,
-            and regulatory precision across industries where failure is not an option.
+            I design systems that hold steady through chaos: policy-grade AI tooling, safety-critical architecture, and
+            operational frameworks that keep teams moving when everything is on fire.
           </p>
-          <p className="studio-body leading-relaxed text-studio-sage">
-            The result: durable playbooks, measurable compliance, and AI-powered safety nets that scale with ambition.
+          <p className="studio-body leading-relaxed">
+            My work translates human urgency into accountable technology—balancing experimentation with structure so the
+            right decisions happen faster, with evidence.
           </p>
         </motion.div>
 
-        {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        {/* CTA to Lab */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="flex flex-wrap items-center gap-4"
+        >
           <motion.button
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={onOpenLab}
@@ -101,17 +106,15 @@ export default function Hero({ onOpenLab }: HeroProps) {
             {/* Animated glow effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-neural-accent to-neural-highlight opacity-0 group-hover:opacity-20 rounded-lg transition-opacity duration-300" />
           </motion.button>
-          <motion.a
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
+
+          <a
             href="/Christopher_Sellers_CV.pdf"
-            className="inline-flex items-center gap-2 px-7 py-4 text-lg font-medium rounded-lg border border-white/20 bg-white/5 text-studio-cream hover:border-neural-accent/60 hover:text-white hover:bg-white/10 transition-colors"
+            className="group inline-flex items-center gap-2 px-6 py-3 text-base font-semibold text-white/80 border border-white/15 rounded-lg transition-all duration-300 hover:text-white hover:border-neural-highlight/60 hover:bg-white/5"
           >
-            <Download className="w-5 h-5" />
+            <Download className="w-5 h-5 text-neural-highlight transition-transform duration-300 group-hover:-translate-y-0.5" />
             <span>Download CV</span>
-          </motion.a>
-        </div>
+          </a>
+        </motion.div>
       </motion.div>
     </section>
   )

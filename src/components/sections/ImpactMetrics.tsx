@@ -19,28 +19,28 @@ interface Metric {
 
 const metrics: Metric[] = [
   {
-    value: 100,
-    label: 'Neurons',
+    value: 20,
+    label: 'Years Across Sectors',
     suffix: '+',
-    description: 'In the neural network architecture',
+    description: 'Leadership in government, tech, and community programs',
   },
   {
-    value: 4,
-    label: 'Scenario Datasets',
-    suffix: '',
-    description: 'Modeling different regulatory approaches',
-  },
-  {
-    value: 5,
-    label: 'Regulation Domains',
-    suffix: '',
-    description: 'From food safety to equity & inclusion',
-  },
-  {
-    value: 89,
-    label: 'Bundle Reduction',
+    value: 100,
+    label: 'MLS Client Retention',
     suffix: '%',
-    description: 'Performance optimization achieved',
+    description: 'Trusted to deliver outcomes across complex stakeholder groups',
+  },
+  {
+    value: 150,
+    label: 'Town Halls',
+    suffix: '+',
+    description: 'Community listening sessions facilitated nationwide',
+  },
+  {
+    value: 250,
+    label: 'Project Budget',
+    suffix: 'K',
+    description: 'Managed from inception through delivery with accountability',
   },
 ]
 
@@ -84,8 +84,9 @@ export default function ImpactMetrics() {
             Technical Depth Meets Social Impact
           </h2>
           <p className="studio-body max-w-2xl mx-auto">
-            Real neural network mathematics applied to regulatory compliance and
-            community equity.
+            A proven record of guiding technology, policy, and community work
+            from strategy to execution while keeping every stakeholder at the
+            table.
           </p>
         </ScrollReveal>
 
@@ -111,8 +112,9 @@ export default function ImpactMetrics() {
         {/* Call to action */}
         <ScrollReveal delay={0.4} className="text-center mt-16">
           <p className="studio-body mb-6">
-            Not just a portfolio piece — a working demonstration of how technology
-            can make complex systems accessible and fair.
+            Each metric reflects hands-on leadership—merging technical rigor,
+            civic partnership, and disciplined delivery to move missions
+            forward.
           </p>
         </ScrollReveal>
       </div>
