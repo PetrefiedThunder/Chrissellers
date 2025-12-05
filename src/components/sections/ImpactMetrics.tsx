@@ -19,28 +19,28 @@ interface Metric {
 
 const metrics: Metric[] = [
   {
-    value: 100,
-    label: 'Neurons',
+    value: 20,
+    label: 'Years Across Sectors',
     suffix: '+',
-    description: 'In the neural network architecture',
+    description: 'Public, private, and non-profit collaboration experience',
   },
   {
-    value: 4,
-    label: 'Scenario Datasets',
-    suffix: '',
-    description: 'Modeling different regulatory approaches',
-  },
-  {
-    value: 5,
-    label: 'Regulation Domains',
-    suffix: '',
-    description: 'From food safety to equity & inclusion',
-  },
-  {
-    value: 89,
-    label: 'Bundle Reduction',
+    value: 100,
+    label: 'MLS Client Retention',
     suffix: '%',
-    description: 'Performance optimization achieved',
+    description: 'Every Major League Soccer partner renewed their engagement',
+  },
+  {
+    value: 150,
+    label: 'Town Halls',
+    suffix: '+',
+    description: 'Community forums facilitated for corridor revitalization',
+  },
+  {
+    value: 250,
+    label: 'Project Budget',
+    suffix: 'K',
+    description: 'Managed to deliver measurable outcomes for Westside Future Fund',
   },
 ]
 
@@ -81,11 +81,11 @@ export default function ImpactMetrics() {
         {/* Section header */}
         <ScrollReveal className="text-center mb-16">
           <h2 className="studio-heading text-4xl md:text-5xl mb-6">
-            Technical Depth Meets Social Impact
+            Measurable Impact at Every Stage
           </h2>
           <p className="studio-body max-w-2xl mx-auto">
-            Real neural network mathematics applied to regulatory compliance and
-            community equity.
+            Two decades of cross-sector partnerships, fan experience innovation,
+            and community-first engagement—captured in outcomes you can measure.
           </p>
         </ScrollReveal>
 
@@ -111,8 +111,8 @@ export default function ImpactMetrics() {
         {/* Call to action */}
         <ScrollReveal delay={0.4} className="text-center mt-16">
           <p className="studio-body mb-6">
-            Not just a portfolio piece — a working demonstration of how technology
-            can make complex systems accessible and fair.
+            A track record of building trust, earning renewals, and managing
+            complex budgets to create equitable growth.
           </p>
         </ScrollReveal>
       </div>
