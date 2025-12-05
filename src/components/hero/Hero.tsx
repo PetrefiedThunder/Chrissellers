@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { ArrowRight, Download, Sparkles } from 'lucide-react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import AnimatedBackground from './AnimatedBackground'
@@ -43,11 +43,11 @@ export default function Hero({ onOpenLab }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full bg-neural-accent/10 border border-neural-accent/20"
+          className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full bg-studio-charcoal/50 border border-white/10 backdrop-blur-sm"
         >
           <Sparkles className="w-4 h-4 text-neural-accent" />
-          <span className="text-sm font-medium text-neural-accent">
-            Interactive Neural Network Simulator
+          <span className="text-sm font-medium text-white/80">
+            Building trusted systems when stakes are highest
           </span>
         </motion.div>
 
@@ -56,9 +56,9 @@ export default function Hero({ onOpenLab }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="studio-heading mb-8 bg-gradient-to-r from-studio-charcoal via-studio-charcoal to-neural-accent bg-clip-text text-transparent"
+          className="studio-heading mb-6 bg-gradient-to-br from-neural-highlight via-neural-accent to-white bg-clip-text text-transparent"
         >
-          Christopher Sellers
+          Trusted systems in chaos
         </motion.h1>
 
         {/* Subheading */}
@@ -66,9 +66,9 @@ export default function Hero({ onOpenLab }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="studio-subheading mb-12 text-studio-stone"
+          className="studio-subheading mb-10 text-studio-stone max-w-3xl"
         >
-          Technical Evangelist | Founding Operator | 0-to-1 Architect
+          Navigating failure, scrutiny, and speed to deliver infrastructure that is resilient, humane, and verifiable.
         </motion.h2>
 
         {/* Short description - very minimal */}
@@ -76,32 +76,45 @@ export default function Hero({ onOpenLab }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="max-w-2xl space-y-6 mb-16"
+          className="max-w-3xl space-y-5 mb-14 text-studio-stone"
         >
           <p className="studio-body leading-relaxed">
-            Bridging human struggle and technical solution. From the U.S. Senate to hyper-growth tech to 
-            building infrastructure by truck headlights—building regulatory systems that are both elegant and equitable.
+            I design systems that hold steady through chaos: policy-grade AI tooling, safety-critical architecture, and
+            operational frameworks that keep teams moving when everything is on fire.
           </p>
-          <p className="studio-body leading-relaxed italic text-studio-sage">
-            "I Build the Stage & I Fill the Seats."
+          <p className="studio-body leading-relaxed">
+            My work translates human urgency into accountable technology—balancing experimentation with structure so the
+            right decisions happen faster, with evidence.
           </p>
         </motion.div>
 
         {/* CTA to Lab */}
-        <motion.button
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={onOpenLab}
-          className="group relative inline-flex items-center gap-3 px-8 py-4 text-lg font-medium bg-studio-charcoal text-white rounded-lg hover:shadow-2xl hover:shadow-neural-accent/20"
+          className="flex flex-wrap items-center gap-4"
         >
-          <span className="relative z-10">Open Neural Night Sky Lab</span>
-          <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 relative z-10" />
-          {/* Animated glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-neural-accent to-neural-highlight opacity-0 group-hover:opacity-20 rounded-lg transition-opacity duration-300" />
-        </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onOpenLab}
+            className="group relative inline-flex items-center gap-3 px-8 py-4 text-lg font-medium bg-studio-charcoal text-white rounded-lg hover:shadow-2xl hover:shadow-neural-accent/20"
+          >
+            <span className="relative z-10">Open Neural Night Sky Lab</span>
+            <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 relative z-10" />
+            {/* Animated glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-neural-accent to-neural-highlight opacity-0 group-hover:opacity-20 rounded-lg transition-opacity duration-300" />
+          </motion.button>
+
+          <a
+            href="/Christopher_Sellers_CV.pdf"
+            className="group inline-flex items-center gap-2 px-6 py-3 text-base font-semibold text-white/80 border border-white/15 rounded-lg transition-all duration-300 hover:text-white hover:border-neural-highlight/60 hover:bg-white/5"
+          >
+            <Download className="w-5 h-5 text-neural-highlight transition-transform duration-300 group-hover:-translate-y-0.5" />
+            <span>Download CV</span>
+          </a>
+        </motion.div>
       </motion.div>
     </section>
   )
