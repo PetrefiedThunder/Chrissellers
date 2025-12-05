@@ -81,7 +81,7 @@ export default function ImpactMetrics() {
         {/* Section header */}
         <ScrollReveal className="text-center mb-16">
           <h2 className="studio-heading text-4xl md:text-5xl mb-6">
-            Technical Depth Meets Social Impact
+            Measurable Impact at Every Stage
           </h2>
           <p className="studio-body max-w-2xl mx-auto">
             A proven record of guiding technology, policy, and community work
