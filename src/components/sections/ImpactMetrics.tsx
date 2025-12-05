@@ -22,25 +22,25 @@ const metrics: Metric[] = [
     value: 20,
     label: 'Years Across Sectors',
     suffix: '+',
-    description: 'Public, private, and non-profit collaboration experience',
+    description: 'Leadership in government, tech, and community programs',
   },
   {
     value: 100,
     label: 'MLS Client Retention',
     suffix: '%',
-    description: 'Every Major League Soccer partner renewed their engagement',
+    description: 'Trusted to deliver outcomes across complex stakeholder groups',
   },
   {
     value: 150,
     label: 'Town Halls',
     suffix: '+',
-    description: 'Community forums facilitated for corridor revitalization',
+    description: 'Community listening sessions facilitated nationwide',
   },
   {
     value: 250,
     label: 'Project Budget',
     suffix: 'K',
-    description: 'Managed to deliver measurable outcomes for Westside Future Fund',
+    description: 'Managed from inception through delivery with accountability',
   },
 ]
 
@@ -84,8 +84,9 @@ export default function ImpactMetrics() {
             Measurable Impact at Every Stage
           </h2>
           <p className="studio-body max-w-2xl mx-auto">
-            Two decades of cross-sector partnerships, fan experience innovation,
-            and community-first engagement—captured in outcomes you can measure.
+            A proven record of guiding technology, policy, and community work
+            from strategy to execution while keeping every stakeholder at the
+            table.
           </p>
         </ScrollReveal>
 
@@ -111,8 +112,9 @@ export default function ImpactMetrics() {
         {/* Call to action */}
         <ScrollReveal delay={0.4} className="text-center mt-16">
           <p className="studio-body mb-6">
-            A track record of building trust, earning renewals, and managing
-            complex budgets to create equitable growth.
+            Each metric reflects hands-on leadership—merging technical rigor,
+            civic partnership, and disciplined delivery to move missions
+            forward.
           </p>
         </ScrollReveal>
       </div>
