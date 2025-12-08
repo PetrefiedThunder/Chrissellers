@@ -2,6 +2,7 @@
 
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Typography } from '@/src/components/design/Typography'
 import Hero from '@/src/components/hero/Hero'
 import Footer from '@/src/components/layout/Footer'
 import LoadingScreen from '@/src/components/layout/LoadingScreen'
@@ -85,10 +86,10 @@ export default function Home() {
             className="relative w-full min-h-screen flex items-center justify-center"
           >
             <div className="text-center">
-              <h2 className="text-2xl font-bold mb-4">Lab Coming Soon</h2>
+              <Typography variant="display-md" tag="h2" className="mb-4">Lab Coming Soon</Typography>
               <button
                 onClick={handleCloseLab}
-                className="px-6 py-3 bg-studio-sage text-white rounded-lg hover:opacity-90 transition-opacity"
+                className="px-6 py-3 bg-text-accent text-bg-page rounded-lg hover:opacity-90 transition-opacity"
               >
                 Back to Studio
               </button>

@@ -17,7 +17,7 @@ export default function HeroVisual() {
   return (
     <div className="absolute right-0 top-0 w-1/2 h-full hidden lg:block">
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-l from-transparent via-studio-cream/50 to-studio-cream z-10" />
+      <div className="absolute inset-0 bg-gradient-to-l from-transparent via-bg-page/50 to-bg-page z-10" />
 
       {/* Image placeholder with abstract pattern */}
       <div className="relative w-full h-full overflow-hidden">
@@ -58,11 +58,11 @@ export default function HeroVisual() {
 
         {/* Image placeholder text */}
         <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 hover:opacity-100 transition-opacity duration-300">
-          <div className="text-center p-8 bg-white/90 backdrop-blur-sm rounded-lg">
-            <p className="text-sm text-studio-stone font-medium mb-2">
+          <div className="text-center p-8 bg-bg-surface/90 backdrop-blur-sm rounded-lg border border-border-light">
+            <p className="text-sm text-text-primary font-medium mb-2">
               Add Hero Image Here
             </p>
-            <p className="text-xs text-studio-stone/60 max-w-xs">
+            <p className="text-xs text-text-secondary max-w-xs">
               Recommended: High-res abstract visualization from Unsplash, Pexels, or Pixabay.
               Search "neural network", "data visualization", or "abstract technology"
             </p>

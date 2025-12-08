@@ -10,6 +10,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { Brain, Network, TrendingUp, Shield } from 'lucide-react'
 import ScrollReveal from '../effects/ScrollReveal'
+import { Typography } from '../design/Typography'
 
 const steps = [
   {
@@ -51,18 +52,18 @@ export default function HowItWorks() {
   return (
     <section
       ref={containerRef}
-      className="relative py-32 px-6 md:px-12 lg:px-24 overflow-hidden bg-gradient-to-b from-white/30 via-white/50 to-white/30"
+      className="relative py-section-md px-6 md:px-12 lg:px-24 overflow-hidden bg-bg-page"
     >
       <motion.div style={{ opacity, scale }} className="max-w-6xl mx-auto">
         {/* Section header */}
         <ScrollReveal className="text-center mb-20">
-          <h2 className="studio-heading text-4xl md:text-5xl mb-6">
+          <Typography variant="display-md" tag="h2" className="mb-6">
             How It Works
-          </h2>
-          <p className="studio-body max-w-2xl mx-auto">
+          </Typography>
+          <Typography variant="body-lg" className="max-w-2xl mx-auto">
             A real neural network that learns to navigate regulatory complexity
             while optimizing for equity and opportunity.
-          </p>
+          </Typography>
         </ScrollReveal>
 
         {/* Steps grid */}
@@ -73,23 +74,25 @@ export default function HowItWorks() {
               delay={index * 0.1}
               direction={index % 2 === 0 ? 'left' : 'right'}
             >
-              <div className="group relative p-8 rounded-2xl bg-white/80 backdrop-blur-sm border border-studio-stone/10 hover:border-neural-accent/30 transition-all duration-500 hover:shadow-xl hover:shadow-neural-accent/5">
+              <div className="group relative p-8 rounded-2xl bg-bg-surface border border-border-light hover:border-text-accent/30 transition-all duration-500 hover:shadow-xl">
                 {/* Icon */}
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-neural-accent to-neural-highlight flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <step.icon className="w-7 h-7 text-white" />
+                <div className="w-14 h-14 rounded-xl bg-text-accent flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <step.icon className="w-7 h-7 text-bg-page" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-2xl font-display font-semibold mb-3 group-hover:text-gradient transition-all duration-300">
+                <Typography variant="title-lg" tag="h3" className="mb-3 group-hover:text-text-accent transition-colors">
                   {step.title}
-                </h3>
-                <p className="studio-body mb-4">{step.description}</p>
-                <p className="text-sm font-mono text-neural-accent/80">
+                </Typography>
+                <Typography variant="body-md" className="mb-4">
+                  {step.description}
+                </Typography>
+                <Typography variant="label" className="text-text-accent/80 font-mono">
                   {step.details}
-                </p>
+                </Typography>
 
                 {/* Hover effect */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-neural-accent/5 to-neural-highlight/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <div className="absolute inset-0 rounded-2xl bg-text-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               </div>
             </ScrollReveal>
           ))}

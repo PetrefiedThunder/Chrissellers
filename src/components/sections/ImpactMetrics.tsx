@@ -7,8 +7,9 @@
  */
 
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ScrollReveal from '../effects/ScrollReveal'
+import { Typography } from '../design/Typography'
 
 interface Metric {
   value: number
@@ -52,7 +53,7 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
     damping: 50,
     stiffness: 50,
   })
-  const displayValue = useRef(0)
+  const [displayValue, setDisplayValue] = useState(0)
 
   useEffect(() => {
     if (isInView) {
@@ -61,33 +62,33 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   }, [isInView, value, motionValue])
 
   useEffect(() => {
-    springValue.on('change', (latest) => {
-      displayValue.current = Math.round(latest)
+    const unsubscribe = springValue.on('change', (latest) => {
+      setDisplayValue(Math.round(latest))
     })
+    return unsubscribe
   }, [springValue])
 
   return (
-    <motion.span ref={ref} className="inline-block">
-      <motion.span>{Math.round(springValue.get())}</motion.span>
-      {suffix}
-    </motion.span>
+    <span ref={ref} className="inline-block">
+      {displayValue}{suffix}
+    </span>
   )
 }
 
 export default function ImpactMetrics() {
   return (
-    <section className="relative py-32 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white/30 to-white/50">
+    <section className="relative py-section-md px-6 md:px-12 lg:px-24 bg-bg-page">
       <div className="max-w-6xl mx-auto">
         {/* Section header */}
         <ScrollReveal className="text-center mb-16">
-          <h2 className="studio-heading text-4xl md:text-5xl mb-6">
+          <Typography variant="display-md" tag="h2" className="mb-6">
             Measurable Impact at Every Stage
-          </h2>
-          <p className="studio-body max-w-2xl mx-auto">
+          </Typography>
+          <Typography variant="body-lg" className="max-w-2xl mx-auto">
             A proven record of guiding technology, policy, and community work
             from strategy to execution while keeping every stakeholder at the
             table.
-          </p>
+          </Typography>
         </ScrollReveal>
 
         {/* Metrics grid */}
@@ -96,14 +97,16 @@ export default function ImpactMetrics() {
             <ScrollReveal key={metric.label} delay={index * 0.1}>
               <div className="text-center group">
                 <div className="mb-4">
-                  <div className="text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-neural-accent to-neural-highlight bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300 inline-block">
+                  <div className="text-5xl md:text-6xl font-display font-bold text-text-accent group-hover:scale-110 transition-transform duration-300 inline-block">
                     <AnimatedCounter value={metric.value} suffix={metric.suffix} />
                   </div>
                 </div>
-                <h3 className="text-lg font-semibold mb-2 text-studio-charcoal">
+                <Typography variant="title-md" tag="h3" className="mb-2">
                   {metric.label}
-                </h3>
-                <p className="text-sm text-studio-stone/70">{metric.description}</p>
+                </Typography>
+                <Typography variant="body-sm" className="text-text-secondary/70">
+                  {metric.description}
+                </Typography>
               </div>
             </ScrollReveal>
           ))}
@@ -111,11 +114,11 @@ export default function ImpactMetrics() {
 
         {/* Call to action */}
         <ScrollReveal delay={0.4} className="text-center mt-16">
-          <p className="studio-body mb-6">
+          <Typography variant="body-lg" className="mb-6">
             Each metric reflects hands-on leadership—merging technical rigor,
             civic partnership, and disciplined delivery to move missions
             forward.
-          </p>
+          </Typography>
         </ScrollReveal>
       </div>
     </section>

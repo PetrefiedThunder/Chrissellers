@@ -8,6 +8,7 @@
 
 import { Briefcase, Code, Users, Award, Building2, Shield, Lightbulb } from 'lucide-react'
 import ScrollReveal from '../effects/ScrollReveal'
+import { Typography } from '../design/Typography'
 
 interface Experience {
   icon: typeof Briefcase
@@ -98,22 +99,22 @@ const experiences: Experience[] = [
 
 export default function ProfessionalExperience() {
   return (
-    <section className="relative py-32 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white/50 via-studio-paper/30 to-white/30">
+    <section className="relative py-section-md px-6 md:px-12 lg:px-24 bg-bg-page">
       <div className="max-w-6xl mx-auto">
         {/* Section header */}
         <ScrollReveal className="mb-20">
           <div className="flex items-center gap-3 mb-6">
-            <h2 className="studio-heading text-4xl md:text-5xl">Professional Experience</h2>
-            <div className="flex-1 h-px bg-gradient-to-r from-studio-stone/20 to-transparent" />
+            <Typography variant="display-md" tag="h2">Professional Experience</Typography>
+            <div className="flex-1 h-px bg-border-light/20" />
           </div>
-          <p className="text-xl font-display italic text-studio-sage mb-6">
+          <Typography variant="title-lg" className="italic text-text-accent mb-6">
             "I Build the Stage & I Fill the Seats."
-          </p>
-          <p className="studio-body max-w-3xl">
+          </Typography>
+          <Typography variant="body-lg" className="max-w-3xl">
             Technical Evangelist and Field Operator who bridges the gap between human struggle and technical solution. 
             From the U.S. Senate to hyper-growth tech companies to building infrastructure by truck headlights in Appalachia—a 
             career defined by resilience, adaptation, and the ability to execute in zero-fail environments.
-          </p>
+          </Typography>
         </ScrollReveal>
 
         {/* Experience timeline */}
@@ -127,42 +128,42 @@ export default function ProfessionalExperience() {
               <article className="group relative">
                 <div className="flex gap-6 items-start">
                   {/* Icon */}
-                  <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-studio-sage to-studio-water flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
-                    <exp.icon className="w-8 h-8 text-white" />
+                  <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-text-accent flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
+                    <exp.icon className="w-8 h-8 text-bg-page" />
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1 bg-white/80 backdrop-blur-sm border border-studio-stone/10 rounded-2xl p-8 group-hover:border-studio-sage/30 group-hover:shadow-xl transition-all duration-500">
+                  <div className="flex-1 bg-bg-surface/80 backdrop-blur-sm border border-border-light rounded-2xl p-8 group-hover:border-text-accent/30 group-hover:shadow-xl transition-all duration-500">
                     {/* Category badge */}
                     <div className="inline-block mb-3">
-                      <span className="text-xs font-semibold tracking-wider uppercase text-studio-sage px-3 py-1 rounded-full bg-studio-sage/10">
+                      <span className="text-xs font-semibold tracking-wider uppercase text-text-accent px-3 py-1 rounded-full bg-text-accent/10">
                         {exp.category}
                       </span>
                     </div>
 
                     {/* Role and org */}
-                    <h3 className="text-2xl font-display font-semibold mb-2 text-studio-charcoal group-hover:text-studio-sage transition-colors duration-300">
+                    <Typography variant="title-lg" tag="h3" className="mb-2 group-hover:text-text-accent transition-colors duration-300">
                       {exp.role}
-                    </h3>
+                    </Typography>
                     <div className="flex items-center gap-3 mb-4">
-                      <p className="text-lg font-medium text-studio-stone/80">
+                      <Typography variant="body-lg" className="font-medium text-text-secondary/80">
                         {exp.organization}
-                      </p>
-                      <span className="text-sm text-studio-stone/60">•</span>
-                      <p className="text-sm text-studio-stone/60">{exp.period}</p>
+                      </Typography>
+                      <span className="text-sm text-text-secondary/60">•</span>
+                      <Typography variant="body-sm" className="text-text-secondary/60">{exp.period}</Typography>
                     </div>
 
                     {/* Description */}
-                    <p className="studio-body mb-4">{exp.description}</p>
+                    <Typography variant="body-md" className="mb-4">{exp.description}</Typography>
 
                     {/* Highlights */}
                     {exp.highlights && exp.highlights.length > 0 && (
-                      <div className="pt-4 border-t border-studio-stone/10">
+                      <div className="pt-4 border-t border-border-light/50">
                         <ul className="space-y-2">
                           {exp.highlights.map((highlight, idx) => (
-                            <li key={idx} className="text-sm text-studio-stone/70 flex gap-2">
-                              <span className="text-studio-sage mt-1">•</span>
-                              <span>{highlight}</span>
+                            <li key={idx} className="flex gap-2">
+                              <span className="text-text-accent mt-1">•</span>
+                              <Typography variant="body-sm" className="text-text-secondary/70">{highlight}</Typography>
                             </li>
                           ))}
                         </ul>
