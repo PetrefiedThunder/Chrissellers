@@ -2,7 +2,6 @@
 
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Typography } from '@/src/components/design/Typography'
 import Hero from '@/src/components/hero/Hero'
 import Footer from '@/src/components/layout/Footer'
 import LoadingScreen from '@/src/components/layout/LoadingScreen'
@@ -14,8 +13,7 @@ import ProfessionalExperience from '@/src/components/sections/ProfessionalExperi
 
 // Lazy load heavy components
 const EnhancedProjectGrid = lazy(() => import('@/src/components/studio/EnhancedProjectGrid'))
-// TODO: Lab component not yet implemented
-// const LabView = lazy(() => import('@/src/components/lab/LabView'))
+const LabView = lazy(() => import('@/src/components/lab/LabView'))
 
 type View = 'studio' | 'lab'
 
@@ -83,15 +81,19 @@ export default function Home() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.5 }}
-            className="relative w-full min-h-screen flex items-center justify-center"
+            className="relative w-full min-h-screen"
           >
-            <div className="text-center">
-              <Typography variant="display-md" tag="h2" className="mb-4">Lab Coming Soon</Typography>
+            <Suspense fallback={<LoadingScreen />}>
+              <LabView />
+            </Suspense>
+            
+            {/* Back Button Overlay */}
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50">
               <button
                 onClick={handleCloseLab}
-                className="px-6 py-3 bg-text-accent text-bg-page rounded-lg hover:opacity-90 transition-opacity"
+                className="px-6 py-3 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 transition-all border border-white/20"
               >
-                Back to Studio
+                Exit Lab
               </button>
             </div>
           </motion.div>
