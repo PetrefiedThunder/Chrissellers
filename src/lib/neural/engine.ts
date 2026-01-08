@@ -26,6 +26,13 @@ const activations = {
   linearPrime: (_x: number) => 1
 }
 
+// Helper: Get the derivative function for a given activation
+function getActivationPrime(activation: string): (x: number) => number {
+  const primeFnName = `${activation}Prime` as keyof typeof activations
+  const primeFn = activations[primeFnName]
+  return typeof primeFn === 'function' ? primeFn : activations.linearPrime
+}
+
 export function initializeNetwork(arch: NetworkArchitecture): { neurons: Neuron[], connections: Connection[] } {
   const neurons: Neuron[] = []
   const connections: Connection[] = []
@@ -154,15 +161,11 @@ export function trainBatch(
       const output = acts.get(id) || 0
       const target = example.target[i] || 0
       const error = output - target
-      
-      // Derivative of activation (assuming sigmoid/tanh/relu)
-      // For simplicity in this simulation, we'll use a generic derivative approximation or specific if needed
-      // Let's assume sigmoid for output for now or linear
-      const actFnPrime = activations.sigmoidPrime // Simplified: assuming sigmoid for now
-      const delta = error * actFnPrime(output) // Note: actFnPrime expects input x, but usually we pass output y if optimized. 
-      // Correct implementation would store z (pre-activation) and pass z to prime.
-      // For visual simulation, this approximation is acceptable.
-      
+
+      // Use the layer's actual activation function derivative
+      const actFnPrime = getActivationPrime(outputLayer.activation)
+      const delta = error * actFnPrime(output)
+
       deltas.set(id, delta)
     }
     
@@ -184,8 +187,9 @@ export function trainBatch(
         }
         
         const output = acts.get(id) || 0
-        // Simplified derivative
-        const delta = errorSum * (output * (1 - output)) // Sigmoid derivative approx
+        // Use the layer's actual activation function derivative
+        const actFnPrime = getActivationPrime(layer.activation)
+        const delta = errorSum * actFnPrime(output)
         deltas.set(id, delta)
       }
     }
