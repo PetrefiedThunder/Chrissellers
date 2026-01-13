@@ -1,0 +1,564 @@
+{
+  "metadata": {
+    "generated": "2026-01-13",
+    "project": "chrissellers",
+    "framework": "Next.js 14 + React 18",
+    "total_files": 31,
+    "total_source_files": 27
+  },
+  "external_dependencies": {
+    "runtime": {
+      "@react-three/drei": "^9.92.7",
+      "@react-three/fiber": "^8.15.12",
+      "@react-three/postprocessing": "^2.16.2",
+      "clsx": "^2.1.1",
+      "framer-motion": "^12.23.24",
+      "lucide-react": "^0.303.0",
+      "next": "^14.2.0",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "recharts": "^2.10.3",
+      "three": "^0.160.0",
+      "zustand": "^4.4.7"
+    },
+    "devDependencies": {
+      "@types/node": "^20.11.0",
+      "@types/react": "^18.2.43",
+      "@types/react-dom": "^18.2.17",
+      "@types/three": "^0.160.0",
+      "@typescript-eslint/eslint-plugin": "^8.0.0",
+      "@typescript-eslint/parser": "^8.0.0",
+      "autoprefixer": "^10.4.16",
+      "eslint": "^9.0.0",
+      "eslint-config-next": "^16.0.7",
+      "postcss": "^8.4.32",
+      "tailwindcss": "^3.4.0",
+      "typescript": "^5.2.2"
+    }
+  },
+  "files": {
+    "app/layout.tsx": {
+      "path": "app/layout.tsx",
+      "type": "layout",
+      "lines": 26,
+      "imports": {
+        "external": ["next"],
+        "internal": ["./globals.css"]
+      },
+      "imported_by": [],
+      "exports": ["RootLayout (default)", "metadata"],
+      "external_deps": ["next/Metadata", "next/script"],
+      "coupling_score": 5,
+      "side_effects": ["CSS import"]
+    },
+    "app/page.tsx": {
+      "path": "app/page.tsx",
+      "type": "page",
+      "lines": 105,
+      "imports": {
+        "external": ["react", "framer-motion"],
+        "internal": [
+          "@/src/components/hero/Hero",
+          "@/src/components/layout/Footer",
+          "@/src/components/layout/LoadingScreen",
+          "@/src/components/effects/CustomCursor",
+          "@/src/components/layout/MobileNav",
+          "@/src/components/sections/HowItWorks",
+          "@/src/components/sections/ImpactMetrics",
+          "@/src/components/sections/ProfessionalExperience",
+          "@/src/components/studio/EnhancedProjectGrid",
+          "@/src/components/lab/LabView"
+        ]
+      },
+      "imported_by": [],
+      "exports": ["Home (default)"],
+      "external_deps": ["react/useState", "react/useEffect", "react/lazy", "react/Suspense", "framer-motion/motion", "framer-motion/AnimatePresence"],
+      "coupling_score": 85,
+      "side_effects": ["window.scrollTo mutations"],
+      "flags": ["HUB_FILE: imports 10 internal modules"]
+    },
+    "app/globals.css": {
+      "path": "app/globals.css",
+      "type": "stylesheet",
+      "lines": 61,
+      "imports": {
+        "external": ["tailwindcss"]
+      },
+      "imported_by": ["app/layout.tsx"],
+      "exports": ["CSS custom properties", "Tailwind utilities"],
+      "coupling_score": 10
+    },
+    "next.config.js": {
+      "path": "next.config.js",
+      "type": "config",
+      "lines": 15,
+      "imports": {
+        "external": []
+      },
+      "imported_by": [],
+      "exports": ["nextConfig"],
+      "coupling_score": 5
+    },
+    "src/components/hero/Hero.tsx": {
+      "path": "src/components/hero/Hero.tsx",
+      "type": "component",
+      "lines": 111,
+      "imports": {
+        "external": ["lucide-react", "framer-motion"],
+        "internal": [
+          "./AnimatedBackground",
+          "./HeroVisual",
+          "../design/Typography"
+        ]
+      },
+      "imported_by": ["app/page.tsx"],
+      "exports": ["Hero (default)"],
+      "external_deps": ["lucide-react/ArrowRight", "lucide-react/Download", "lucide-react/Sparkles", "framer-motion/motion"],
+      "coupling_score": 35
+    },
+    "src/components/hero/AnimatedBackground.tsx": {
+      "path": "src/components/hero/AnimatedBackground.tsx",
+      "type": "component",
+      "lines": 120,
+      "imports": {
+        "external": ["react"],
+        "internal": []
+      },
+      "imported_by": ["src/components/hero/Hero.tsx"],
+      "exports": ["AnimatedBackground (default)"],
+      "external_deps": ["react/useEffect", "react/useRef"],
+      "coupling_score": 10,
+      "side_effects": ["window resize event listener", "requestAnimationFrame loop"]
+    },
+    "src/components/hero/HeroVisual.tsx": {
+      "path": "src/components/hero/HeroVisual.tsx",
+      "type": "component",
+      "lines": 75,
+      "imports": {
+        "external": [],
+        "internal": []
+      },
+      "imported_by": ["src/components/hero/Hero.tsx"],
+      "exports": ["HeroVisual (default)"],
+      "coupling_score": 5,
+      "side_effects": []
+    },
+    "src/components/layout/Footer.tsx": {
+      "path": "src/components/layout/Footer.tsx",
+      "type": "component",
+      "lines": 61,
+      "imports": {
+        "external": ["lucide-react"],
+        "internal": ["../design/Typography"]
+      },
+      "imported_by": ["app/page.tsx"],
+      "exports": ["Footer (default)"],
+      "external_deps": ["lucide-react/Github", "lucide-react/Linkedin", "lucide-react/Mail"],
+      "coupling_score": 15
+    },
+    "src/components/layout/LoadingScreen.tsx": {
+      "path": "src/components/layout/LoadingScreen.tsx",
+      "type": "component",
+      "lines": 40,
+      "imports": {
+        "external": [],
+        "internal": ["../design/Typography"]
+      },
+      "imported_by": ["app/page.tsx", "src/components/lab/LabView.tsx"],
+      "exports": ["LoadingScreen (default)"],
+      "coupling_score": 15
+    },
+    "src/components/layout/MobileNav.tsx": {
+      "path": "src/components/layout/MobileNav.tsx",
+      "type": "component",
+      "lines": 134,
+      "imports": {
+        "external": ["react", "framer-motion", "lucide-react"],
+        "internal": ["../design/Typography"]
+      },
+      "imported_by": ["app/page.tsx"],
+      "exports": ["MobileNav (default)"],
+      "external_deps": ["react/useState", "framer-motion/motion", "framer-motion/AnimatePresence", "lucide-react/Menu", "lucide-react/X", "lucide-react/Sparkles"],
+      "coupling_score": 20
+    },
+    "src/components/effects/CustomCursor.tsx": {
+      "path": "src/components/effects/CustomCursor.tsx",
+      "type": "component",
+      "lines": 123,
+      "imports": {
+        "external": ["react"],
+        "internal": []
+      },
+      "imported_by": ["app/page.tsx"],
+      "exports": ["CustomCursor (default)"],
+      "external_deps": ["react/useEffect", "react/useState"],
+      "coupling_score": 10,
+      "side_effects": ["window mousemove event listener", "document mouseenter/leave listeners", "Global CSS injection via style tag"]
+    },
+    "src/components/effects/ScrollReveal.tsx": {
+      "path": "src/components/effects/ScrollReveal.tsx",
+      "type": "component",
+      "lines": 58,
+      "imports": {
+        "external": ["framer-motion", "react"],
+        "internal": []
+      },
+      "imported_by": [
+        "src/components/sections/HowItWorks.tsx",
+        "src/components/sections/ImpactMetrics.tsx",
+        "src/components/sections/ProfessionalExperience.tsx"
+      ],
+      "exports": ["ScrollReveal (default)"],
+      "external_deps": ["framer-motion/motion", "framer-motion/useInView", "react/useRef"],
+      "coupling_score": 25
+    },
+    "src/components/design/Typography.tsx": {
+      "path": "src/components/design/Typography.tsx",
+      "type": "component",
+      "lines": 40,
+      "imports": {
+        "external": ["react", "clsx"],
+        "internal": []
+      },
+      "imported_by": [
+        "src/components/hero/Hero.tsx",
+        "src/components/layout/Footer.tsx",
+        "src/components/layout/LoadingScreen.tsx",
+        "src/components/layout/MobileNav.tsx",
+        "src/components/sections/HowItWorks.tsx",
+        "src/components/sections/ImpactMetrics.tsx",
+        "src/components/sections/ProfessionalExperience.tsx",
+        "src/components/studio/ProjectGrid.tsx",
+        "src/components/studio/EnhancedProjectGrid.tsx",
+        "src/components/lab/LabView.tsx"
+      ],
+      "exports": ["Typography (named)"],
+      "external_deps": ["react/createElement", "clsx"],
+      "coupling_score": 75,
+      "flags": ["HUB_FILE: imported by 10 modules"]
+    },
+    "src/components/sections/HowItWorks.tsx": {
+      "path": "src/components/sections/HowItWorks.tsx",
+      "type": "component",
+      "lines": 104,
+      "imports": {
+        "external": ["framer-motion", "react", "lucide-react"],
+        "internal": [
+          "../effects/ScrollReveal",
+          "../design/Typography"
+        ]
+      },
+      "imported_by": ["app/page.tsx"],
+      "exports": ["HowItWorks (default)"],
+      "external_deps": ["framer-motion/motion", "framer-motion/useScroll", "framer-motion/useTransform", "react/useRef", "lucide-react/Brain", "lucide-react/Network", "lucide-react/TrendingUp", "lucide-react/Shield"],
+      "coupling_score": 30
+    },
+    "src/components/sections/ImpactMetrics.tsx": {
+      "path": "src/components/sections/ImpactMetrics.tsx",
+      "type": "component",
+      "lines": 127,
+      "imports": {
+        "external": ["framer-motion", "react"],
+        "internal": [
+          "../effects/ScrollReveal",
+          "../design/Typography"
+        ]
+      },
+      "imported_by": ["app/page.tsx"],
+      "exports": ["ImpactMetrics (default)"],
+      "external_deps": ["framer-motion/motion", "framer-motion/useInView", "framer-motion/useMotionValue", "framer-motion/useSpring", "react/useEffect", "react/useRef", "react/useState"],
+      "coupling_score": 30
+    },
+    "src/components/sections/ProfessionalExperience.tsx": {
+      "path": "src/components/sections/ProfessionalExperience.tsx",
+      "type": "component",
+      "lines": 193,
+      "imports": {
+        "external": ["lucide-react"],
+        "internal": [
+          "../effects/ScrollReveal",
+          "../design/Typography"
+        ]
+      },
+      "imported_by": ["app/page.tsx"],
+      "exports": ["ProfessionalExperience (default)"],
+      "external_deps": ["lucide-react/Briefcase", "lucide-react/Code", "lucide-react/Users", "lucide-react/Award", "lucide-react/Building2", "lucide-react/Shield", "lucide-react/Lightbulb"],
+      "coupling_score": 30
+    },
+    "src/components/studio/ProjectGrid.tsx": {
+      "path": "src/components/studio/ProjectGrid.tsx",
+      "type": "component",
+      "lines": 110,
+      "imports": {
+        "external": ["lucide-react"],
+        "internal": ["../design/Typography"]
+      },
+      "imported_by": [],
+      "exports": ["ProjectGrid (default)"],
+      "external_deps": ["lucide-react/ArrowUpRight"],
+      "coupling_score": 10,
+      "side_effects": ["window.open"]
+    },
+    "src/components/studio/EnhancedProjectGrid.tsx": {
+      "path": "src/components/studio/EnhancedProjectGrid.tsx",
+      "type": "component",
+      "lines": 251,
+      "imports": {
+        "external": ["lucide-react", "react"],
+        "internal": ["../design/Typography"]
+      },
+      "imported_by": ["app/page.tsx"],
+      "exports": ["EnhancedProjectGrid (default)"],
+      "external_deps": ["lucide-react/ArrowUpRight", "lucide-react/Sparkles", "lucide-react/Clock", "lucide-react/Rocket", "react/useEffect", "react/useMemo", "react/useState"],
+      "coupling_score": 25,
+      "side_effects": ["fetch to GitHub API", "window.open"]
+    },
+    "src/components/lab/LabView.tsx": {
+      "path": "src/components/lab/LabView.tsx",
+      "type": "component",
+      "lines": 133,
+      "imports": {
+        "external": ["react", "@react-three/fiber", "@react-three/drei", "@react-three/postprocessing"],
+        "internal": [
+          "@/src/state/simulationStore",
+          "./NeuralGalaxy",
+          "./NebulaBackground",
+          "../design/Typography"
+        ]
+      },
+      "imported_by": ["app/page.tsx"],
+      "exports": ["LabView (default)"],
+      "external_deps": ["react/useEffect", "react/Suspense", "@react-three/fiber/Canvas", "@react-three/drei/OrbitControls", "@react-three/postprocessing/EffectComposer", "@react-three/postprocessing/Bloom", "@react-three/postprocessing/Vignette"],
+      "coupling_score": 55,
+      "flags": ["HIGH_EXTERNAL_DEPS: 4 external packages"]
+    },
+    "src/components/lab/NeuralGalaxy.tsx": {
+      "path": "src/components/lab/NeuralGalaxy.tsx",
+      "type": "component",
+      "lines": 28,
+      "imports": {
+        "external": ["@react-three/drei"],
+        "internal": [
+          "@/src/state/simulationStore",
+          "./StarNeuron",
+          "./ConstellationConnection"
+        ]
+      },
+      "imported_by": ["src/components/lab/LabView.tsx"],
+      "exports": ["NeuralGalaxy (named)"],
+      "external_deps": ["@react-three/drei/Center"],
+      "coupling_score": 35
+    },
+    "src/components/lab/StarNeuron.tsx": {
+      "path": "src/components/lab/StarNeuron.tsx",
+      "type": "component",
+      "lines": 65,
+      "imports": {
+        "external": ["react", "@react-three/fiber", "three"],
+        "internal": [
+          "@/src/lib/neural/types",
+          "@/src/state/simulationStore"
+        ]
+      },
+      "imported_by": ["src/components/lab/NeuralGalaxy.tsx"],
+      "exports": ["StarNeuron (named)"],
+      "external_deps": ["react/useRef", "react/useMemo", "@react-three/fiber/useFrame", "three/Mesh", "three/Color"],
+      "coupling_score": 35
+    },
+    "src/components/lab/ConstellationConnection.tsx": {
+      "path": "src/components/lab/ConstellationConnection.tsx",
+      "type": "component",
+      "lines": 76,
+      "imports": {
+        "external": ["react", "@react-three/fiber", "three"],
+        "internal": [
+          "@/src/lib/neural/types",
+          "@/src/lib/neural/networkLayout",
+          "@/src/state/simulationStore",
+          "./shaders/EnergyBeamMaterial"
+        ]
+      },
+      "imported_by": ["src/components/lab/NeuralGalaxy.tsx"],
+      "exports": ["ConstellationConnection (named)"],
+      "external_deps": ["react/useRef", "react/useMemo", "@react-three/fiber/useFrame", "three/Mesh", "three/Vector3", "three/Color", "three/ShaderMaterial"],
+      "coupling_score": 45
+    },
+    "src/components/lab/NebulaBackground.tsx": {
+      "path": "src/components/lab/NebulaBackground.tsx",
+      "type": "component",
+      "lines": 18,
+      "imports": {
+        "external": ["@react-three/drei"],
+        "internal": []
+      },
+      "imported_by": ["src/components/lab/LabView.tsx"],
+      "exports": ["NebulaBackground (named)"],
+      "external_deps": ["@react-three/drei/Stars"],
+      "coupling_score": 5
+    },
+    "src/components/lab/shaders/EnergyBeamMaterial.ts": {
+      "path": "src/components/lab/shaders/EnergyBeamMaterial.ts",
+      "type": "shader",
+      "lines": 61,
+      "imports": {
+        "external": ["@react-three/drei", "@react-three/fiber", "three"],
+        "internal": []
+      },
+      "imported_by": ["src/components/lab/ConstellationConnection.tsx"],
+      "exports": ["EnergyBeamMaterial (named)"],
+      "external_deps": ["@react-three/drei/shaderMaterial", "@react-three/fiber/extend", "three/Color"],
+      "coupling_score": 15,
+      "side_effects": ["extend() call registers material globally", "Global JSX namespace augmentation"]
+    },
+    "src/state/simulationStore.ts": {
+      "path": "src/state/simulationStore.ts",
+      "type": "store",
+      "lines": 147,
+      "imports": {
+        "external": ["zustand"],
+        "internal": [
+          "../lib/neural/types",
+          "../lib/neural/engine",
+          "../lib/neural/networkLayout",
+          "../lib/neural/datasets"
+        ]
+      },
+      "imported_by": [
+        "src/components/lab/LabView.tsx",
+        "src/components/lab/NeuralGalaxy.tsx",
+        "src/components/lab/StarNeuron.tsx",
+        "src/components/lab/ConstellationConnection.tsx"
+      ],
+      "exports": ["useSimulationStore (named)"],
+      "external_deps": ["zustand/create"],
+      "coupling_score": 70,
+      "flags": ["HUB_FILE: imported by 4 modules, imports 4 modules"]
+    },
+    "src/lib/neural/types.ts": {
+      "path": "src/lib/neural/types.ts",
+      "type": "types",
+      "lines": 62,
+      "imports": {
+        "external": [],
+        "internal": []
+      },
+      "imported_by": [
+        "src/state/simulationStore.ts",
+        "src/lib/neural/engine.ts",
+        "src/lib/neural/networkLayout.ts",
+        "src/lib/neural/datasets.ts",
+        "src/components/lab/StarNeuron.tsx",
+        "src/components/lab/ConstellationConnection.tsx"
+      ],
+      "exports": [
+        "ActivationFunction (type)",
+        "LayerConfig (interface)",
+        "NetworkArchitecture (interface)",
+        "TrainingConfig (interface)",
+        "Neuron (interface)",
+        "Connection (interface)",
+        "TrainingExample (interface)",
+        "Dataset (interface)",
+        "TrainingMetrics (interface)",
+        "PredictionResult (interface)"
+      ],
+      "coupling_score": 60,
+      "flags": ["HUB_FILE: imported by 6 modules"]
+    },
+    "src/lib/neural/engine.ts": {
+      "path": "src/lib/neural/engine.ts",
+      "type": "library",
+      "lines": 253,
+      "imports": {
+        "external": [],
+        "internal": ["./types"]
+      },
+      "imported_by": ["src/state/simulationStore.ts"],
+      "exports": [
+        "initializeNetwork (function)",
+        "forwardPass (function)",
+        "trainBatch (function)",
+        "evaluate (function)"
+      ],
+      "coupling_score": 30,
+      "flags": ["GOD_MODULE: 253 lines, complex neural network implementation"]
+    },
+    "src/lib/neural/networkLayout.ts": {
+      "path": "src/lib/neural/networkLayout.ts",
+      "type": "library",
+      "lines": 52,
+      "imports": {
+        "external": [],
+        "internal": ["./types"]
+      },
+      "imported_by": [
+        "src/state/simulationStore.ts",
+        "src/components/lab/ConstellationConnection.tsx"
+      ],
+      "exports": [
+        "layoutNeurons (function)",
+        "getConnectionPoints (function)"
+      ],
+      "coupling_score": 25
+    },
+    "src/lib/neural/datasets.ts": {
+      "path": "src/lib/neural/datasets.ts",
+      "type": "library",
+      "lines": 41,
+      "imports": {
+        "external": [],
+        "internal": ["./types"]
+      },
+      "imported_by": ["src/state/simulationStore.ts"],
+      "exports": [
+        "DATASETS (const)",
+        "getDataset (function)",
+        "shuffleDataset (function)",
+        "batchDataset (function)"
+      ],
+      "coupling_score": 15
+    }
+  },
+  "wip_files": {
+    "src/_lab-wip/useNeuralSimulation.ts": {
+      "path": "src/_lab-wip/useNeuralSimulation.ts",
+      "type": "hook",
+      "lines": 214,
+      "status": "EXCLUDED_FROM_BUILD",
+      "imports": {
+        "external": ["react"],
+        "internal": [
+          "../state/simulationStore",
+          "../lib/neural/engine",
+          "../lib/neural/datasets",
+          "../lib/policy/metrics",
+          "../lib/viz/networkLayout",
+          "../lib/neural/types"
+        ]
+      },
+      "flags": ["BROKEN_IMPORTS: references non-existent modules ../lib/policy/metrics, ../lib/viz/networkLayout"]
+    },
+    "src/_lab-wip/policy/metrics.ts": {
+      "path": "src/_lab-wip/policy/metrics.ts",
+      "type": "library",
+      "lines": 280,
+      "status": "EXCLUDED_FROM_BUILD",
+      "imports": {
+        "external": [],
+        "internal": ["../neural/types"]
+      },
+      "flags": ["BROKEN_IMPORTS: references ../neural/types but relative path would be ../../lib/neural/types from this location"]
+    },
+    "src/_lab-wip/viz/networkLayout.ts": {
+      "path": "src/_lab-wip/viz/networkLayout.ts",
+      "type": "library",
+      "lines": 204,
+      "status": "EXCLUDED_FROM_BUILD",
+      "imports": {
+        "external": [],
+        "internal": ["../neural/types"]
+      },
+      "flags": ["BROKEN_IMPORTS: references non-existent types (NetworkWeights, NeuronVisual, etc.)"]
+    }
+  }
+}

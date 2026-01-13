@@ -1,0 +1,174 @@
+%% Chrissellers Codebase Architecture Diagram
+%% Generated: 2026-01-13
+%% Framework: Next.js 14 + React 18 + Three.js
+
+flowchart TB
+    subgraph Entry["Entry Points"]
+        layout["app/layout.tsx<br/>Root Layout"]
+        page["app/page.tsx<br/>Home Page<br/><b>HUB FILE</b>"]
+        globals["app/globals.css<br/>Global Styles"]
+    end
+
+    subgraph Hero["Hero Section"]
+        hero["Hero.tsx"]
+        animBg["AnimatedBackground.tsx"]
+        heroVis["HeroVisual.tsx"]
+    end
+
+    subgraph Layout["Layout Components"]
+        footer["Footer.tsx"]
+        loading["LoadingScreen.tsx"]
+        mobileNav["MobileNav.tsx"]
+    end
+
+    subgraph Effects["Effects"]
+        cursor["CustomCursor.tsx"]
+        scroll["ScrollReveal.tsx"]
+    end
+
+    subgraph Design["Design System"]
+        typo["Typography.tsx<br/><b>HUB FILE</b><br/>10 importers"]
+    end
+
+    subgraph Sections["Section Components"]
+        howItWorks["HowItWorks.tsx"]
+        impact["ImpactMetrics.tsx"]
+        experience["ProfessionalExperience.tsx"]
+    end
+
+    subgraph Studio["Studio Components"]
+        projGrid["ProjectGrid.tsx<br/><i>ORPHAN</i>"]
+        enhProjGrid["EnhancedProjectGrid.tsx"]
+    end
+
+    subgraph Lab["Lab 3D Visualization"]
+        labView["LabView.tsx"]
+        neuralGalaxy["NeuralGalaxy.tsx"]
+        starNeuron["StarNeuron.tsx"]
+        constConn["ConstellationConnection.tsx"]
+        nebulaBg["NebulaBackground.tsx"]
+        shader["EnergyBeamMaterial.ts<br/>Shader"]
+    end
+
+    subgraph State["State Management"]
+        simStore["simulationStore.ts<br/>Zustand<br/><b>HUB FILE</b>"]
+    end
+
+    subgraph Lib["Business Logic"]
+        types["types.ts<br/><b>HUB FILE</b><br/>6 importers"]
+        engine["engine.ts<br/><b>GOD MODULE</b><br/>253 lines"]
+        netLayout["networkLayout.ts"]
+        datasets["datasets.ts"]
+    end
+
+    subgraph WIP["_lab-wip (EXCLUDED)"]
+        wipHook["useNeuralSimulation.ts<br/><i>DEAD CODE</i>"]
+        wipMetrics["policy/metrics.ts<br/><i>DEAD CODE</i>"]
+        wipLayout["viz/networkLayout.ts<br/><i>DEAD CODE</i>"]
+    end
+
+    subgraph External["External Dependencies"]
+        next["next"]
+        react["react"]
+        framer["framer-motion"]
+        three["three"]
+        r3f["@react-three/fiber"]
+        drei["@react-three/drei"]
+        post["@react-three/postprocessing"]
+        zustand["zustand"]
+        lucide["lucide-react"]
+        clsx["clsx"]
+        recharts["recharts<br/><i>UNUSED</i>"]
+    end
+
+    %% Entry point connections
+    layout --> globals
+    page --> hero
+    page --> footer
+    page --> loading
+    page --> cursor
+    page --> mobileNav
+    page --> howItWorks
+    page --> impact
+    page --> experience
+    page --> enhProjGrid
+    page --> labView
+
+    %% Hero dependencies
+    hero --> animBg
+    hero --> heroVis
+    hero --> typo
+
+    %% Layout dependencies
+    footer --> typo
+    loading --> typo
+    mobileNav --> typo
+
+    %% Section dependencies
+    howItWorks --> scroll
+    howItWorks --> typo
+    impact --> scroll
+    impact --> typo
+    experience --> scroll
+    experience --> typo
+
+    %% Studio dependencies
+    enhProjGrid --> typo
+
+    %% Lab dependencies
+    labView --> simStore
+    labView --> neuralGalaxy
+    labView --> nebulaBg
+    labView --> typo
+    neuralGalaxy --> simStore
+    neuralGalaxy --> starNeuron
+    neuralGalaxy --> constConn
+    starNeuron --> types
+    starNeuron --> simStore
+    constConn --> types
+    constConn --> netLayout
+    constConn --> simStore
+    constConn --> shader
+
+    %% State dependencies
+    simStore --> types
+    simStore --> engine
+    simStore --> netLayout
+    simStore --> datasets
+
+    %% Lib internal dependencies
+    engine --> types
+    netLayout --> types
+    datasets --> types
+
+    %% WIP broken dependencies (dashed)
+    wipHook -.->|BROKEN| wipMetrics
+    wipHook -.->|BROKEN| wipLayout
+    wipMetrics -.->|BROKEN| types
+    wipLayout -.->|BROKEN| types
+
+    %% External package usage
+    page -.-> react
+    page -.-> framer
+    hero -.-> framer
+    hero -.-> lucide
+    labView -.-> r3f
+    labView -.-> drei
+    labView -.-> post
+    simStore -.-> zustand
+    typo -.-> clsx
+
+    %% Styling
+    classDef hub fill:#ff6b6b,stroke:#333,stroke-width:2px,color:#fff
+    classDef orphan fill:#ffa94d,stroke:#333,stroke-width:1px
+    classDef dead fill:#868e96,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5
+    classDef god fill:#845ef7,stroke:#333,stroke-width:2px,color:#fff
+    classDef external fill:#339af0,stroke:#333,stroke-width:1px,color:#fff
+    classDef unused fill:#fa5252,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5
+
+    class page,typo,simStore,types hub
+    class projGrid orphan
+    class wipHook,wipMetrics,wipLayout dead
+    class engine god
+    class next,react,framer,three,r3f,drei,post,zustand,lucide,clsx external
+    class recharts unused
