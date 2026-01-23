@@ -7,7 +7,7 @@
  */
 
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import ScrollReveal from '../effects/ScrollReveal'
 import { Typography } from '../design/Typography'
 
@@ -45,7 +45,7 @@ const metrics: Metric[] = [
   },
 ]
 
-function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
+const AnimatedCounter = memo(function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const motionValue = useMotionValue(0)
@@ -73,7 +73,7 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
       {displayValue}{suffix}
     </span>
   )
-}
+})
 
 export default function ImpactMetrics() {
   return (

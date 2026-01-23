@@ -52,15 +52,17 @@ export default function LabView() {
 
         <div className="bg-black/50 backdrop-blur-md p-4 rounded-lg border border-white/10 pointer-events-auto">
           <div className="flex gap-4 mb-4">
-            <button 
+            <button
               onClick={isTraining ? pauseTraining : startTraining}
               className="px-4 py-2 bg-neural-accent text-white rounded hover:bg-neural-accent/80 transition-colors"
+              aria-label={isTraining ? 'Pause neural network training' : 'Start neural network training'}
             >
               {isTraining ? 'Pause Training' : 'Start Training'}
             </button>
-            <button 
+            <button
               onClick={reset}
               className="px-4 py-2 bg-white/10 text-white rounded hover:bg-white/20 transition-colors"
+              aria-label="Reset simulation to initial state"
             >
               Reset
             </button>
@@ -70,10 +72,12 @@ export default function LabView() {
             <button
               onClick={toggleConstellationMode}
               className={`w-full px-4 py-2 rounded transition-colors border ${
-                constellationMode 
-                  ? 'bg-neural-accent/20 border-neural-accent text-neural-accent' 
+                constellationMode
+                  ? 'bg-neural-accent/20 border-neural-accent text-neural-accent'
                   : 'bg-transparent border-white/20 text-white/70 hover:text-white'
               }`}
+              aria-label={constellationMode ? 'Disable constellation visualization mode' : 'Enable constellation visualization mode'}
+              aria-pressed={constellationMode}
             >
               {constellationMode ? '✨ Constellation Mode: ON' : 'Constellation Mode: OFF'}
             </button>

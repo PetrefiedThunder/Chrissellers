@@ -67,12 +67,15 @@ export default function ProjectGrid({ onOpenLab }: ProjectGridProps) {
 
         {/* Project list */}
         <div className="space-y-0">
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <article
               key={project.id}
               className="group relative py-8 border-t border-border-light cursor-pointer hover:bg-bg-surface transition-colors duration-300"
               onClick={() => handleProjectClick(project)}
-              style={{ animationDelay: `${index * 100}ms` }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && handleProjectClick(project)}
+              aria-label={`${project.title}: ${project.subtitle}${project.action === 'soon' ? ' (Coming Soon)' : ''}`}
             >
               <div className="flex items-start justify-between gap-8">
                 <div className="flex-1">

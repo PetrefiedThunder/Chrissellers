@@ -14,23 +14,30 @@ function initializeWeight(fanIn: number, fanOut: number): number {
   return Math.random() * 2 * limit - limit
 }
 
-// Helper: Activation functions and derivatives
+// Helper: Activation functions
 const activations = {
-  sigmoid: (x: number) => 1 / (1 + Math.exp(-x)),
-  sigmoidPrime: (x: number) => { const s = 1 / (1 + Math.exp(-x)); return s * (1 - s) },
+  sigmoid: (x: number) => 1 / (1 + Math.exp(-Math.max(-500, Math.min(500, x)))),
   relu: (x: number) => Math.max(0, x),
-  reluPrime: (x: number) => x > 0 ? 1 : 0,
   tanh: (x: number) => Math.tanh(x),
-  tanhPrime: (x: number) => 1 - Math.pow(Math.tanh(x), 2),
-  linear: (x: number) => x,
-  linearPrime: (_x: number) => 1
+  linear: (x: number) => x
 }
 
-// Helper: Get the derivative function for a given activation
-function getActivationPrime(activation: string): (x: number) => number {
-  const primeFnName = `${activation}Prime` as keyof typeof activations
-  const primeFn = activations[primeFnName]
-  return typeof primeFn === 'function' ? primeFn : activations.linearPrime
+// Helper: Derivatives that accept POST-ACTIVATION values (output y, not input x)
+// This is the correct form for backpropagation since we have y = f(x) stored
+const activationDerivatives = {
+  // For sigmoid: y = sigmoid(x), dy/dx = y * (1 - y)
+  sigmoid: (y: number) => y * (1 - y),
+  // For relu: dy/dx = 1 if y > 0, else 0 (approximation using output)
+  relu: (y: number) => y > 0 ? 1 : 0,
+  // For tanh: y = tanh(x), dy/dx = 1 - y^2
+  tanh: (y: number) => 1 - y * y,
+  // For linear: dy/dx = 1
+  linear: (_y: number) => 1
+}
+
+// Helper: Get the derivative function for a given activation (accepts post-activation value)
+function getActivationPrime(activation: string): (y: number) => number {
+  return activationDerivatives[activation as keyof typeof activationDerivatives] || activationDerivatives.linear
 }
 
 export function initializeNetwork(arch: NetworkArchitecture): { neurons: Neuron[], connections: Connection[] } {

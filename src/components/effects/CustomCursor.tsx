@@ -107,13 +107,13 @@ export default function CustomCursor() {
           }
         }
 
-        * {
-          cursor: none !important;
-        }
-
-        @media (max-width: 768px) {
-          * {
-            cursor: auto !important;
+        /* Hide default cursor only on desktop - scoped to body for better performance */
+        @media (min-width: 769px) {
+          body {
+            cursor: none;
+          }
+          a, button, [role="button"], input, select, textarea {
+            cursor: none;
           }
         }
       `}</style>
