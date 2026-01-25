@@ -8,6 +8,7 @@ import { useSimulationStore } from '@/src/state/simulationStore'
 import { NeuralGalaxy } from './NeuralGalaxy'
 import { NebulaBackground } from './NebulaBackground'
 import { Typography } from '../design/Typography'
+import { useReducedMotion } from 'framer-motion'
 
 export default function LabView() {
   const initialize = useSimulationStore(state => state.initialize)
@@ -19,6 +20,7 @@ export default function LabView() {
   const metrics = useSimulationStore(state => state.metrics)
   const constellationMode = useSimulationStore(state => state.constellationMode)
   const toggleConstellationMode = useSimulationStore(state => state.toggleConstellationMode)
+  const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
     initialize()
@@ -36,6 +38,9 @@ export default function LabView() {
   }, [isTraining, step])
 
   const currentMetric = metrics[metrics.length - 1]
+  const lossValue = currentMetric?.loss ?? 0
+  const accuracyValue = currentMetric?.accuracy ?? 0
+  const epochValue = currentMetric?.epoch ?? 0
 
   return (
     <div className="relative w-full h-screen bg-neural-dark overflow-hidden">
@@ -54,13 +59,13 @@ export default function LabView() {
           <div className="flex gap-4 mb-4">
             <button 
               onClick={isTraining ? pauseTraining : startTraining}
-              className="px-4 py-2 bg-neural-accent text-white rounded hover:bg-neural-accent/80 transition-colors"
+              className="min-h-[44px] px-4 py-2 bg-neural-accent text-white rounded hover:bg-neural-accent/80 transition-colors"
             >
               {isTraining ? 'Pause Training' : 'Start Training'}
             </button>
             <button 
               onClick={reset}
-              className="px-4 py-2 bg-white/10 text-white rounded hover:bg-white/20 transition-colors"
+              className="min-h-[44px] px-4 py-2 bg-white/10 text-white rounded hover:bg-white/20 transition-colors"
             >
               Reset
             </button>
@@ -69,7 +74,8 @@ export default function LabView() {
           <div className="mb-4">
             <button
               onClick={toggleConstellationMode}
-              className={`w-full px-4 py-2 rounded transition-colors border ${
+              aria-pressed={constellationMode}
+              className={`min-h-[44px] w-full px-4 py-2 rounded transition-colors border ${
                 constellationMode 
                   ? 'bg-neural-accent/20 border-neural-accent text-neural-accent' 
                   : 'bg-transparent border-white/20 text-white/70 hover:text-white'
@@ -82,16 +88,21 @@ export default function LabView() {
           <div className="space-y-2">
             <div className="flex justify-between text-sm text-white/80">
               <span>Epoch:</span>
-              <span className="font-mono">{currentMetric?.epoch || 0}</span>
+              <span className="font-mono">{epochValue}</span>
             </div>
             <div className="flex justify-between text-sm text-white/80">
               <span>Loss:</span>
-              <span className="font-mono">{currentMetric?.loss.toFixed(4) || '0.0000'}</span>
+              <span className="font-mono">{lossValue.toFixed(4)}</span>
             </div>
             <div className="flex justify-between text-sm text-white/80">
               <span>Accuracy:</span>
-              <span className="font-mono">{(currentMetric?.accuracy * 100).toFixed(1) || '0.0'}%</span>
+              <span className="font-mono">{(accuracyValue * 100).toFixed(1)}%</span>
             </div>
+          </div>
+          <div className="sr-only" role="status" aria-live="polite">
+            {`Training metrics updated. Epoch ${epochValue}. Loss ${lossValue.toFixed(4)}. Accuracy ${(
+              accuracyValue * 100
+            ).toFixed(1)} percent.`}
           </div>
         </div>
       </div>
@@ -123,7 +134,7 @@ export default function LabView() {
           enablePan={false} 
           minDistance={10} 
           maxDistance={50}
-          autoRotate={isTraining}
+          autoRotate={!shouldReduceMotion && isTraining}
           autoRotateSpeed={0.5}
         />
       </Canvas>

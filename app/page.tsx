@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, lazy, Suspense } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Hero from '@/src/components/hero/Hero'
 import Footer from '@/src/components/layout/Footer'
 import LoadingScreen from '@/src/components/layout/LoadingScreen'
@@ -20,6 +20,7 @@ type View = 'studio' | 'lab'
 export default function Home() {
   const [currentView, setCurrentView] = useState<View>('studio')
   const [isLoading, setIsLoading] = useState(true)
+  const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
     // Simulate initial load
@@ -44,6 +45,18 @@ export default function Home() {
     return <LoadingScreen />
   }
 
+  const fadeTransition = { duration: shouldReduceMotion ? 0 : 0.5 }
+  const studioMotion = shouldReduceMotion
+    ? { initial: false, animate: { opacity: 1 }, exit: { opacity: 1 } }
+    : { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
+  const labMotion = shouldReduceMotion
+    ? { initial: false, animate: { opacity: 1 }, exit: { opacity: 1 } }
+    : {
+        initial: { opacity: 0, scale: 0.95 },
+        animate: { opacity: 1, scale: 1 },
+        exit: { opacity: 0, scale: 0.95 },
+      }
+
   return (
     <>
       <CustomCursor />
@@ -53,10 +66,10 @@ export default function Home() {
         {currentView === 'studio' ? (
           <motion.div
             key="studio"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={studioMotion.initial}
+            animate={studioMotion.animate}
+            exit={studioMotion.exit}
+            transition={fadeTransition}
             className="relative w-full min-h-screen"
           >
             <Hero onOpenLab={handleOpenLab} />
@@ -77,10 +90,10 @@ export default function Home() {
         ) : (
           <motion.div
             key="lab"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.5 }}
+            initial={labMotion.initial}
+            animate={labMotion.animate}
+            exit={labMotion.exit}
+            transition={fadeTransition}
             className="relative w-full min-h-screen"
           >
             <Suspense fallback={<LoadingScreen />}>
