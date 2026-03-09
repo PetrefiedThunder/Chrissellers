@@ -90,14 +90,14 @@ export default function MobileNav({ onOpenLab }: MobileNavProps) {
               </motion.button>
 
               <motion.a
-                href="#how-it-works"
+                href="#about"
                 onClick={() => setIsOpen(false)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
                 <Typography variant="display-md" className="hover:text-text-accent transition-colors">
-                  How It Works
+                  About
                 </Typography>
               </motion.a>
 

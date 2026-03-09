@@ -3,8 +3,21 @@ import Script from 'next/script'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Christopher Sellers',
-  description: 'Christopher Sellers - Bridging regulation, equity, and technology through elegant systems design.',
+  title: 'Christopher Sellers — Trusted Systems in Chaos',
+  description: 'From disaster zones to the U.S. Senate to regulatory AI — building infrastructure that holds steady when the stakes are highest. Founder of RegEngine.',
+  openGraph: {
+    title: 'Christopher Sellers — Trusted Systems in Chaos',
+    description: 'From disaster zones to the U.S. Senate to regulatory AI — building infrastructure that holds steady when the stakes are highest.',
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Christopher Sellers',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Christopher Sellers — Trusted Systems in Chaos',
+    description: 'From disaster zones to the U.S. Senate to regulatory AI — building infrastructure that holds steady when the stakes are highest.',
+  },
+  keywords: ['regulatory technology', 'systems design', 'RegEngine', 'policy technology', 'neural networks', 'compliance', 'Christopher Sellers'],
 }
 
 export default function RootLayout({

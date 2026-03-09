@@ -7,8 +7,9 @@ import Footer from '@/src/components/layout/Footer'
 import LoadingScreen from '@/src/components/layout/LoadingScreen'
 import CustomCursor from '@/src/components/effects/CustomCursor'
 import MobileNav from '@/src/components/layout/MobileNav'
-import HowItWorks from '@/src/components/sections/HowItWorks'
+import AboutNarrative from '@/src/components/sections/AboutNarrative'
 import ImpactMetrics from '@/src/components/sections/ImpactMetrics'
+import LabBridge from '@/src/components/sections/LabBridge'
 import ProfessionalExperience from '@/src/components/sections/ProfessionalExperience'
 
 // Lazy load heavy components
@@ -73,13 +74,16 @@ export default function Home() {
             className="relative w-full min-h-screen"
           >
             <Hero onOpenLab={handleOpenLab} />
-            <HowItWorks />
+            <div id="about">
+              <AboutNarrative />
+            </div>
             <ImpactMetrics />
             <Suspense fallback={<div className="min-h-screen" />}>
               <div id="projects">
                 <EnhancedProjectGrid onOpenLab={handleOpenLab} />
               </div>
             </Suspense>
+            <LabBridge onOpenLab={handleOpenLab} />
             <div id="experience">
               <ProfessionalExperience />
             </div>

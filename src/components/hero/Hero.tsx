@@ -69,12 +69,13 @@ export default function Hero({ onOpenLab }: HeroProps) {
           className="max-w-3xl space-y-5 mb-14"
         >
           <Typography variant="body-lg">
-            I design systems that hold steady through chaos: policy-grade AI tooling, safety-critical architecture, and
-            operational frameworks that keep teams moving when everything is on fire.
+            Disaster responder turned Senate aide turned tech operator turned regulatory AI founder.
+            I build systems at the intersection of policy, technology, and human need—where the cost of failure is highest
+            and the usual playbooks don&apos;t apply.
           </Typography>
           <Typography variant="body-lg">
-            My work translates human urgency into accountable technology—balancing experimentation with structure so the
-            right decisions happen faster, with evidence.
+            Currently building RegEngine: graph-based regulatory infrastructure that makes compliance
+            computable, auditable, and fair.
           </Typography>
         </motion.div>
 

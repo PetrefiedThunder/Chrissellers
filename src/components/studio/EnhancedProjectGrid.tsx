@@ -7,7 +7,7 @@
  */
 
 import { ArrowUpRight, Sparkles, Clock, Rocket } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Typography } from '../design/Typography'
 
 interface Project {
@@ -21,54 +21,54 @@ interface Project {
   tech?: string[]
 }
 
-// Base curated projects (kept minimal). GitHub repos are fetched dynamically below.
-const baseProjects: Project[] = [
+// Curated projects — each tells part of the polymath story
+const curatedProjects: Project[] = [
   {
     id: 'neural-lab',
     title: 'Neural Night Sky Lab',
-    subtitle: 'Regulatory compliance & social impact network simulator',
+    subtitle: 'Interactive neural network that models how regulatory decisions cascade through communities. Real backpropagation, real equity metrics, real tradeoffs.',
     category: 'Interactive Visualization',
     action: 'lab',
     featured: true,
     tech: ['React', 'Three.js', 'TypeScript', 'Neural Networks'],
   },
-]
-
-interface GitHubRepo {
-  name: string
-  full_name: string
-  description: string | null
-  fork: boolean
-  html_url: string
-  language: string | null
-  topics?: string[]
-}
-
-function mapRepoToProject(repo: GitHubRepo): Project {
-  const name = repo.name
-  const title = name
-    .replace(/-/g, ' ')
-    .replace(/_/g, ' ')
-  const categoryMap: Record<string, string> = {
-    Prep: 'Food Safety Systems',
-    SupportCarr: 'Urban Systems',
-    RegEngine: 'Compliance Systems',
-    PopFact: 'Data Analysis',
-    'GrannScraperV1-BIG': 'Data Engineering',
-    Chrissellers: 'Personal Site',
-  }
-  const category = categoryMap[name] ?? 'GitHub Repo'
-  const tech = [repo.language ?? 'Code']
-  return {
-    id: name.toLowerCase(),
-    title,
-    subtitle: repo.description ?? 'Open-source repository',
-    category,
+  {
+    id: 'regengine',
+    title: 'RegEngine',
+    subtitle: 'Graph-based regulatory infrastructure that makes cross-border compliance computable, auditable, and fair. The "Stripe for Regulation."',
+    category: 'Regulatory Technology',
     action: 'external',
-    url: repo.html_url,
-    tech,
-  }
-}
+    url: 'https://github.com/PetrefiedThunder/RegEngine',
+    tech: ['Python', 'GraphDB', 'AI Agents', 'API Design'],
+  },
+  {
+    id: 'prep',
+    title: 'Prep (PrepChef)',
+    subtitle: 'Food safety compliance system built to prove that regulatory tech can be accessible to small businesses, not just enterprises.',
+    category: 'Food Safety Systems',
+    action: 'external',
+    url: 'https://github.com/PetrefiedThunder/Prep',
+    tech: ['Full-Stack', 'Compliance', 'Small Business'],
+  },
+  {
+    id: 'supportcarr',
+    title: 'SupportCarr',
+    subtitle: 'Urban support systems analysis — mapping how community infrastructure connects to outcomes for underserved populations.',
+    category: 'Urban Systems',
+    action: 'external',
+    url: 'https://github.com/PetrefiedThunder/SupportCarr',
+    tech: ['Data Analysis', 'Systems Design'],
+  },
+  {
+    id: 'popfact',
+    title: 'PopFact',
+    subtitle: 'Population data analysis tools exploring how demographic patterns intersect with policy outcomes.',
+    category: 'Data Analysis',
+    action: 'external',
+    url: 'https://github.com/PetrefiedThunder/PopFact',
+    tech: ['Python', 'Data Science'],
+  },
+]
 
 interface EnhancedProjectGridProps {
   onOpenLab: () => void
@@ -76,39 +76,6 @@ interface EnhancedProjectGridProps {
 
 export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridProps) {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
-  const [repos, setRepos] = useState<Project[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-
-  useEffect(() => {
-    let cancelled = false
-    async function fetchRepos() {
-      try {
-        const res = await fetch('https://api.github.com/users/PetrefiedThunder/repos?per_page=100&type=owner&sort=updated', {
-          headers: { Accept: 'application/vnd.github+json' },
-        })
-        const data: GitHubRepo[] = await res.json()
-        if (cancelled) return
-        const projects = data
-          .filter((r) => !r.fork)
-          .map(mapRepoToProject)
-          // de-duplicate any that might overlap with curated IDs
-          .filter((p) => !baseProjects.some((bp) => bp.id === p.id))
-        setRepos(projects)
-      } catch (e) {
-        // Fail silently; show just curated projects
-      } finally {
-        if (!cancelled) setLoading(false)
-      }
-    }
-    fetchRepos()
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
-  const projects: Project[] = useMemo(() => {
-    return [...baseProjects, ...repos]
-  }, [repos])
 
   const handleProjectClick = (project: Project) => {
     if (project.action === 'lab') {
@@ -135,7 +102,7 @@ export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridPr
 
         {/* Project grid */}
         <div className="grid grid-cols-1 gap-6">
-          {projects.map((project, index) => (
+          {curatedProjects.map((project, index) => (
             <article
               key={project.id}
               className={`group relative cursor-pointer rounded-2xl border transition-all duration-500 ${
@@ -239,10 +206,18 @@ export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridPr
             </article>
           ))}
 
-          {/* Loading state (only shown until repos load) */}
-          {loading && (
-            <Typography variant="body-sm" className="text-text-secondary/60">Loading GitHub repositories…</Typography>
-          )}
+          {/* GitHub link */}
+          <div className="pt-4 text-center">
+            <a
+              href="https://github.com/PetrefiedThunder"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-text-secondary/60 hover:text-text-accent transition-colors text-sm"
+            >
+              View all repositories on GitHub
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
         </div>
       </div>
     </section>
