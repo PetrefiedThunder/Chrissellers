@@ -6,7 +6,7 @@
  * Premium version with better animations and visual polish.
  */
 
-import { ArrowUpRight, Sparkles, Clock, Rocket } from 'lucide-react'
+import { ArrowUpRight, Sparkles, Clock } from 'lucide-react'
 import { useState } from 'react'
 import { Typography } from '../design/Typography'
 
@@ -15,7 +15,7 @@ interface Project {
   title: string
   subtitle: string
   category: string
-  action: 'lab' | 'external' | 'soon'
+  action: 'external' | 'soon'
   url?: string
   featured?: boolean
   tech?: string[]
@@ -24,21 +24,13 @@ interface Project {
 // Curated projects — each tells part of the polymath story
 const curatedProjects: Project[] = [
   {
-    id: 'neural-lab',
-    title: 'Neural Night Sky Lab',
-    subtitle: 'Interactive neural network that models how regulatory decisions cascade through communities. Real backpropagation, real equity metrics, real tradeoffs.',
-    category: 'Interactive Visualization',
-    action: 'lab',
-    featured: true,
-    tech: ['React', 'Three.js', 'TypeScript', 'Neural Networks'],
-  },
-  {
     id: 'regengine',
     title: 'RegEngine',
     subtitle: 'Graph-based regulatory infrastructure that makes cross-border compliance computable, auditable, and fair. The "Stripe for Regulation."',
     category: 'Regulatory Technology',
     action: 'external',
     url: 'https://github.com/PetrefiedThunder/RegEngine',
+    featured: true,
     tech: ['Python', 'GraphDB', 'AI Agents', 'API Design'],
   },
   {
@@ -70,17 +62,11 @@ const curatedProjects: Project[] = [
   },
 ]
 
-interface EnhancedProjectGridProps {
-  onOpenLab: () => void
-}
-
-export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridProps) {
+export default function EnhancedProjectGrid() {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
 
   const handleProjectClick = (project: Project) => {
-    if (project.action === 'lab') {
-      onOpenLab()
-    } else if (project.action === 'external' && project.url) {
+    if (project.action === 'external' && project.url) {
       window.open(project.url, '_blank', 'noopener,noreferrer')
     }
   }
@@ -137,12 +123,6 @@ export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridPr
                         <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-text-secondary/10 text-text-secondary/60 text-xs font-medium">
                           <Clock className="w-3 h-3" />
                           Coming Soon
-                        </span>
-                      )}
-                      {project.action === 'lab' && (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-600 text-xs font-medium">
-                          <Rocket className="w-3 h-3" />
-                          Live
                         </span>
                       )}
                     </div>

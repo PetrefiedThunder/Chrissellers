@@ -1,16 +1,12 @@
 'use client'
 
-import { ArrowRight, Download, Sparkles } from 'lucide-react'
+import { Download, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
 import AnimatedBackground from './AnimatedBackground'
 import HeroVisual from './HeroVisual'
 import { Typography } from '../design/Typography'
 
-interface HeroProps {
-  onOpenLab: () => void
-}
-
-export default function Hero({ onOpenLab }: HeroProps) {
+export default function Hero() {
   return (
     <section
       id="studio"
@@ -79,23 +75,13 @@ export default function Hero({ onOpenLab }: HeroProps) {
           </Typography>
         </motion.div>
 
-        {/* CTA to Lab */}
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
           className="flex flex-wrap items-center gap-4"
         >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onOpenLab}
-            className="group relative inline-flex items-center gap-3 px-8 py-4 bg-text-primary text-bg-page rounded-lg hover:shadow-2xl transition-all"
-          >
-            <span className="relative z-10 font-medium">Open Neural Night Sky Lab</span>
-            <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 relative z-10" />
-          </motion.button>
-
           <a
             href="/Christopher_Sellers_CV.pdf"
             className="group inline-flex items-center gap-2 px-6 py-3 border border-border-strong rounded-lg transition-all duration-300 hover:bg-bg-surface"
