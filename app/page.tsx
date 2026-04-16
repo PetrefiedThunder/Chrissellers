@@ -65,6 +65,7 @@ export default function Home() {
       <AnimatePresence mode="wait">
         {currentView === 'studio' ? (
           <motion.div
+            id="main-content"
             key="studio"
             initial={studioMotion.initial}
             animate={studioMotion.animate}

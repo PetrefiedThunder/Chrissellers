@@ -13,7 +13,31 @@
  * - Pixabay.com (free for commercial use)
  */
 
+import { useState } from 'react'
+
+interface FloatingShape {
+  width: number
+  height: number
+  left: number
+  top: number
+  delay: number
+  duration: number
+}
+
+function generateStableShapes(count: number): FloatingShape[] {
+  return Array.from({ length: count }, (_, i) => ({
+    width: Math.random() * 300 + 100,
+    height: Math.random() * 300 + 100,
+    left: Math.random() * 100,
+    top: Math.random() * 100,
+    delay: i * 0.7,
+    duration: Math.random() * 3 + 4,
+  }))
+}
+
 export default function HeroVisual() {
+  const [shapes] = useState<FloatingShape[]>(() => generateStableShapes(5))
+
   return (
     <div className="absolute right-0 top-0 w-1/2 h-full hidden lg:block">
       {/* Gradient overlay */}
@@ -40,17 +64,17 @@ export default function HeroVisual() {
 
         {/* Floating elements for visual interest */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(5)].map((_, i) => (
+          {shapes.map((shape, i) => (
             <div
               key={i}
               className="absolute rounded-full bg-gradient-to-br from-neural-accent/20 to-neural-highlight/10 blur-3xl animate-pulse-slow"
               style={{
-                width: `${Math.random() * 300 + 100}px`,
-                height: `${Math.random() * 300 + 100}px`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 0.7}s`,
-                animationDuration: `${Math.random() * 3 + 4}s`,
+                width: `${shape.width}px`,
+                height: `${shape.height}px`,
+                left: `${shape.left}%`,
+                top: `${shape.top}%`,
+                animationDelay: `${shape.delay}s`,
+                animationDuration: `${shape.duration}s`,
               }}
             />
           ))}

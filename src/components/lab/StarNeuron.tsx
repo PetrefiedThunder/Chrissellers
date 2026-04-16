@@ -1,6 +1,6 @@
-import { useRef, useMemo } from 'react'
+import { memo, useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Mesh, Color } from 'three'
+import { Mesh, Color, MeshStandardMaterial } from 'three'
 import { Neuron } from '@/src/lib/neural/types'
 import { useSimulationStore } from '@/src/state/simulationStore'
 
@@ -8,28 +8,24 @@ interface StarNeuronProps {
   neuron: Neuron
 }
 
-export function StarNeuron({ neuron }: StarNeuronProps) {
+export const StarNeuron = memo(function StarNeuron({ neuron }: StarNeuronProps) {
   const meshRef = useRef<Mesh>(null)
   const constellationMode = useSimulationStore(state => state.constellationMode)
   
-  // Color based on layer type
   const baseColor = useMemo(() => {
-    const colors = [
-      '#60A5FA', // Blue (Input)
-      '#A78BFA', // Purple (Hidden 1)
-      '#F472B6', // Pink (Hidden 2)
-      '#FBBF24'  // Amber (Output)
-    ]
+    const colors = ['#60A5FA', '#A78BFA', '#F472B6', '#FBBF24']
     return new Color(colors[neuron.layerIndex % colors.length])
   }, [neuron.layerIndex])
+
+  const geometryArgs: [number, number, number] = [0.4, 16, 16]
 
   useFrame((state) => {
     if (!meshRef.current) return
     
-    // Constellation Mode Logic
+    const material = meshRef.current.material as MeshStandardMaterial | undefined
+    
     if (constellationMode) {
-      // Hide inactive neurons (simulated by bias for now, ideally activation)
-      if (Math.abs(neuron.bias) < 0.1) {
+      if (Math.abs(neuron.activation) < 0.1) {
         meshRef.current.visible = false
         return
       }
@@ -38,21 +34,17 @@ export function StarNeuron({ neuron }: StarNeuronProps) {
 
     const time = state.clock.getElapsedTime()
     const breathe = Math.sin(time * 2 + neuron.indexInLayer) * 0.1 + 1
-    
-    // Scale based on bias/importance + breathe
-    const scale = (0.5 + Math.abs(neuron.bias)) * breathe
+    const scale = (0.5 + Math.abs(neuron.activation)) * breathe
     meshRef.current.scale.setScalar(scale)
     
-    // Emissive intensity pulse
-    if (meshRef.current.material) {
-      // @ts-ignore
-      meshRef.current.material.emissiveIntensity = 1.5 + Math.sin(time * 3) * 0.5
+    if (material) {
+      material.emissiveIntensity = 1.5 + Math.sin(time * 3) * 0.5
     }
   })
 
   return (
     <mesh ref={meshRef} position={neuron.position}>
-      <sphereGeometry args={[0.4, 32, 32]} />
+      <sphereGeometry args={geometryArgs} />
       <meshStandardMaterial 
         color={baseColor}
         emissive={baseColor}
@@ -61,4 +53,8 @@ export function StarNeuron({ neuron }: StarNeuronProps) {
       />
     </mesh>
   )
-}
+}, (prev, next) => {
+  return prev.neuron.id === next.neuron.id &&
+         prev.neuron.activation === next.neuron.activation &&
+         prev.neuron.bias === next.neuron.bias
+})

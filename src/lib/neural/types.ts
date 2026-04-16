@@ -1,4 +1,4 @@
-export type ActivationFunction = 'relu' | 'sigmoid' | 'tanh' | 'linear'
+export type ActivationFunction = 'relu' | 'leakyRelu' | 'sigmoid' | 'tanh' | 'linear'
 
 export interface LayerConfig {
   id: string
@@ -57,5 +57,6 @@ export interface TrainingMetrics {
 
 export interface PredictionResult {
   predictions: number[]
-  activations: Map<string, number> // Neuron ID -> Activation
+  activations: Map<string, number>
+  zValues?: Map<string, number>
 }
