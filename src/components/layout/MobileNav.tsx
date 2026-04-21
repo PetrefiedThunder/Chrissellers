@@ -3,10 +3,10 @@
 /**
  * Mobile Navigation Component
  *
- * Responsive mobile menu with smooth animations
+ * Responsive mobile menu with smooth animations and focus trap
  */
 
-import { useState } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Sparkles } from 'lucide-react'
 import { Typography } from '../design/Typography'
@@ -15,8 +15,13 @@ interface MobileNavProps {
   onOpenLab: () => void
 }
 
+const FOCUSABLE_ELEMENTS = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
 export default function MobileNav({ onOpenLab }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const previousFocusRef = useRef<HTMLElement | null>(null)
 
   const menuVariants = {
     closed: {
@@ -37,18 +42,65 @@ export default function MobileNav({ onOpenLab }: MobileNavProps) {
     },
   }
 
+  useEffect(() => {
+    if (isOpen) {
+      previousFocusRef.current = document.activeElement as HTMLElement
+      const firstFocusable = menuRef.current?.querySelector(FOCUSABLE_ELEMENTS) as HTMLElement
+      firstFocusable?.focus()
+    } else if (previousFocusRef.current) {
+      previousFocusRef.current.focus()
+    }
+  }, [isOpen])
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (!isOpen) return
+
+    if (e.key === 'Escape') {
+      setIsOpen(false)
+      return
+    }
+
+    if (e.key === 'Tab') {
+      const focusableElements = menuRef.current?.querySelectorAll(FOCUSABLE_ELEMENTS)
+      if (!focusableElements?.length) return
+
+      const firstElement = focusableElements[0] as HTMLElement
+      const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
+
+      if (e.shiftKey && document.activeElement === firstElement) {
+        e.preventDefault()
+        lastElement.focus()
+      } else if (!e.shiftKey && document.activeElement === lastElement) {
+        e.preventDefault()
+        firstElement.focus()
+      }
+    }
+  }, [isOpen])
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [handleKeyDown])
+
   const handleOpenLab = () => {
     setIsOpen(false)
     onOpenLab()
+  }
+
+  const handleClose = () => {
+    setIsOpen(false)
   }
 
   return (
     <>
       {/* Mobile menu button */}
       <button
+        ref={triggerRef}
         onClick={() => setIsOpen(!isOpen)}
         className="fixed top-6 right-6 z-50 p-3 rounded-lg bg-bg-surface/90 backdrop-blur-sm border border-border-light shadow-lg md:hidden hover:scale-110 transition-transform duration-200"
         aria-label="Toggle menu"
+        aria-expanded={isOpen}
+        aria-controls="mobile-menu"
       >
         {isOpen ? <X className="w-6 h-6 text-text-primary" /> : <Menu className="w-6 h-6 text-text-primary" />}
       </button>
@@ -57,15 +109,28 @@ export default function MobileNav({ onOpenLab }: MobileNavProps) {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            ref={menuRef}
+            id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
             initial="closed"
             animate="open"
             exit="closed"
             variants={menuVariants}
             className="fixed inset-0 z-40 bg-bg-page md:hidden"
           >
+            <button
+              className="absolute top-6 right-24 p-2 text-text-primary"
+              onClick={handleClose}
+              aria-label="Close menu"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
             <nav className="flex flex-col items-center justify-center h-full space-y-8 p-8">
               <motion.a
-                href="#studio"
+                href="#main-content"
                 onClick={() => setIsOpen(false)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

@@ -1,10 +1,10 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Mesh, Vector3, Color, ShaderMaterial } from 'three'
+import { Mesh, Vector3, Quaternion, ShaderMaterial, AdditiveBlending } from 'three'
 import { Connection, Neuron } from '@/src/lib/neural/types'
 import { getConnectionPoints } from '@/src/lib/neural/networkLayout'
 import { useSimulationStore } from '@/src/state/simulationStore'
-import './shaders/EnergyBeamMaterial' // Register shader
+import './shaders/EnergyBeamMaterial'
 
 interface ConstellationConnectionProps {
   connection: Connection
@@ -23,17 +23,14 @@ export function ConstellationConnection({ connection, neurons }: ConstellationCo
   const length = useMemo(() => startVec.distanceTo(endVec), [startVec, endVec])
   const position = useMemo(() => startVec.clone().add(endVec).multiplyScalar(0.5), [startVec, endVec])
   
-  // Orientation
   const quaternion = useMemo(() => {
-    const tempObj = new Mesh()
-    tempObj.position.copy(startVec)
-    // Rotate 90 deg to align cylinder with lookAt? 
-    // Cylinder default is Y-axis. lookAt aligns Z-axis.
-    // We need to rotate the geometry or the mesh.
-    // Actually, let's just use lookAt and rotate X by 90.
-    tempObj.lookAt(endVec)
-    tempObj.rotateX(Math.PI / 2)
-    return tempObj.quaternion
+    const q = new Quaternion()
+    const up = new Vector3(0, 1, 0)
+    const direction = new Vector3().subVectors(endVec, startVec).normalize()
+    if (direction.length() > 0.001) {
+      q.setFromUnitVectors(up, direction)
+    }
+    return q
   }, [startVec, endVec])
 
   useFrame((state) => {
@@ -41,9 +38,7 @@ export function ConstellationConnection({ connection, neurons }: ConstellationCo
     
     const weightStrength = Math.abs(connection.weight)
     
-    // Constellation Mode Logic
     if (constellationMode) {
-      // Hide weak connections
       if (weightStrength < 0.3) {
         meshRef.current.visible = false
         return
@@ -51,10 +46,9 @@ export function ConstellationConnection({ connection, neurons }: ConstellationCo
     }
     meshRef.current.visible = true
 
-    // Update Shader Uniforms
     materialRef.current.uniforms.time.value = state.clock.getElapsedTime()
     materialRef.current.uniforms.opacity.value = (0.1 + (weightStrength * 0.5)) * (constellationMode ? 0.5 : 1)
-    materialRef.current.uniforms.speed.value = 1.0 + weightStrength * 2.0 // Faster flow for stronger weights
+    materialRef.current.uniforms.speed.value = 1.0 + weightStrength * 2.0
   })
 
   return (
@@ -67,7 +61,7 @@ export function ConstellationConnection({ connection, neurons }: ConstellationCo
       <energyBeamMaterial 
         ref={materialRef}
         transparent
-        blending={2} // AdditiveBlending
+        blending={AdditiveBlending}
         depthWrite={false}
       />
     </mesh>

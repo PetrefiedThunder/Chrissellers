@@ -3,6 +3,26 @@
 @tailwind components;
 @tailwind utilities;
 
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 9999;
+  padding: 12px 24px;
+  background: rgb(var(--color-neural-accent));
+  color: white;
+  font-weight: 600;
+  border-radius: 0 0 8px 8px;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+  top: 0;
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
 @layer base {
   :root {
     /* --- PRIMITIVES (The Raw Palette) --- */

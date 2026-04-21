@@ -4,35 +4,34 @@ import {
   Neuron, 
   Connection, 
   TrainingConfig,
-  TrainingMetrics
+  TrainingMetrics,
+  TrainingExample
 } from '../lib/neural/types'
 import { initializeNetwork, trainBatch, evaluate } from '../lib/neural/engine'
 import { layoutNeurons } from '../lib/neural/networkLayout'
 import { getDataset, batchDataset, shuffleDataset } from '../lib/neural/datasets'
 
 interface SimulationState {
-  // Configuration
   architecture: NetworkArchitecture
   config: TrainingConfig
   
-  // Network State
   neurons: Neuron[]
   connections: Connection[]
   
-  // Training State
   isTraining: boolean
   currentEpoch: number
   metrics: TrainingMetrics[]
   
-  // Visualization State
   constellationMode: boolean
 
-  // Actions
+  currentBatches: TrainingExample[][] | null
+  currentBatchIndex: number
+
   initialize: () => void
   startTraining: () => void
   pauseTraining: () => void
   reset: () => void
-  step: () => void // Single training step (batch or epoch)
+  step: () => void
   toggleConstellationMode: () => void
 }
 
@@ -61,6 +60,8 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
   currentEpoch: 0,
   metrics: [],
   constellationMode: false,
+  currentBatches: null,
+  currentBatchIndex: 0,
 
   initialize: () => {
     const { architecture } = get()
@@ -72,7 +73,9 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
       connections,
       currentEpoch: 0,
       metrics: [],
-      isTraining: false
+      isTraining: false,
+      currentBatches: null,
+      currentBatchIndex: 0
     })
   },
 
@@ -99,48 +102,68 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
       connections, 
       config, 
       architecture, 
-      currentEpoch 
+      currentEpoch,
+      currentBatches,
+      currentBatchIndex
     } = get()
 
     if (!isTraining) return
-
-    // Get Data
-    const dataset = getDataset('compliance-v1')
-    const shuffled = shuffleDataset(dataset)
-    const batches = batchDataset(shuffled, config.batchSize)
-
-    // Train one epoch (all batches)
-    let currentNeurons = neurons
-    let currentConnections = connections
-
-    for (const batch of batches) {
-      const result = trainBatch(batch, currentNeurons, currentConnections, config, architecture)
-      currentNeurons = result.neurons
-      currentConnections = result.connections
+    if (currentEpoch < 0 || currentEpoch >= config.epochs) {
+      set({ isTraining: false })
+      return
     }
 
-    // Evaluate
-    const { loss, accuracy } = evaluate(dataset.examples, currentNeurons, currentConnections, config, architecture)
+    let batches = currentBatches
+    let batchIdx = currentBatchIndex
+    let epoch = currentEpoch
 
-    // Update State
-    // Note: We re-run layout to keep positions but update internal values? 
-    // Actually layout is static for now unless we want them to move. 
-    // We just need to merge the new weights/biases into the existing positioned neurons.
-    
-    const updatedNeurons = currentNeurons.map((n, i) => ({
+    if (!batches || batchIdx >= batches.length) {
+      const dataset = getDataset('compliance-v1')
+      const shuffled = shuffleDataset(dataset)
+      batches = batchDataset(shuffled, config.batchSize)
+      batchIdx = 0
+      epoch = currentEpoch + 1
+    }
+
+    const batch = batches[batchIdx]
+
+    const result = trainBatch(batch, neurons, connections, config, architecture)
+
+    const updatedNeurons = result.neurons.map((n, i) => ({
       ...n,
-      position: neurons[i].position // Keep visual position
+      position: neurons[i].position,
+      activation: n.activation
     }))
 
-    set({
-      neurons: updatedNeurons,
-      connections: currentConnections,
-      currentEpoch: currentEpoch + 1,
-      metrics: [...get().metrics, { epoch: currentEpoch + 1, loss, accuracy }]
-    })
-
-    if (currentEpoch >= config.epochs) {
-      set({ isTraining: false })
+    if (batchIdx + 1 >= batches.length) {
+      const dataset = getDataset('compliance-v1')
+      const { loss, accuracy } = evaluate(
+        dataset.examples, 
+        result.neurons, 
+        result.connections, 
+        config, 
+        architecture
+      )
+      
+      const newEpoch = epoch
+      const shouldContinue = newEpoch < config.epochs
+      
+      set({
+        neurons: updatedNeurons,
+        connections: result.connections,
+        currentEpoch: shouldContinue ? newEpoch : config.epochs,
+        metrics: [...get().metrics, { epoch: newEpoch, loss, accuracy }],
+        currentBatches: null,
+        currentBatchIndex: 0,
+        isTraining: shouldContinue
+      })
+    } else {
+      set({
+        neurons: updatedNeurons,
+        connections: result.connections,
+        currentBatches: batches,
+        currentBatchIndex: batchIdx + 1
+      })
     }
   }
 }))
