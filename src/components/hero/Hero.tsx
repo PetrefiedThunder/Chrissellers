@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import AnimatedBackground from './AnimatedBackground'
 import HeroVisual from './HeroVisual'
 import { Typography } from '../design/Typography'
+import MagneticButton from '../effects/MagneticButton'
 
 interface HeroProps {
   onOpenLab: () => void
@@ -85,15 +86,13 @@ export default function Hero({ onOpenLab }: HeroProps) {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="flex flex-wrap items-center gap-4"
         >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <MagneticButton
             onClick={onOpenLab}
-            className="group relative inline-flex items-center gap-3 px-8 py-4 bg-text-primary text-bg-page rounded-lg hover:shadow-2xl transition-all"
+            className="group relative inline-flex items-center gap-3 px-8 py-4 bg-text-primary text-bg-page rounded-lg hover:shadow-2xl transition-shadow"
           >
             <span className="relative z-10 font-medium">Open Neural Night Sky Lab</span>
             <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 relative z-10" />
-          </motion.button>
+          </MagneticButton>
 
           <a
             href="/Christopher_Sellers_CV.pdf"

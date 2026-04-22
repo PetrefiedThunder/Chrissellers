@@ -7,7 +7,8 @@
  */
 
 import { ArrowUpRight, Sparkles, Clock, Rocket } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
+import { motion } from 'framer-motion'
 import { Typography } from '../design/Typography'
 
 interface Project {
@@ -76,8 +77,10 @@ interface EnhancedProjectGridProps {
 
 export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridProps) {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
+  const [tilt, setTilt] = useState<{ [key: string]: { x: number, y: number } }>({})
   const [repos, setRepos] = useState<Project[]>([])
   const [loading, setLoading] = useState<boolean>(true)
+  const cardRefs = useRef<{ [key: string]: HTMLElement | null }>({})
 
   useEffect(() => {
     let cancelled = false
@@ -118,6 +121,28 @@ export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridPr
     }
   }
 
+  const handleMouseMove = (e: React.MouseEvent, projectId: string) => {
+    const card = cardRefs.current[projectId]
+    if (!card) return
+    
+    const rect = card.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width
+    const y = (e.clientY - rect.top) / rect.height
+    
+    setTilt(prev => ({ 
+      ...prev, 
+      [projectId]: { 
+        x: (y - 0.5) * 20, 
+        y: (x - 0.5) * -20 
+      } 
+    }))
+  }
+
+  const handleMouseLeave = (projectId: string) => {
+    setHoveredProject(null)
+    setTilt(prev => ({ ...prev, [projectId]: { x: 0, y: 0 } }))
+  }
+
   return (
     <section className="py-section-md px-6 md:px-12 lg:px-24 bg-bg-page">
       <div className="max-w-5xl w-full mx-auto">
@@ -136,8 +161,9 @@ export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridPr
         {/* Project grid */}
         <div className="grid grid-cols-1 gap-6">
           {projects.map((project, index) => (
-            <article
+            <motion.article
               key={project.id}
+              ref={(el) => { cardRefs.current[project.id] = el }}
               className={`group relative cursor-pointer rounded-2xl border transition-all duration-500 ${
                 hoveredProject === project.id
                   ? 'border-text-accent/40 shadow-xl -translate-y-1'
@@ -147,10 +173,17 @@ export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridPr
                   ? 'bg-bg-surface'
                   : 'bg-bg-surface/80 backdrop-blur-sm'
               }`}
+              onMouseMove={(e) => handleMouseMove(e, project.id)}
+              style={{
+                transformPerspective: 1000,
+                rotateX: hoveredProject === project.id ? tilt[project.id]?.x || 0 : 0,
+                rotateY: hoveredProject === project.id ? tilt[project.id]?.y || 0 : 0,
+                animationDelay: `${index * 100}ms`,
+              }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               onClick={() => handleProjectClick(project)}
               onMouseEnter={() => setHoveredProject(project.id)}
-              onMouseLeave={() => setHoveredProject(null)}
-              style={{ animationDelay: `${index * 100}ms` }}
+              onMouseLeave={() => handleMouseLeave(project.id)}
             >
               <div className="p-8">
                 <div className="flex items-start justify-between gap-8">
@@ -236,7 +269,7 @@ export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridPr
                   hoveredProject === project.id ? 'opacity-100' : 'opacity-0'
                 }`}
               />
-            </article>
+            </motion.article>
           ))}
 
           {/* Loading state (only shown until repos load) */}
