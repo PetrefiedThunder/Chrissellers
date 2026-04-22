@@ -90,8 +90,8 @@ describe('Neural Network Engine', () => {
 
       const result = trainBatch(batch, neurons, connections, config, arch)
 
-      expect(result.connections[0].weight).not.toBe(originalWeight)
-      expect(result.neurons[1].bias).not.toBe(originalBias)
+      expect(result.connections[0].weight).not.toBeCloseTo(originalWeight)
+      expect(result.neurons[1].bias).not.toBeCloseTo(originalBias)
     })
 
     it('maintains position data on neurons', () => {

@@ -10,7 +10,7 @@ interface MilkyWayProps {
   radius?: number
 }
 
-export default function MilkyWayVisualizer({ 
+export function MilkyWayVisualizer({ 
   latitude = 37.7749, 
   longitude = -122.4194,
   radius = 100 

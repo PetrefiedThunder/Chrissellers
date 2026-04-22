@@ -6,7 +6,7 @@
  * Premium version with better animations and visual polish.
  */
 
-import { ArrowUpRight, Sparkles, Clock, Rocket } from 'lucide-react'
+import { ArrowUpRight, Sparkles, Clock, Rocket, FileText } from 'lucide-react'
 import { useEffect, useMemo, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Typography } from '../design/Typography'
@@ -16,7 +16,7 @@ interface Project {
   title: string
   subtitle: string
   category: string
-  action: 'lab' | 'external' | 'soon'
+  action: 'lab' | 'external' | 'soon' | 'prd'
   url?: string
   featured?: boolean
   tech?: string[]
@@ -32,6 +32,15 @@ const baseProjects: Project[] = [
     action: 'lab',
     featured: true,
     tech: ['React', 'Three.js', 'TypeScript', 'Neural Networks'],
+  },
+  {
+    id: 'regengine',
+    title: 'RegEngine',
+    subtitle: 'FSMA 204 compliant supply chain traceability platform',
+    category: 'Enterprise SaaS',
+    action: 'prd',
+    featured: true,
+    tech: ['Apache Kafka', 'Neo4j', 'AWS EKS', 'PostgreSQL RLS'],
   },
 ]
 
@@ -73,9 +82,10 @@ function mapRepoToProject(repo: GitHubRepo): Project {
 
 interface EnhancedProjectGridProps {
   onOpenLab: () => void
+  onOpenPRD?: () => void
 }
 
-export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridProps) {
+export default function EnhancedProjectGrid({ onOpenLab, onOpenPRD }: EnhancedProjectGridProps) {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null)
   const [tilt, setTilt] = useState<{ [key: string]: { x: number, y: number } }>({})
   const [repos, setRepos] = useState<Project[]>([])
@@ -116,6 +126,8 @@ export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridPr
   const handleProjectClick = (project: Project) => {
     if (project.action === 'lab') {
       onOpenLab()
+    } else if (project.action === 'prd') {
+      onOpenPRD?.()
     } else if (project.action === 'external' && project.url) {
       window.open(project.url, '_blank', 'noopener,noreferrer')
     }
@@ -209,6 +221,12 @@ export default function EnhancedProjectGrid({ onOpenLab }: EnhancedProjectGridPr
                         <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/10 text-green-600 text-xs font-medium">
                           <Rocket className="w-3 h-3" />
                           Live
+                        </span>
+                      )}
+                      {project.action === 'prd' && (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-text-accent/10 text-text-accent text-xs font-medium">
+                          <FileText className="w-3 h-3" />
+                          PRD
                         </span>
                       )}
                     </div>

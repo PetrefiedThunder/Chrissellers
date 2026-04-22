@@ -81,7 +81,7 @@ export default function Home() {
             <ImpactMetrics />
             <Suspense fallback={<div className="min-h-screen" />}>
               <div id="projects">
-                <EnhancedProjectGrid onOpenLab={handleOpenLab} />
+                <EnhancedProjectGrid onOpenLab={handleOpenLab} onOpenPRD={() => setIsPRDOpen(true)} />
                 <button
                   onClick={() => setIsPRDOpen(true)}
                   className="fixed bottom-8 right-8 z-40 px-4 py-3 bg-text-accent text-bg-page rounded-full hover:bg-text-accent/90 transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
