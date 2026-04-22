@@ -10,6 +10,7 @@ import { NeuralGalaxy } from './NeuralGalaxy'
 import { NebulaBackground } from './NebulaBackground'
 import { LiveISSTracker } from './LiveISSTracker'
 import { MilkyWayVisualizer } from './MilkyWayVisualizer'
+import { HazardousAsteroidTracker } from './HazardousAsteroidTracker'
 import { Typography } from '../design/Typography'
 import { useReducedMotion } from 'framer-motion'
 
@@ -25,6 +26,7 @@ export default function LabView() {
   const toggleConstellationMode = useSimulationStore(state => state.toggleConstellationMode)
   const [liveTelemetry, setLiveTelemetry] = useState(false)
   const [milkyWay, setMilkyWay] = useState(true)
+  const [asteroids, setAsteroids] = useState(false)
   const [userLocation, setUserLocation] = useState<{ lat: number; lon: number } | null>(null)
   const shouldReduceMotion = useReducedMotion()
   const [sheetExpanded, setSheetExpanded] = useState(false)
@@ -136,6 +138,18 @@ export default function LabView() {
           >
             {milkyWay ? '🌌 Milky Way: ON' : 'Milky Way: OFF'}
           </button>
+
+          <button
+            onClick={() => setAsteroids(!asteroids)}
+            aria-pressed={asteroids}
+            className={`touch-target min-h-[44px] w-full px-4 py-3 rounded-lg transition-colors border ${
+              asteroids 
+                ? 'bg-red-500/20 border-red-500/50 text-red-400' 
+                : 'bg-transparent border-white/20 text-white/70 hover:text-white'
+            }`}
+          >
+            {asteroids ? '☄️ Asteroids: ON' : 'Asteroids: OFF'}
+          </button>
           
           <div className="space-y-2 text-sm">
             <div className="flex justify-between text-white/80">
@@ -175,6 +189,7 @@ export default function LabView() {
             />
           )}
           {liveTelemetry && <LiveISSTracker />}
+          {asteroids && <HazardousAsteroidTracker />}
           
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} intensity={1} />
