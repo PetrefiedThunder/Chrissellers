@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 import { useSimulationStore } from '@/src/state/simulationStore'
 import { NeuralGalaxy } from './NeuralGalaxy'
 import { NebulaBackground } from './NebulaBackground'
+import { LiveISSTracker } from './LiveISSTracker'
 import { Typography } from '../design/Typography'
 import { useReducedMotion } from 'framer-motion'
 
@@ -21,6 +22,7 @@ export default function LabView() {
   const metrics = useSimulationStore(state => state.metrics)
   const constellationMode = useSimulationStore(state => state.constellationMode)
   const toggleConstellationMode = useSimulationStore(state => state.toggleConstellationMode)
+  const [liveTelemetry, setLiveTelemetry] = useState(false)
   const shouldReduceMotion = useReducedMotion()
   const [sheetExpanded, setSheetExpanded] = useState(false)
 
@@ -100,6 +102,18 @@ export default function LabView() {
           >
             {constellationMode ? '✨ Constellation: ON' : 'Constellation: OFF'}
           </button>
+
+          <button
+            onClick={() => setLiveTelemetry(!liveTelemetry)}
+            aria-pressed={liveTelemetry}
+            className={`touch-target min-h-[44px] w-full px-4 py-3 rounded-lg transition-colors border ${
+              liveTelemetry 
+                ? 'bg-red-500/20 border-red-500/50 text-red-400' 
+                : 'bg-transparent border-white/20 text-white/70 hover:text-white'
+            }`}
+          >
+            {liveTelemetry ? '📡 Live ISS: ON' : 'Live ISS: OFF'}
+          </button>
           
           <div className="space-y-2 text-sm">
             <div className="flex justify-between text-white/80">
@@ -132,6 +146,7 @@ export default function LabView() {
         <Suspense fallback={null}>
           <NebulaBackground />
           <NeuralGalaxy />
+          {liveTelemetry && <LiveISSTracker />}
           
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} intensity={1} />

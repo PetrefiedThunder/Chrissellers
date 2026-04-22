@@ -2,6 +2,7 @@
 
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { FileText } from 'lucide-react'
 import Hero from '@/src/components/hero/Hero'
 import Footer from '@/src/components/layout/Footer'
 import LoadingScreen from '@/src/components/layout/LoadingScreen'
@@ -10,6 +11,7 @@ import MobileNav from '@/src/components/layout/MobileNav'
 import HowItWorks from '@/src/components/sections/HowItWorks'
 import ImpactMetrics from '@/src/components/sections/ImpactMetrics'
 import ProfessionalExperience from '@/src/components/sections/ProfessionalExperience'
+import PRDModal from './studio/regengine/prd/PRDModal'
 
 // Lazy load heavy components
 const EnhancedProjectGrid = lazy(() => import('@/src/components/studio/EnhancedProjectGrid'))
@@ -20,6 +22,7 @@ type View = 'studio' | 'lab'
 export default function Home() {
   const [currentView, setCurrentView] = useState<View>('studio')
   const [isLoading, setIsLoading] = useState(true)
+  const [isPRDOpen, setIsPRDOpen] = useState(false)
   const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
@@ -79,6 +82,13 @@ export default function Home() {
             <Suspense fallback={<div className="min-h-screen" />}>
               <div id="projects">
                 <EnhancedProjectGrid onOpenLab={handleOpenLab} />
+                <button
+                  onClick={() => setIsPRDOpen(true)}
+                  className="fixed bottom-8 right-8 z-40 px-4 py-3 bg-text-accent text-bg-page rounded-full hover:bg-text-accent/90 transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
+                >
+                  <FileText className="w-4 h-4" />
+                  <span className="text-sm font-medium">View PRD</span>
+                </button>
               </div>
             </Suspense>
             <div id="experience">
@@ -87,6 +97,7 @@ export default function Home() {
             <div id="contact">
               <Footer />
             </div>
+            <PRDModal isOpen={isPRDOpen} onClose={() => setIsPRDOpen(false)} />
           </motion.div>
         ) : (
           <motion.div
