@@ -87,7 +87,10 @@ export default function Hero({ onOpenLab }: HeroProps) {
           className="flex flex-wrap items-center gap-4"
         >
           <MagneticButton
-            onClick={onOpenLab}
+            onClick={() => {
+              onOpenLab()
+              setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100)
+            }}
             className="group relative inline-flex items-center gap-3 px-8 py-4 bg-text-primary text-bg-page rounded-lg hover:shadow-2xl transition-shadow"
           >
             <span className="relative z-10 font-medium">Open Neural Night Sky Lab</span>
