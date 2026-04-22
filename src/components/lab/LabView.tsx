@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, Suspense } from 'react'
+import { useEffect, Suspense, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'
+import { motion } from 'framer-motion'
 import { useSimulationStore } from '@/src/state/simulationStore'
 import { NeuralGalaxy } from './NeuralGalaxy'
 import { NebulaBackground } from './NebulaBackground'
@@ -21,18 +22,18 @@ export default function LabView() {
   const constellationMode = useSimulationStore(state => state.constellationMode)
   const toggleConstellationMode = useSimulationStore(state => state.toggleConstellationMode)
   const shouldReduceMotion = useReducedMotion()
+  const [sheetExpanded, setSheetExpanded] = useState(false)
 
   useEffect(() => {
     initialize()
   }, [initialize])
 
-  // Training Loop
   useEffect(() => {
     let interval: NodeJS.Timeout
     if (isTraining) {
       interval = setInterval(() => {
         step()
-      }, 100) // Speed of simulation
+      }, 100)
     }
     return () => clearInterval(interval)
   }, [isTraining, step])
@@ -44,7 +45,7 @@ export default function LabView() {
 
   return (
     <div className="relative w-full h-screen bg-neural-dark overflow-hidden">
-      {/* UI Overlay */}
+      {/* Header */}
       <div className="absolute top-0 left-0 w-full p-6 z-10 flex justify-between items-start pointer-events-none">
         <div>
           <Typography variant="display-md" tag="h1" className="text-white mb-2">
@@ -54,57 +55,73 @@ export default function LabView() {
             Regulatory Compliance Neural Network
           </Typography>
         </div>
+      </div>
 
-        <div className="bg-black/50 backdrop-blur-md p-4 rounded-lg border border-white/10 pointer-events-auto">
-          <div className="flex gap-4 mb-4">
+      {/* Responsive Controls - Desktop Side / Mobile Bottom Sheet */}
+      <motion.div 
+        className="fixed md:absolute top-auto md:top-6 bottom-0 md:left-6 right-0 md:w-auto z-50 bg-black/80 md:bg-black/50 backdrop-blur-xl md:backdrop-blur-md p-6 md:rounded-lg border-t md:border border-white/10 pointer-events-auto"
+        drag="y"
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={0.2}
+        onDragEnd={(_, info) => {
+          if (info.offset.y < -50) setSheetExpanded(true)
+          if (info.offset.y > 50) setSheetExpanded(false)
+        }}
+        animate={{ y: sheetExpanded ? 0 : 100 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      >
+        {/* Drag handle */}
+        <div className="w-12 h-1.5 bg-white/20 rounded-full mx-auto mb-4 md:hidden" />
+        
+        <div className="space-y-4">
+          <div className="flex gap-4">
             <button 
               onClick={isTraining ? pauseTraining : startTraining}
-              className="min-h-[44px] px-4 py-2 bg-neural-accent text-white rounded hover:bg-neural-accent/80 transition-colors"
+              className="touch-target flex-1 min-h-[44px] px-4 py-3 bg-neural-accent text-white rounded-lg hover:bg-neural-accent/80 transition-colors"
             >
-              {isTraining ? 'Pause Training' : 'Start Training'}
+              {isTraining ? 'Pause' : 'Start'}
             </button>
             <button 
               onClick={reset}
-              className="min-h-[44px] px-4 py-2 bg-white/10 text-white rounded hover:bg-white/20 transition-colors"
+              className="touch-target min-h-[44px] px-4 py-3 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors"
             >
               Reset
             </button>
           </div>
 
-          <div className="mb-4">
-            <button
-              onClick={toggleConstellationMode}
-              aria-pressed={constellationMode}
-              className={`min-h-[44px] w-full px-4 py-2 rounded transition-colors border ${
-                constellationMode 
-                  ? 'bg-neural-accent/20 border-neural-accent text-neural-accent' 
-                  : 'bg-transparent border-white/20 text-white/70 hover:text-white'
-              }`}
-            >
-              {constellationMode ? '✨ Constellation Mode: ON' : 'Constellation Mode: OFF'}
-            </button>
-          </div>
+          <button
+            onClick={toggleConstellationMode}
+            aria-pressed={constellationMode}
+            className={`touch-target min-h-[44px] w-full px-4 py-3 rounded-lg transition-colors border ${
+              constellationMode 
+                ? 'bg-neural-accent/20 border-neural-accent text-neural-accent' 
+                : 'bg-transparent border-white/20 text-white/70 hover:text-white'
+            }`}
+          >
+            {constellationMode ? '✨ Constellation: ON' : 'Constellation: OFF'}
+          </button>
           
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm text-white/80">
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between text-white/80">
               <span>Epoch:</span>
               <span className="font-mono">{epochValue}</span>
             </div>
-            <div className="flex justify-between text-sm text-white/80">
+            <div className="flex justify-between text-white/80">
               <span>Loss:</span>
               <span className="font-mono">{lossValue.toFixed(4)}</span>
             </div>
-            <div className="flex justify-between text-sm text-white/80">
+            <div className="flex justify-between text-white/80">
               <span>Accuracy:</span>
               <span className="font-mono">{(accuracyValue * 100).toFixed(1)}%</span>
             </div>
           </div>
-          <div className="sr-only" role="status" aria-live="polite">
-            {`Training metrics updated. Epoch ${epochValue}. Loss ${lossValue.toFixed(4)}. Accuracy ${(
-              accuracyValue * 100
-            ).toFixed(1)} percent.`}
-          </div>
         </div>
+      </motion.div>
+
+      <div className="sr-only" role="status" aria-live="polite">
+        {`Training metrics updated. Epoch ${epochValue}. Loss ${lossValue.toFixed(4)}. Accuracy ${(
+          accuracyValue * 100
+        ).toFixed(1)} percent.`}
       </div>
 
       {/* 3D Scene */}
