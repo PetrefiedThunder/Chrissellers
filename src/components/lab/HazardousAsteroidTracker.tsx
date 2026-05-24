@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { Html } from '@react-three/drei'
+import { useTargetingStore } from '@/src/state/targetingStore'
 
 interface AsteroidData {
   id: string
@@ -18,6 +19,55 @@ interface AsteroidData {
 
 interface HazardousAsteroidTrackerProps {
   radius?: number
+}
+
+function AsteroidMarker({ ast }: { ast: AsteroidData }) {
+  const meshRef = useRef<THREE.Mesh>(null)
+  const setLockedObject = useTargetingStore((state) => state.setLockedObject)
+  const lockedObject = useTargetingStore((state) => state.lockedObject)
+  const isLocked = !!meshRef.current && lockedObject === meshRef.current
+
+  useEffect(() => {
+    return () => {
+      const mesh = meshRef.current
+      if (mesh && useTargetingStore.getState().lockedObject === mesh) {
+        useTargetingStore.getState().setLockedObject(null)
+      }
+    }
+  }, [])
+
+  return (
+    <mesh ref={meshRef} position={ast.startPos}>
+      <sphereGeometry args={[Math.max(0.5, ast.size * 3), 8, 8]} />
+      <meshBasicMaterial color="#ff3300" />
+      <pointLight color="#ff4400" intensity={3} distance={25} />
+
+      <Html distanceFactor={100} zIndexRange={[100, 0]}>
+        <div className="bg-red-950/80 backdrop-blur-md border border-red-500/50 text-red-400 font-mono text-[9px] p-1.5 rounded pointer-events-auto whitespace-nowrap transform -translate-y-6">
+          <div className="flex items-center gap-1 mb-0.5">
+            <span className="w-1 h-1 rounded-full bg-red-400 animate-pulse" />
+            <span className="font-bold text-white">⚠ {ast.name}</span>
+          </div>
+          <span className="text-[8px] text-red-400/70">VEL: {ast.velocity.toFixed(2)} km/s</span><br/>
+          <span className="text-[8px] text-red-400/70">DIST: {ast.distance.toFixed(2)} LD</span>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation()
+              setLockedObject(isLocked ? null : meshRef.current)
+            }}
+            className={`mt-2 w-full border px-2 py-1 text-[8px] transition-colors ${
+              isLocked
+                ? 'border-red-500 text-red-200 bg-red-500/10 hover:bg-red-500/20'
+                : 'border-red-400/50 text-red-200 hover:border-red-300 hover:bg-red-400/10'
+            }`}
+          >
+            {isLocked ? '[ DISENGAGE ]' : '[ LOCK TARGET ]'}
+          </button>
+        </div>
+      </Html>
+    </mesh>
+  )
 }
 
 export default function HazardousAsteroidTracker({ radius = 100 }: HazardousAsteroidTrackerProps) {
@@ -69,7 +119,7 @@ export default function HazardousAsteroidTracker({ radius = 100 }: HazardousAste
               direction: new THREE.Vector3().subVectors(targetPos, startPos).normalize()
             }
           })
-          .filter(Boolean)
+          .filter((ast): ast is AsteroidData => ast !== null)
 
         setAsteroids(parsedAsteroids)
         setIsConnected(true)
@@ -116,22 +166,7 @@ export default function HazardousAsteroidTracker({ radius = 100 }: HazardousAste
   return (
     <group ref={groupRef}>
       {asteroids.map((ast) => (
-        <mesh key={ast.id} position={ast.startPos}>
-          <sphereGeometry args={[Math.max(0.5, ast.size * 3), 8, 8]} />
-          <meshBasicMaterial color="#ff3300" />
-          <pointLight color="#ff4400" intensity={3} distance={25} />
-          
-          <Html distanceFactor={100}>
-            <div className="bg-red-950/80 backdrop-blur-md border border-red-500/50 text-red-400 font-mono text-[9px] p-1.5 rounded pointer-events-none whitespace-nowrap transform -translate-y-6">
-              <div className="flex items-center gap-1 mb-0.5">
-                <span className="w-1 h-1 rounded-full bg-red-400 animate-pulse" />
-                <span className="font-bold text-white">⚠ {ast.name}</span>
-              </div>
-              <span className="text-[8px] text-red-400/70">VEL: {ast.velocity.toFixed(2)} km/s</span><br/>
-              <span className="text-[8px] text-red-400/70">DIST: {ast.distance.toFixed(2)} LD</span>
-            </div>
-          </Html>
-        </mesh>
+        <AsteroidMarker key={ast.id} ast={ast} />
       ))}
     </group>
   )

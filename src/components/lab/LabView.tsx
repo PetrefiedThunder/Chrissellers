@@ -2,7 +2,6 @@
 
 import { useEffect, Suspense, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'
 import { motion } from 'framer-motion'
 import { useSimulationStore } from '@/src/state/simulationStore'
@@ -10,9 +9,9 @@ import { NeuralGalaxy } from './NeuralGalaxy'
 import { NebulaBackground } from './NebulaBackground'
 import { LiveISSTracker } from './LiveISSTracker'
 import { MilkyWayVisualizer } from './MilkyWayVisualizer'
-import { HazardousAsteroidTracker } from './HazardousAsteroidTracker'
+import HazardousAsteroidTracker from './HazardousAsteroidTracker'
+import TacticalCameraController from './TacticalCameraController'
 import { Typography } from '../design/Typography'
-import { useReducedMotion } from 'framer-motion'
 
 export default function LabView() {
   const initialize = useSimulationStore(state => state.initialize)
@@ -28,7 +27,6 @@ export default function LabView() {
   const [milkyWay, setMilkyWay] = useState(true)
   const [asteroids, setAsteroids] = useState(false)
   const [userLocation, setUserLocation] = useState<{ lat: number; lon: number } | null>(null)
-  const shouldReduceMotion = useReducedMotion()
   const [sheetExpanded, setSheetExpanded] = useState(false)
 
   useEffect(() => {
@@ -204,14 +202,8 @@ export default function LabView() {
             <Vignette eskil={false} offset={0.1} darkness={1.1} />
           </EffectComposer>
         </Suspense>
-        
-        <OrbitControls 
-          enablePan={false} 
-          minDistance={10} 
-          maxDistance={50}
-          autoRotate={!shouldReduceMotion && isTraining}
-          autoRotateSpeed={0.5}
-        />
+
+        <TacticalCameraController />
       </Canvas>
     </div>
   )

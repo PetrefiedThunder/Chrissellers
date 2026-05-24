@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import * as THREE from 'three'
+import { useTargetingStore } from '@/src/state/targetingStore'
 
 interface ISSData {
   latitude: number
@@ -12,10 +13,15 @@ interface ISSData {
   velocity: number
 }
 
+const issTargetPosition = new THREE.Vector3()
+
 export function LiveISSTracker({ radius = 100 }: { radius?: number }) {
   const meshRef = useRef<THREE.Mesh>(null)
   const [issData, setIssData] = useState<ISSData | null>(null)
   const [isConnected, setIsConnected] = useState(false)
+  const setLockedObject = useTargetingStore((state) => state.setLockedObject)
+  const lockedObject = useTargetingStore((state) => state.lockedObject)
+  const isLocked = !!meshRef.current && lockedObject === meshRef.current
 
   useEffect(() => {
     const fetchISS = async () => {
@@ -34,6 +40,15 @@ export function LiveISSTracker({ radius = 100 }: { radius?: number }) {
     return () => clearInterval(interval)
   }, [])
 
+  useEffect(() => {
+    return () => {
+      const mesh = meshRef.current
+      if (mesh && useTargetingStore.getState().lockedObject === mesh) {
+        useTargetingStore.getState().setLockedObject(null)
+      }
+    }
+  }, [])
+
   useFrame(() => {
     if (!meshRef.current || !issData) return
 
@@ -46,7 +61,8 @@ export function LiveISSTracker({ radius = 100 }: { radius?: number }) {
     const targetY = altScale * Math.sin(latRad)
     const targetZ = -altScale * Math.cos(latRad) * Math.sin(lonRad)
 
-    meshRef.current.position.lerp(new THREE.Vector3(targetX, targetY, targetZ), 0.05)
+    issTargetPosition.set(targetX, targetY, targetZ)
+    meshRef.current.position.lerp(issTargetPosition, 0.05)
   })
 
   if (!issData) return null
@@ -57,8 +73,8 @@ export function LiveISSTracker({ radius = 100 }: { radius?: number }) {
       <meshBasicMaterial color="#ff3366" />
       <pointLight color="#ff3366" intensity={2} distance={10} />
       
-      <Html distanceFactor={150}>
-        <div className="bg-black/80 backdrop-blur border border-red-500/30 text-red-400 font-mono text-[10px] p-1.5 rounded pointer-events-none whitespace-nowrap">
+      <Html distanceFactor={150} zIndexRange={[100, 0]}>
+        <div className="bg-black/80 backdrop-blur border border-red-500/30 text-red-400 font-mono text-[10px] p-1.5 rounded pointer-events-auto whitespace-nowrap">
           <div className="flex items-center gap-1 mb-1">
             <span className={`w-1.5 h-1.5 rounded-full ${isConnected ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`} />
             <span className="text-[8px] text-red-400/60">LIVE</span>
@@ -66,6 +82,20 @@ export function LiveISSTracker({ radius = 100 }: { radius?: number }) {
           ISS_TELEMETRY<br/>
           ALT: {Math.round(issData.altitude)}km<br/>
           VEL: {Math.round(issData.velocity)} km/h
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation()
+              setLockedObject(isLocked ? null : meshRef.current)
+            }}
+            className={`mt-2 w-full border px-2 py-1 text-[9px] transition-colors ${
+              isLocked
+                ? 'border-red-500 text-red-300 bg-red-500/10 hover:bg-red-500/20'
+                : 'border-red-400/50 text-red-300 hover:border-red-300 hover:bg-red-400/10'
+            }`}
+          >
+            {isLocked ? '[ DISENGAGE ]' : '[ LOCK TARGET ]'}
+          </button>
         </div>
       </Html>
     </mesh>
