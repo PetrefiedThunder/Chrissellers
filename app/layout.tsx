@@ -1,23 +1,36 @@
 import type { Metadata } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
-import SmoothScroll from '@/src/components/effects/SmoothScroll'
+import { profile } from '@/src/content/profile'
 import './globals.css'
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
 })
 
-const spaceGrotesk = Space_Grotesk({ 
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-space-grotesk',
   display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'Christopher Sellers',
-  description: 'Christopher Sellers - Bridging regulation, equity, and technology through elegant systems design.',
+  metadataBase: new URL(profile.siteUrl),
+  title: `${profile.name} — ${profile.role}`,
+  description: profile.summary,
+  openGraph: {
+    type: 'website',
+    url: profile.siteUrl,
+    title: `${profile.name} — ${profile.role}`,
+    description: profile.summary,
+    siteName: profile.name,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${profile.name} — ${profile.role}`,
+    description: profile.summary,
+  },
 }
 
 export default function RootLayout({
@@ -28,15 +41,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <body>
-        <a 
-          href="#main-content"
-          className="skip-to-content"
-        >
+        <a href="#main" className="skip-to-content">
           Skip to main content
         </a>
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+        {children}
       </body>
     </html>
   )

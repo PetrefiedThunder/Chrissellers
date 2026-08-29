@@ -4,21 +4,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 
 const nextConfig = {
-  transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
+  // There is a package.json in the home directory (for agentpub), which Next
+  // would otherwise pick as the workspace root. Pin it to this repo.
+  turbopack: {
+    root: __dirname,
+  },
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion', '@react-three/drei', 'recharts'],
-  },
-  images: {
-    formats: ['image/avif', 'image/webp'],
-  },
-  turbopack: {},
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.(glsl|vs|fs|vert|frag)$/,
-      exclude: /node_modules/,
-      use: ['raw-loader', 'glslify-loader'],
-    })
-    return config
+    optimizePackageImports: ['lucide-react'],
   },
 }
 
