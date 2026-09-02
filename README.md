@@ -47,4 +47,13 @@ well-formed. This catches a half-finished content edit before it ships. It does
 
 Next.js 16 (App Router) · React 18 · TypeScript · Tailwind CSS · Jest
 
-Deployed on Vercel.
+## Deployment
+
+**This repository is not currently wired to deploy anywhere.** There is no
+`vercel.json`, no `.vercel/` link, and CI builds an artifact without publishing
+it. `chrissellers.com` currently resolves to HostGator shared hosting
+(Apache, `hgns*.hostgator.com` nameservers) and returns HTTP 403.
+
+To publish this site, either point `chrissellers.com` at a Vercel project built
+from this repo, or add a deploy step to `.github/workflows/ci.yml`. The site is
+fully static, so any static host will serve it.

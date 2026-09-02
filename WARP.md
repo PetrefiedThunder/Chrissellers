@@ -8,7 +8,9 @@ Personal site and portfolio for Christopher Sellers (chrissellers.com). One
 statically-rendered page: hero, selected work, career, contact.
 
 **Stack:** Next.js 16 (App Router), React 18, TypeScript, Tailwind CSS, Jest.
-Deployed on Vercel.
+
+**Not currently deployed.** No `vercel.json`, no `.vercel/` link, and CI does not
+publish. `chrissellers.com` points at HostGator shared hosting and returns 403.
 
 ## Commands
 
@@ -75,3 +77,6 @@ does not verify links resolve — see the note in that file.
   confirmed live.
 - `RegEngine_PRD.md` in the repo root is RegEngine product material that belongs
   in the RegEngine repo, not here.
+- The contact CTA uses `hello@chrissellers.com`. That domain's MX points at
+  HostGator mail, not the Google Workspace that serves the
+  `christophersellers.com` address — worth confirming it is monitored.
