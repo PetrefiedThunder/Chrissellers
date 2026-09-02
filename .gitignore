@@ -29,5 +29,14 @@ out/
 
 # Environment variables
 .env
+.envrc
 .env.local
 .env.*.local
+
+# cwinit
+.overmind.sock
+.envrc.local
+
+# Build artifacts
+*.tsbuildinfo
+coverage/

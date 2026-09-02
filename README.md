@@ -1,161 +1,50 @@
-# Christopher Sellers — Neural Night Sky Lab
+# chrissellers.com
 
-The flagship site for **chrissellers.com** blends a minimal studio portfolio with an immersive neural network laboratory that explores how regulation, equity, and technology intersect. The experience is powered by **Next.js 16**, **React 18**, and a custom Three.js simulation that renders an interpretable "Neural Night Sky."
+Personal site and portfolio for Christopher Sellers. A single statically-rendered
+page: positioning, selected work, career, and contact.
 
-## Highlights
+## Design constraints
 
-- Dual **studio + lab** experience with smooth animated transitions and a shared navigation/cursor system.
-- **Studio landing** that introduces the work, explains the lab, and showcases projects in a premium project grid.
-- **Neural Night Sky Lab** featuring an interactive neural simulation, scenario controls, dataset toggles, and live training metrics.
-- **Immersive motion system** powered by Framer Motion plus a bespoke pointer for tactile hover/scroll states.
-- **Performance-aware loading** via Suspense/lazy loading for the lab canvas and project grid.
-- **Mathematically sound** neural network with Xavier initialization, proper backpropagation, and gradient clipping.
-- **Accessible** with skip-to-content links, focus trapping, and keyboard navigation.
+The site is a credibility surface — the thing linked from LinkedIn, email
+signatures, and cold outreach. That drives three rules:
 
-## Technology Stack
+1. **Zero client JavaScript components.** Every component is a React Server
+   Component. Content arrives in the HTML, so it survives slow connections,
+   crawlers, and link-preview bots. The only JS shipped is the React runtime.
+2. **Content lives in `src/content/`, not in JSX.** Copy is edited in three data
+   files; components only lay it out.
+3. **No claim the code cannot back up.** Every project states its real status —
+   including "pre-production" and "built, not shipped."
 
-| Layer | Details |
+## Editing content
+
+| File | What it holds |
 | --- | --- |
-| Framework | Next.js 16 (App Router) with TypeScript |
-| UI & Styling | React 18, Tailwind CSS, clsx, custom cursor + motion effects |
-| Visualization | Three.js via `@react-three/fiber` and helpers from `@react-three/drei` |
-| State & Data | Zustand store for the neural simulation; bespoke neural + policy utilities in `src/lib` |
-| Charts | Recharts for burden/benefit/equity and training readouts |
-| Testing | Jest + React Testing Library |
-| CI/CD | GitHub Actions |
+| `src/content/profile.ts` | Name, headline, bio, contact links. Also feeds page metadata and the generated OG image. |
+| `src/content/work.ts` | Projects, split into `featured` and `other`. |
+| `src/content/career.ts` | Roles, in reverse-chronological order. |
 
-## Project Structure
+The social preview image (`app/opengraph-image.tsx`) is generated at build time
+from `profile.ts` — edit the headline and the card follows.
 
-```
-app/
-├── layout.tsx        # Root layout with metadata, fonts, and skip link
-├── page.tsx          # Studio/Lab controller with animated view switching
-└── globals.css       # Tailwind layers, typography, cursor styles, accessibility
-
-src/
-├── components/
-│   ├── hero/         # Landing hero with CTA into the lab
-│   ├── studio/       # Enhanced project grid and supporting UI
-│   ├── sections/     # How it works + Impact metrics sections
-│   ├── lab/          # Lab view, controls, dashboard, info panel, and 3D scene
-│   │   └── shaders/  # GLSL shaders for energy beam effects
-│   ├── layout/       # Footer, mobile nav, loading screen, typography system
-│   └── effects/      # Custom cursor and interaction helpers
-├── lib/
-│   └── neural/       # Feedforward network, datasets, and math utilities
-│       ├── engine.ts        # Forward/backward pass, training
-│       ├── types.ts         # TypeScript interfaces
-│       ├── datasets.ts      # Training datasets
-│       └── networkLayout.ts # Neuron positioning
-└── state/
-    └── simulationStore.ts   # Zustand store for simulation
-
-.github/
-└── workflows/
-    └── ci.yml        # CI/CD pipeline
-
-__tests__/
-├── neural/           # Neural network unit tests
-│   └── engine.test.ts
-└── components/      # Component tests
-    └── HeroVisual.test.tsx
-```
-
-## Experience Overview
-
-### Studio
-- **Hero** introduces Christopher Sellers with a CTA that opens the Lab view.
-- **How It Works** and **Impact Metrics** sections explain the regulatory/safety framing.
-- **Enhanced Project Grid** features tagged case studies, a highlighted Lab entry point, and responsive hover animations.
-
-### Neural Night Sky Lab
-- **Lab layout** combines a control sidebar, real-time 3D network visualization, metrics dashboard, and contextual info panel.
-- **Simulation controls** manage architecture presets, learning rate/batch size/epochs, activation choice, and dataset selection.
-- **Scenario tuning** adjusts support/enforcement levels and toggles regulation categories to see burden/benefit/equity shifts.
-- **Visualization options** include camera presets, label/connection toggles, and animation speed controls.
-
-## Development
-
-### Prerequisites
-
-- Node.js 18+
-- npm (comes with Node)
-
-### Setup
+## Commands
 
 ```bash
-npm install
+npm run dev     # local dev server
+npm run build   # production build
+npm run lint    # eslint (flat config)
+npm test        # content validation tests
 ```
 
-### Local Development
+## Tests
 
-```bash
-npm run dev
-# open http://localhost:3000
-```
+`__tests__/content.test.ts` validates the content files rather than the markup:
+every project has a status, descriptions are non-trivial, and links are
+well-formed. This catches a half-finished content edit before it ships. It does
+**not** check that links resolve — see the note in that file for the trade-off.
 
-### Production Build
+## Stack
 
-```bash
-npm run build
-npm run start
-```
+Next.js 16 (App Router) · React 18 · TypeScript · Tailwind CSS · Jest
 
-> Note: Production builds use Webpack for GLSL shader support. Use `npm run build:turbopack` for Turbopack builds.
-
-### Testing
-
-```bash
-# Run all tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run tests with coverage
-npm run test:coverage
-```
-
-### Linting
-
-```bash
-npm run lint
-```
-
-## CI/CD
-
-The project uses GitHub Actions for continuous integration:
-
-- **Test job**: Runs lint and tests with coverage on every push/PR
-- **Build job**: Creates production build (runs after tests pass)
-
-View the workflow at `.github/workflows/ci.yml`.
-
-## Neural Network Implementation
-
-The lab features a mathematically sound feedforward neural network:
-
-- **Xavier/Glorot** weight initialization
-- **Activation functions**: ReLU, Leaky ReLU, Sigmoid, Tanh, Linear
-- **Proper backpropagation** with correct pre-activation (z) values for derivatives
-- **Gradient clipping** to prevent exploding gradients
-- **Numerical stability guards** to prevent NaN/Infinity
-
-See `src/lib/neural/engine.ts` for implementation details.
-
-## Accessibility
-
-The site includes accessibility features:
-
-- Skip-to-content link for keyboard users
-- Focus trapping in mobile navigation
-- ARIA attributes on interactive elements
-- Keyboard navigation support (Escape to close modals)
-- Reduced motion support via `prefers-reduced-motion`
-
-## Contact
-
-**Christopher Sellers**
-[hello@chrissellers.com](mailto:hello@chrissellers.com)
-
-&copy; 2025 Christopher Sellers. All rights reserved.
+Deployed on Vercel.

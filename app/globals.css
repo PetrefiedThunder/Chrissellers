@@ -1,97 +1,59 @@
-/* app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.skip-to-content {
-  position: absolute;
-  top: -100%;
-  left: 16px;
-  z-index: 9999;
-  padding: 12px 24px;
-  background: rgb(var(--color-neural-accent));
-  color: white;
-  font-weight: 600;
-  border-radius: 0 0 8px 8px;
-  text-decoration: none;
-  transition: top 0.2s ease;
-}
-
-.skip-to-content:focus {
-  top: 0;
-  outline: 2px solid white;
-  outline-offset: 2px;
-}
-
 @layer base {
   :root {
-    /* --- PRIMITIVES (The Raw Palette) --- */
-    /* Neutrals */
-    --color-paper: 244 244 240;    /* #F4F4F0 */
-    --color-ink: 43 43 43;         /* #2B2B2B */
-    --color-concrete: 154 154 154; /* #9A9A9A */
-    
-    /* Accents */
-    --color-sage: 138 154 138;     /* #8A9A8A */
-    --color-clay: 181 142 126;     /* #B58E7E */
-    --color-water: 141 163 176;    /* #8DA3B0 */
-    
-    /* Neural / Lab Specific */
-    --color-neural-dark: 10 10 15;
-    --color-neural-accent: 99 102 241; /* Indigo-500 */
-    
-    /* --- SEMANTIC TOKENS (Usage Rules) --- */
-    
-    /* Backgrounds */
+    --color-paper: 244 244 240;
+    --color-ink: 28 28 28;
+    --color-slate: 106 106 100;
+    --color-sage: 94 112 94;
+
     --bg-page: var(--color-paper);
     --bg-surface: 255 255 255;
-    --bg-surface-glass: 255 255 255; /* Opacity handled in utility */
-    
-    /* Text */
+    --bg-sunken: 237 237 231;
+
     --text-primary: var(--color-ink);
-    --text-secondary: var(--color-concrete);
+    --text-secondary: var(--color-slate);
     --text-accent: var(--color-sage);
-    
-    /* Borders */
-    --border-light: 43 43 43; /* Use with opacity 0.1 */
-    --border-strong: 43 43 43; /* Use with opacity 0.2 */
+
+    --rule: 28 28 28;
   }
 
-  /* Dark Mode (Lab Mode) Overrides */
-  [data-theme='lab'] {
-    --bg-page: var(--color-neural-dark);
-    --bg-surface: 20 20 25;
-    
-    --text-primary: 244 244 240;
-    --text-secondary: 148 163 184;
-    --text-accent: var(--color-neural-accent);
-    
-    --border-light: 255 255 255;
-    --border-strong: 255 255 255;
-  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-page: 18 18 17;
+      --bg-surface: 26 26 25;
+      --bg-sunken: 13 13 12;
 
-  * {
-    @apply antialiased border-border-light/10;
+      --text-primary: 240 240 235;
+      --text-secondary: 158 158 150;
+      --text-accent: 154 176 154;
+
+      --rule: 240 240 235;
+    }
   }
 
   body {
-    @apply bg-bg-page text-text-primary font-sans transition-colors duration-500;
+    @apply bg-bg-page text-text-primary font-sans antialiased;
   }
 
   :focus-visible {
-    outline: 2px solid rgb(var(--color-neural-accent));
+    outline: 2px solid rgb(var(--text-accent));
     outline-offset: 3px;
-    border-radius: 6px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .skip-to-content {
+    @apply absolute left-4 z-50 -top-24 rounded-b-lg px-6 py-3 font-semibold;
+    background: rgb(var(--text-primary));
+    color: rgb(var(--bg-page));
+    transition: top 0.2s ease;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
+  .skip-to-content:focus {
+    top: 0;
   }
 }

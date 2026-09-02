@@ -1,129 +1,19 @@
-'use client'
-
-import { useState, useEffect, lazy, Suspense } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { FileText } from 'lucide-react'
-import Hero from '@/src/components/hero/Hero'
-import Footer from '@/src/components/layout/Footer'
-import LoadingScreen from '@/src/components/layout/LoadingScreen'
-import CustomCursor from '@/src/components/effects/CustomCursor'
-import MobileNav from '@/src/components/layout/MobileNav'
-import HowItWorks from '@/src/components/sections/HowItWorks'
-import ImpactMetrics from '@/src/components/sections/ImpactMetrics'
-import ProfessionalExperience from '@/src/components/sections/ProfessionalExperience'
-import PRDModal from './studio/regengine/prd/PRDModal'
-
-// Lazy load heavy components
-const EnhancedProjectGrid = lazy(() => import('@/src/components/studio/EnhancedProjectGrid'))
-const LabView = lazy(() => import('@/src/components/lab/LabView'))
-
-type View = 'studio' | 'lab'
+import Nav from '@/src/components/Nav'
+import Hero from '@/src/components/Hero'
+import Work from '@/src/components/Work'
+import Career from '@/src/components/Career'
+import Contact from '@/src/components/Contact'
 
 export default function Home() {
-  const [currentView, setCurrentView] = useState<View>('studio')
-  const [isLoading, setIsLoading] = useState(true)
-  const [isPRDOpen, setIsPRDOpen] = useState(false)
-  const shouldReduceMotion = useReducedMotion()
-
-  useEffect(() => {
-    // Simulate initial load
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 1500)
-
-    return () => clearTimeout(timer)
-  }, [])
-
-  const handleOpenLab = () => {
-    setCurrentView('lab')
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  const handleCloseLab = () => {
-    setCurrentView('studio')
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  if (isLoading) {
-    return <LoadingScreen />
-  }
-
-  const fadeTransition = { duration: shouldReduceMotion ? 0 : 0.5 }
-  const studioMotion = shouldReduceMotion
-    ? { initial: false, animate: { opacity: 1 }, exit: { opacity: 1 } }
-    : { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
-  const labMotion = shouldReduceMotion
-    ? { initial: false, animate: { opacity: 1 }, exit: { opacity: 1 } }
-    : {
-        initial: { opacity: 0, scale: 0.95 },
-        animate: { opacity: 1, scale: 1 },
-        exit: { opacity: 0, scale: 0.95 },
-      }
-
   return (
     <>
-      <CustomCursor />
-      <MobileNav onOpenLab={handleOpenLab} />
-
-      <AnimatePresence mode="wait">
-        {currentView === 'studio' ? (
-          <motion.div
-            id="main-content"
-            key="studio"
-            initial={studioMotion.initial}
-            animate={studioMotion.animate}
-            exit={studioMotion.exit}
-            transition={fadeTransition}
-            className="relative w-full min-h-screen"
-          >
-            <Hero onOpenLab={handleOpenLab} />
-            <HowItWorks />
-            <ImpactMetrics />
-            <Suspense fallback={<div className="min-h-screen" />}>
-              <div id="projects">
-                <EnhancedProjectGrid onOpenLab={handleOpenLab} onOpenPRD={() => setIsPRDOpen(true)} />
-                <button
-                  onClick={() => setIsPRDOpen(true)}
-                  className="fixed bottom-8 right-8 z-40 px-4 py-3 bg-text-accent text-bg-page rounded-full hover:bg-text-accent/90 transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
-                >
-                  <FileText className="w-4 h-4" />
-                  <span className="text-sm font-medium">View PRD</span>
-                </button>
-              </div>
-            </Suspense>
-            <div id="experience">
-              <ProfessionalExperience />
-            </div>
-            <div id="contact">
-              <Footer />
-            </div>
-            <PRDModal isOpen={isPRDOpen} onClose={() => setIsPRDOpen(false)} />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="lab"
-            initial={labMotion.initial}
-            animate={labMotion.animate}
-            exit={labMotion.exit}
-            transition={fadeTransition}
-            className="relative w-full min-h-screen"
-          >
-            <Suspense fallback={<LoadingScreen />}>
-              <LabView />
-            </Suspense>
-            
-            {/* Back Button Overlay */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50">
-              <button
-                onClick={handleCloseLab}
-                className="px-6 py-3 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-white/20 transition-all border border-white/20"
-              >
-                Exit Lab
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <Nav />
+      <main id="main">
+        <Hero />
+        <Work />
+        <Career />
+      </main>
+      <Contact />
     </>
   )
 }
