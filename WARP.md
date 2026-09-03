@@ -9,8 +9,10 @@ statically-rendered page: hero, selected work, career, contact.
 
 **Stack:** Next.js 16 (App Router), React 18, TypeScript, Tailwind CSS, Jest.
 
-**Not currently deployed.** No `vercel.json`, no `.vercel/` link, and CI does not
-publish. `chrissellers.com` points at HostGator shared hosting and returns 403.
+**Live at https://chrissellers.vercel.app**, auto-deployed from `main` via
+Vercel's GitHub integration (configured dashboard-side, so no `vercel.json` or
+`.vercel/` exists in the repo). `chrissellers.com` is NOT connected — it points
+at HostGator and returns 403.
 
 ## Commands
 
@@ -73,8 +75,8 @@ does not verify links resolve — see the note in that file.
 
 ## Known follow-ups
 
-- Project URLs in `src/content/work.ts` came from READMEs and have not been
-  confirmed live.
+- `siteUrl` in `src/content/profile.ts` must point at a host that actually
+  serves the site; it feeds `metadataBase` and therefore every og:image URL.
 - `RegEngine_PRD.md` in the repo root is RegEngine product material that belongs
   in the RegEngine repo, not here.
 - The contact CTA uses `hello@chrissellers.com`. That domain's MX points at

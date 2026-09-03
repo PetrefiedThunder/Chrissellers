@@ -1,6 +1,14 @@
 export const profile = {
   name: 'Christopher Sellers',
-  siteUrl: 'https://chrissellers.com',
+
+  // Feeds Next's metadataBase, which every og:image and og:url is resolved
+  // against — so this MUST be a host that actually serves the site. It points at
+  // the Vercel URL because chrissellers.com is not connected to this project
+  // (it resolves to HostGator and returns 403/500). Pointing it at the custom
+  // domain before that is fixed silently breaks every link preview.
+  // TODO(chris): switch to https://chrissellers.com once the domain is added to
+  // the Vercel project and resolving.
+  siteUrl: 'https://chrissellers.vercel.app',
 
   // Shown under the name in the hero and in every social/search preview card.
   role: 'Technical Founder',

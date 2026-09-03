@@ -49,11 +49,13 @@ Next.js 16 (App Router) · React 18 · TypeScript · Tailwind CSS · Jest
 
 ## Deployment
 
-**This repository is not currently wired to deploy anywhere.** There is no
-`vercel.json`, no `.vercel/` link, and CI builds an artifact without publishing
-it. `chrissellers.com` currently resolves to HostGator shared hosting
-(Apache, `hgns*.hostgator.com` nameservers) and returns HTTP 403.
+Live at **https://chrissellers.vercel.app**, deployed automatically from `main`
+by Vercel's GitHub integration. That integration is configured in the Vercel
+dashboard, which is why there is no `vercel.json` or `.vercel/` directory here —
+their absence does not mean the site is unwired.
 
-To publish this site, either point `chrissellers.com` at a Vercel project built
-from this repo, or add a deploy step to `.github/workflows/ci.yml`. The site is
-fully static, so any static host will serve it.
+**`chrissellers.com` is not connected to this project.** It resolves to HostGator
+shared hosting and returns 403. Until the domain is added to the Vercel project,
+`siteUrl` in `src/content/profile.ts` must keep pointing at the `.vercel.app`
+host: it feeds `metadataBase`, so every social preview image is resolved against
+it, and pointing it at an unserved domain silently breaks every link preview.
