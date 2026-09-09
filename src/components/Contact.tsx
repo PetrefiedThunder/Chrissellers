@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail } from 'lucide-react'
+import { Github, Mail } from 'lucide-react'
 import { profile } from '@/src/content/profile'
 
 export default function Contact() {
@@ -33,15 +33,6 @@ export default function Contact() {
               className="text-text-secondary transition-colors hover:text-text-primary"
             >
               <Github className="h-5 w-5" />
-            </a>
-            <a
-              href={profile.links.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="text-text-secondary transition-colors hover:text-text-primary"
-            >
-              <Linkedin className="h-5 w-5" />
             </a>
           </div>
         </div>

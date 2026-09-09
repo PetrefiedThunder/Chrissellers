@@ -31,7 +31,5 @@ export const profile = {
   links: {
     email: 'hello@chrissellers.com',
     github: 'https://github.com/PetrefiedThunder',
-    // TODO(chris): confirm this LinkedIn slug resolves — it was unverified in the old site.
-    linkedin: 'https://linkedin.com/in/christopher-sellers',
   },
 } as const

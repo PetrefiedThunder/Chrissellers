@@ -52,7 +52,7 @@ export default function OpengraphImage() {
           }}
         >
           <span>{profile.name}</span>
-          <span>chrissellers.com</span>
+          <span>{new URL(profile.siteUrl).hostname}</span>
         </div>
       </div>
     ),

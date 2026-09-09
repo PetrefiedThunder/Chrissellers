@@ -28,7 +28,6 @@ describe('profile', () => {
   it('only links somewhere publishable', () => {
     expect(profile.links.email).toMatch(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
     expect(isPublishableLink(profile.links.github)).toBe(true)
-    expect(isPublishableLink(profile.links.linkedin)).toBe(true)
   })
 })
 
