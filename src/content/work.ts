@@ -85,7 +85,7 @@ export const other: Project[] = [
     name: 'PopFact',
     tagline: 'A fact-checking ticker overlay',
     description:
-      'A browser extension exploring what a always-on credibility ticker would feel like on the open web. Explicitly a proof of concept — the verdicts are heuristic, and the README says so before anything else.',
+      'A browser extension exploring what an always-on credibility ticker would feel like on the open web. Explicitly a proof of concept — the verdicts are heuristic, and the README says so before anything else.',
     status: 'Prototype',
     stack: ['Manifest V3', 'Playwright'],
   },
