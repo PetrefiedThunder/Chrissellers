@@ -24,7 +24,7 @@ export const profile = {
     'Technical founder building RegEngine, a compliance platform for food supply chain traceability. Previously business development at RadarFirst through its Vista Equity growth round, technical account management at SeatGeek, and personal aide to a sitting U.S. Senator.',
 
   bio: [
-    'I have spent twenty years in rooms where the cost of getting it wrong was immediate and public — a Senator\'s schedule across 36 counties, enterprise integrations that could not go down during a season, disaster zones where the resources did not exist yet.',
+    'I have spent twenty years in rooms where the cost of getting it wrong was immediate and public — Senator Jeff Merkley\'s schedule across 36 counties, SeatGeek integrations that could not go down during a season, disaster zones where the resources did not exist yet.',
     'Now I build regulatory infrastructure. RegEngine is a compliance platform I architected and shipped solo, using AI agents to cover the ground a small engineering team would normally handle.',
   ],
 
