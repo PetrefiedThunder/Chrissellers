@@ -29,7 +29,12 @@ export const profile = {
   ],
 
   links: {
-    email: 'hello@chrissellers.com',
+    // Verified to accept mail (Google Workspace, SMTP 250). Do NOT switch this to
+    // an address on chrissellers.com without probing it first: hello@ was on this
+    // line for months and hard-bounced every message with 550 No Such User Here.
+    // That domain's mail is HostGator and has no catch-all, so a plausible-looking
+    // address there is not necessarily a real mailbox.
+    email: '1@christophersellers.com',
     github: 'https://github.com/PetrefiedThunder',
   },
 } as const

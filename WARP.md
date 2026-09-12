@@ -79,6 +79,8 @@ does not verify links resolve — see the note in that file.
   serves the site; it feeds `metadataBase` and therefore every og:image URL.
 - `RegEngine_PRD.md` in the repo root is RegEngine product material that belongs
   in the RegEngine repo, not here.
-- The contact CTA uses `hello@chrissellers.com`. That domain's MX points at
-  HostGator mail, not the Google Workspace that serves the
-  `christophersellers.com` address — worth confirming it is monitored.
+- The contact CTA uses `1@christophersellers.com` (Google Workspace), verified to
+  accept mail. It previously used `hello@chrissellers.com`, which never existed and
+  hard-bounced every message for months with `550 No Such User Here`. Before
+  changing this address, probe the new one — `chrissellers.com` mail is HostGator
+  with no catch-all, so an address there looking right does not mean it resolves.
