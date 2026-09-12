@@ -23,7 +23,7 @@ export const career: Role[] = [
     organization: 'RadarFirst',
     period: '2018 — 2019',
     summary:
-      'Privacy SaaS. Part of the growth engine through a $100M exit to Vista Equity Partners.',
+      'Privacy SaaS. Part of the growth engine through Vista Equity Partners\' growth investment.',
     highlights: [
       'Translated technical privacy tooling into business value for Fortune 500 C-suites',
       'Supported closing $3M+ in enterprise pipeline',

@@ -51,8 +51,8 @@ export const featured: Project[] = [
     name: 'SupportCarr',
     tagline: 'Roadside assistance for e-bikes',
     description:
-      'On-demand rescue for e-bikes and bicycles, piloting in Pasadena. Built as partner infrastructure rather than a single app: tenant-scoped APIs, signed outbound webhooks, and a delivery ledger so dispatch networks can integrate without bespoke glue.',
-    status: 'Live · Pasadena pilot',
+      'On-demand rescue for e-bikes and bicycles, with Pasadena as the pilot focus. Built as partner infrastructure rather than a single app: tenant-scoped APIs, signed outbound webhooks, and a delivery ledger so dispatch networks can integrate without bespoke glue.',
+    status: 'Built · Pasadena pilot planned',
     stack: ['Express 5', 'PostgreSQL + PostGIS', 'BullMQ', 'React PWA', 'Stripe'],
     detail: [
       'Finite state machine for ride lifecycle with Redis geo-lookup for nearby-driver assignment',
