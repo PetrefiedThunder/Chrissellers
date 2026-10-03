@@ -1,0 +1,12 @@
+Started: 2026-10-03T01:22:44+00:00
+Command: node -e 'console.log(JSON.stringify({next:require("next/package.json").version,react:require("react/package.json").version,playwright:require("/private/tmp/chrissellers-qa-20261002-tools/node_modules/playwright/package.json").version,axe:require("/private/tmp/chrissellers-qa-20261002-tools/node_modules/axe-core/package.json").version,remoteBrowserConfigured:Boolean(process.env.PW_TEST_CONNECT_WS_ENDPOINT)},null,2))'
+
+{
+  "next": "16.3.3",
+  "react": "18.3.1",
+  "playwright": "1.63.0",
+  "axe": "4.13.0",
+  "remoteBrowserConfigured": true
+}
+
+- 2026-10-03T01:22:44+00:00 [ROOT] END `tools-versions`: exit 0; elapsed 0.0s.

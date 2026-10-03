@@ -1,0 +1,5 @@
+Started: 2026-10-03T01:22:28+00:00
+Command: rg --files --hidden -g AGENTS.md -g '!.git/**' -g '!node_modules/**' -g '!.env*' -g '!.next/**'
+
+
+- 2026-10-03T01:22:28+00:00 [BE] END `tracked-source`: exit 1; elapsed 0.0s.

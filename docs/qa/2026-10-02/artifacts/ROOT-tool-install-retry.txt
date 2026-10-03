@@ -1,0 +1,7 @@
+Started: 2026-10-03T01:22:27+00:00
+Command: npm install --prefix /private/tmp/chrissellers-qa-20261002-tools --ignore-scripts --no-audit --no-fund --save-exact --cache /private/tmp/chrissellers-qa-npm-cache playwright@latest axe-core@latest
+
+
+added 3 packages in 2s
+
+- 2026-10-03T01:22:29+00:00 [ROOT] END `tool-install-retry`: exit 0; elapsed 1.9s.

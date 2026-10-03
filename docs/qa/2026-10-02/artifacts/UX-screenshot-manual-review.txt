@@ -1,0 +1,7 @@
+Started: 2026-10-03T01:28:12+00:00
+Command: python3 -c 'from pathlib import Path; files=list(Path("docs/qa/2026-10-02/artifacts/ux").glob("*.png")); print(f"{len(files)} PNG files, {sum(p.stat().st_size for p in files)/1024/1024:.2f} MiB"); print("Manual visual inspection via view_image: mobile-light-320-contact, 404-page, mobile-text200-375-contact, keyboard-skip-focus, mobile-text200-375-viewport, mobile-light-320-viewport, desktop-dark-1440-viewport. Confirmed normal 320px readable, 200% mobile text offscreen, 404 no recovery. Initial skip screenshot occurred during CSS 0.2s entrance; rerun waits animation completion, proves visible outline at y=0 and next Tab after activation reaches Get in touch. No skip-link finding on home.")'
+
+25 PNG files, 8.59 MiB
+Manual visual inspection via view_image: mobile-light-320-contact, 404-page, mobile-text200-375-contact, keyboard-skip-focus, mobile-text200-375-viewport, mobile-light-320-viewport, desktop-dark-1440-viewport. Confirmed normal 320px readable, 200% mobile text offscreen, 404 no recovery. Initial skip screenshot occurred during CSS 0.2s entrance; rerun waits animation completion, proves visible outline at y=0 and next Tab after activation reaches Get in touch. No skip-link finding on home.
+
+- 2026-10-03T01:28:12+00:00 [UX] END `screenshot-manual-review`: exit 0; elapsed 0.0s.

@@ -1,0 +1,57 @@
+Started: 2026-10-03T01:23:12+00:00
+Command: npm audit --package-lock-only --omit=dev --json --registry=https://registry.npmjs.org
+
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "next": {
+      "name": "next",
+      "severity": "critical",
+      "isDirect": true,
+      "via": [
+        {
+          "source": 1240609,
+          "name": "next",
+          "dependency": "next",
+          "title": "Next.js: Remote Code Execution in next/og ImageResponse",
+          "url": "https://github.com/advisories/GHSA-vcvr-r3jv-pc5j",
+          "severity": "critical",
+          "cwe": [
+            "CWE-1395"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=16.2.0 <16.3.6"
+        }
+      ],
+      "effects": [],
+      "range": "",
+      "nodes": [
+        "node_modules/next"
+      ],
+      "fixAvailable": false
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 1,
+      "total": 1
+    },
+    "dependencies": {
+      "prod": 20,
+      "dev": 704,
+      "optional": 63,
+      "peer": 9,
+      "peerOptional": 0,
+      "total": 761
+    }
+  }
+}
+
+- 2026-10-03T01:23:12+00:00 [BE] END `audit-production`: exit 1; elapsed 0.4s.

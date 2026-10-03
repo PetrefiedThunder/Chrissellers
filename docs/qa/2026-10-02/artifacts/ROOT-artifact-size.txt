@@ -1,0 +1,8 @@
+Started: 2026-10-03T01:29:08+00:00
+Command: python3 -c 'from pathlib import Path; q=Path("docs/qa/2026-10-02"); files=[p for p in q.rglob("*") if p.is_file()]; print("files",len(files),"bytes",sum(p.stat().st_size for p in files)); print("screenshots",len(list(q.rglob("*.png")))); print("ts tests", [str(p) for p in Path("__tests__").glob("*.qa.test.tsx")])'
+
+files 199 bytes 10425301
+screenshots 29
+ts tests ['__tests__/components.qa.test.tsx', '__tests__/metadata.qa.test.tsx']
+
+- 2026-10-03T01:29:08+00:00 [ROOT] END `artifact-size`: exit 0; elapsed 0.0s.

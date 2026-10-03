@@ -1,0 +1,15 @@
+Started: 2026-10-03T01:22:44+00:00
+Command: rg --files /Users/sellers/.codex/skills/security-best-practices/references
+
+/Users/sellers/.codex/skills/security-best-practices/references/javascript-typescript-react-web-frontend-security.md
+/Users/sellers/.codex/skills/security-best-practices/references/javascript-general-web-frontend-security.md
+/Users/sellers/.codex/skills/security-best-practices/references/javascript-typescript-nextjs-web-server-security.md
+/Users/sellers/.codex/skills/security-best-practices/references/javascript-jquery-web-frontend-security.md
+/Users/sellers/.codex/skills/security-best-practices/references/python-django-web-server-security.md
+/Users/sellers/.codex/skills/security-best-practices/references/javascript-express-web-server-security.md
+/Users/sellers/.codex/skills/security-best-practices/references/python-fastapi-web-server-security.md
+/Users/sellers/.codex/skills/security-best-practices/references/golang-general-backend-security.md
+/Users/sellers/.codex/skills/security-best-practices/references/python-flask-web-server-security.md
+/Users/sellers/.codex/skills/security-best-practices/references/javascript-typescript-vue-web-frontend-security.md
+
+- 2026-10-03T01:22:44+00:00 [BE] END `security-reference-list`: exit 0; elapsed 0.0s.

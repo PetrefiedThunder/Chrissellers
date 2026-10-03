@@ -1,0 +1,19 @@
+Started: 2026-10-03T01:33:27+00:00
+Command: python3 -c 'import subprocess; 
+for port in [3017,3977]:
+ print("Port",port); print(subprocess.check_output(["lsof","-a","-iTCP:"+str(port),"-sTCP:LISTEN","-Fpcn"],text=True))'
+
+Port 3017
+p53015
+cnode
+f12
+nlocalhost:event_listener
+
+Port 3977
+p50508
+cPython
+f3
+nlocalhost:opswmanager
+
+
+- 2026-10-03T01:33:27+00:00 [ROOT] END `local-listener-identities`: exit 0; elapsed 0.2s.

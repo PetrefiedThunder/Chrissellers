@@ -1,0 +1,114 @@
+Started: 2026-10-03T01:23:33+00:00
+Command: env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build
+
+
+> chrissellers@2.0.0 build
+> next build
+
+▲ Next.js 16.3.3 (Turbopack)
+✓ Running next.config.js took 6ms
+⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+- Experiments (use with caution):
+  · optimizePackageImports
+
+  Creating an optimized production build ...
+
+thread 'tokio-rt-worker' (183467) panicked at crates/next-core/src/next_font/google/mod.rs:772:13:
+Unexpected error evaluating JS
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'tokio-rt-worker' (183466) panicked at crates/next-core/src/next_font/google/mod.rs:772:13:
+Unexpected error evaluating JS
+
+> Build error occurred
+Error: Turbopack build failed with 3 errors:
+[mock]/loader.js
+Error: Error evaluating Node.js code
+TypeError: Invalid URL
+    [at new URL (node:internal/url:862:25)]
+    at Object.get (turbopack:///[mock]/font-responses.cjs:10:20) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[root-of-the-server]__20agqcb._.js:18:24]
+    at __esModule (turbopack:///[turbopack]/shared/runtime/runtime-utils.ts:481:25) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[turbopack]_runtime.js:344:79]
+    at module evaluation (turbopack:///[mock]/loader.js:1:1) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[root-of-the-server]__20agqcb._.js:43:140]
+    at moduleFactory (turbopack:///[turbopack]/nodejs/runtime/build-base.ts:56:5) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[turbopack]_runtime.js:876:9]
+    at instantiateModule (turbopack:///[turbopack]/nodejs/runtime/build-base.ts:89:10) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[turbopack]_runtime.js:900:12]
+    at getOrInstantiateModuleFromParent (turbopack:///[turbopack]/shared/runtime/runtime-utils.ts:471:18) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[turbopack]_runtime.js:339:20]
+    [at /Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[mock]_loader_0r1vlnr.js:8:16]
+    [at process.processTicksAndRejections (node:internal/process/task_queues:104:5)]
+    at async run (turbopack:///[turbopack-node]/child_process/evaluate.ts:72:20) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[root-of-the-server]__1pjuw-_._.js:57:24]
+
+
+[next]/internal/font/google/inter_c15e96cb.js:1:1
+Error: Module not found: Can't resolve '@vercel/turbopack-next/internal/font/google/cssmodule.module.css'
+[31m[1m>[0m [90m1 |[0m ...[32m22:%22layout.tsx%22,%22import%22:%22Inter%22,%22arguments%22:[{%22subsets%22:[%22latin%2...[0m
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m ...
+  [90m3 |[0m ...
+  [90m4 |[0m ...
+
+Unexpected error evaluating JS
+
+Debug info:
+- Execution of <ModuleAssetContext as AssetContext>::resolve_asset failed
+- Execution of resolve failed
+- Execution of resolve_internal failed
+- Execution of NextFontGoogleCssModuleReplacer::import_map_result failed
+- Unexpected error evaluating JS
+Error while looking up import map: Unexpected error evaluating JS
+
+Debug info:
+- Execution of NextFontGoogleCssModuleReplacer::import_map_result failed
+- Unexpected error evaluating JS
+
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/inter_c15e96cb.js
+    ./app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[next]/internal/font/google/space_grotesk_e6988195.js:1:1
+Error: Module not found: Can't resolve '@vercel/turbopack-next/internal/font/google/cssmodule.module.css'
+[31m[1m>[0m [90m1 |[0m ...[32mt.tsx%22,%22import%22:%22Space_Grotesk%22,%22arguments%22:[{%22subsets%22:[%22latin%22],...[0m
+  [90m  |[0m    [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m ...
+  [90m3 |[0m ...
+  [90m4 |[0m ...
+
+Unexpected error evaluating JS
+
+Debug info:
+- Execution of <ModuleAssetContext as AssetContext>::resolve_asset failed
+- Execution of resolve failed
+- Execution of resolve_internal failed
+- Execution of NextFontGoogleCssModuleReplacer::import_map_result failed
+- Unexpected error evaluating JS
+Error while looking up import map: Unexpected error evaluating JS
+
+Debug info:
+- Execution of NextFontGoogleCssModuleReplacer::import_map_result failed
+- Unexpected error evaluating JS
+
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/space_grotesk_e6988195.js
+    ./app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at Object.get (turbopack:///[mock]/font-responses.cjs:10:20) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[root-of-the-server]__20agqcb._.js:18:24])
+    at __esModule (turbopack:///[turbopack]/shared/runtime/runtime-utils.ts:481:25) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[turbopack]_runtime.js:344:79])
+    at module evaluation (turbopack:///[mock]/loader.js:1:1) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[root-of-the-server]__20agqcb._.js:43:140])
+    at moduleFactory (turbopack:///[turbopack]/nodejs/runtime/build-base.ts:56:5) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[turbopack]_runtime.js:876:9])
+    at instantiateModule (turbopack:///[turbopack]/nodejs/runtime/build-base.ts:89:10) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[turbopack]_runtime.js:900:12])
+    at getOrInstantiateModuleFromParent (turbopack:///[turbopack]/shared/runtime/runtime-utils.ts:471:18) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[turbopack]_runtime.js:339:20])
+    at async run (turbopack:///[turbopack-node]/child_process/evaluate.ts:72:20) [/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/.next/build/chunks/[root-of-the-server]__1pjuw-_._.js:57:24])
+    at <unknown> ([next]/internal/font/google/inter_c15e96cb.js:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> ([next]/internal/font/google/space_grotesk_e6988195.js:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+
+- 2026-10-03T01:23:35+00:00 [ROOT] END `build`: exit 1; elapsed 1.9s.

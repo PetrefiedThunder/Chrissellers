@@ -1,0 +1,37 @@
+Started: 2026-10-03T01:28:22+00:00
+Command: python3 -c 'from pathlib import Path; import subprocess,json; source=Path("docs/qa/2026-10-02/browser/frontend.mjs").read_text(); old="assert.equal(smokeResponse.status(), 200)"; assert source.count(old)==1; source=source.replace(old,"assert.equal(smokeResponse.status(), 201, \"GATE-001 deliberately injected Firefox smoke failure\")"); source=source.replace("artifacts/frontend\x27", "artifacts/frontend-gate-negative\x27"); source="\n".join(line for line in source.splitlines() if ".screenshot(" not in line); temporary=Path("/private/tmp/chrissellers-frontend-gate-negative.mjs"); temporary.write_text(source); result=subprocess.run(["node",str(temporary),"/private/tmp/chrissellers-qa-20261002-tools","http://127.0.0.1:3017"]); report=json.loads(Path("docs/qa/2026-10-02/artifacts/frontend-gate-negative/runtime-report.json").read_text()); assert result.returncode==1,result.returncode; assert report["outcome"]=="fail"; assert "GATE-001 deliberately injected" in report["error"]; print("EXPECTED FAILURE VERIFIED: a post-connect Firefox assertion produces outcome=fail and process exit=1; no product defect.")'
+
+{
+  "outcome": "fail",
+  "engines": [
+    {
+      "requested": "chromium",
+      "actual": "chromium",
+      "version": "153.0.8010.12",
+      "outcome": "connected"
+    }
+  ],
+  "journeys": [
+    {
+      "name": "arrival-work-career-contact-home",
+      "outcome": "pass"
+    },
+    {
+      "name": "javascript-disabled",
+      "outcome": "pass"
+    },
+    {
+      "name": "unknown-route",
+      "outcome": "pass"
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: GATE-001 deliberately injected Firefox smoke failure\n\n200 !== 201\n\n    at file:///private/tmp/chrissellers-frontend-gate-negative.mjs:160:16",
+  "performance": {
+    "lcp": 564,
+    "cls": 0,
+    "longTaskMs": 17
+  }
+}
+EXPECTED FAILURE VERIFIED: a post-connect Firefox assertion produces outcome=fail and process exit=1; no product defect.
+
+- 2026-10-03T01:28:27+00:00 [FE] END `fe-browser-gate-negative-control`: exit 0; elapsed 4.5s.

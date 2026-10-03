@@ -1,0 +1,21 @@
+Started: 2026-10-03T01:24:32+00:00
+Command: env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build -- --webpack
+
+
+> chrissellers@2.0.0 build
+> next build --webpack
+
+▲ Next.js 16.3.3 (webpack)
+✓ Running next.config.js took 6ms
+- Experiments (use with caution):
+  · optimizePackageImports
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1719ms
+  Running TypeScript ...
+__tests__/metadata.qa.test.tsx(36,35): error TS2339: Property 'href' does not exist on type 'string | URL'.
+  Property 'href' does not exist on type 'string'.
+Failed to type check.
+
+
+- 2026-10-03T01:24:36+00:00 [ROOT] END `build-webpack`: exit 1; elapsed 3.8s.

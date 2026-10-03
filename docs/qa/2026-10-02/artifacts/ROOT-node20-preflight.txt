@@ -1,0 +1,8 @@
+Started: 2026-10-03T01:29:01+00:00
+Command: python3 -c 'from pathlib import Path; import platform; print("architecture",platform.machine()); print("localNode20",Path("/opt/homebrew/opt/node@20/bin/node").exists()); print("public node package binary",Path("/private/tmp/chrissellers-qa-node20/node_modules/node/bin/node").exists())'
+
+architecture arm64
+localNode20 False
+public node package binary True
+
+- 2026-10-03T01:29:01+00:00 [ROOT] END `node20-preflight`: exit 0; elapsed 0.0s.

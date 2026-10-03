@@ -1,0 +1,433 @@
+Started: 2026-10-03T01:27:05+00:00
+Command: python3 -c 'from pathlib import Path; files=["docs/qa/2026-10-02/browser/frontend.mjs","docs/qa/2026-10-02/browser/ux.mjs","docs/qa/2026-10-02/local-contracts.mjs","docs/qa/2026-10-02/font-responses.cjs"]; [print("\nFILE:",p,"\n",Path(p).read_text()) for p in files]'
+
+
+FILE: docs/qa/2026-10-02/browser/frontend.mjs 
+ import assert from 'node:assert/strict'
+import { createRequire } from 'node:module'
+import { mkdir, writeFile } from 'node:fs/promises'
+import path from 'node:path'
+
+// Usage: node frontend.mjs /private/tmp/qa-tools http://127.0.0.1:3000
+// Connect only: the orchestrator owns the already-running browser server.
+const [toolRoot, baseUrl] = process.argv.slice(2)
+assert(toolRoot && baseUrl, 'Supply isolated tools path and loopback base URL')
+assert(['localhost', '127.0.0.1', '[::1]'].includes(new URL(baseUrl).hostname))
+assert(process.env.PW_TEST_CONNECT_WS_ENDPOINT, 'Browser server endpoint required')
+const require = createRequire(path.join(toolRoot, 'package.json'))
+const engines = require('playwright')
+const output = path.resolve('docs/qa/2026-10-02/artifacts/frontend')
+await mkdir(output, { recursive: true })
+const report = { started: new Date().toISOString(), baseUrl, engines: [], journeys: [], checks: [], performance: {} }
+
+async function localContext(browser, options = {}) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, ...options })
+  const blocked = []
+  await context.route('**/*', async route => {
+    const url = new URL(route.request().url())
+    if (['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) && ['http:', 'https:'].includes(url.protocol)) {
+      await route.continue()
+    } else {
+      blocked.push(url.origin + url.pathname)
+      await route.abort('blockedbyclient')
+    }
+  })
+  return { context, blocked }
+}
+
+function observe(page) {
+  const errors = { console: [], page: [], network: [], failed: [] }
+  page.on('console', message => {
+    if (message.type() === 'error' || message.type() === 'warning') errors.console.push({ type: message.type(), text: message.text() })
+  })
+  page.on('pageerror', error => errors.page.push(error.message))
+  page.on('response', response => {
+    if (response.status() >= 400) errors.network.push({ url: response.url(), status: response.status() })
+  })
+  page.on('requestfailed', request => errors.failed.push({ url: request.url(), error: request.failure()?.errorText }))
+  return errors
+}
+
+async function navigateSections(page) {
+  const visited = []
+  for (const [name, target, heading] of [
+    ['Work', 'work', 'Selected work'],
+    ['Career', 'career', 'Career'],
+    ['Contact', 'contact', 'Get in touch'],
+  ]) {
+    await page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name, exact: true }).click()
+    assert.equal(new URL(page.url()).hash, '#' + target)
+    const section = page.locator('#' + target)
+    assert(await section.getByRole('heading', { name: heading, exact: true }).isVisible())
+    const box = await section.getByRole('heading', { name: heading, exact: true }).boundingBox()
+    assert(box && box.y >= 0 && box.y < 1000, `${target} heading is in the viewport`)
+    visited.push({ target, heading, y: box.y })
+  }
+  return visited
+}
+
+let browser
+try {
+  browser = await engines.chromium.connect(process.env.PW_TEST_CONNECT_WS_ENDPOINT, { timeout: 15000 })
+  report.engines.push({ requested: 'chromium', actual: browser.browserType().name(), version: browser.version(), outcome: 'connected' })
+  const { context, blocked } = await localContext(browser)
+  const page = await context.newPage()
+  const errors = observe(page)
+  const response = await page.goto(baseUrl, { waitUntil: 'networkidle' })
+  assert.equal(response.status(), 200)
+  assert.equal(await page.locator('h1').count(), 1)
+  assert.match(await page.title(), /Christopher Sellers/)
+  assert.equal(await page.getByRole('main').count(), 1)
+  assert.equal(await page.locator('#work article').count(), 6)
+  assert.equal(await page.locator('#career ol > li').count(), 6)
+  await page.screenshot({ path: path.join(output, 'desktop-home.png'), fullPage: false })
+  await page.getByRole('link', { name: 'See the work', exact: true }).click()
+  assert.equal(new URL(page.url()).hash, '#work')
+  const visited = await navigateSections(page)
+  const emailLinks = await page.locator('a[href^="mailto:"]').evaluateAll(links => links.map(link => ({ label: link.textContent.trim(), href: link.getAttribute('href') })))
+  assert.equal(emailLinks.length, 2)
+  for (const link of emailLinks) assert.match(link.href, /^mailto:[^@\s]+@[^@\s]+\.[^@\s]+$/)
+  const externalLinks = await page.locator('a[target="_blank"]').evaluateAll(links => links.map(link => ({ label: link.textContent.trim() || link.getAttribute('aria-label'), href: link.href, rel: link.rel })))
+  for (const link of externalLinks) {
+    assert.equal(new URL(link.href).protocol, 'https:')
+    assert.match(link.rel, /noopener/)
+    assert.match(link.rel, /noreferrer/)
+  }
+  await page.screenshot({ path: path.join(output, 'desktop-contact.png'), fullPage: false })
+  await page.getByRole('navigation').getByRole('link', { name: 'Christopher Sellers', exact: true }).click()
+  assert.equal(new URL(page.url()).hash, '#main')
+  assert.deepEqual(errors, { console: [], page: [], network: [], failed: [] })
+  assert.equal(blocked.length, 0)
+  report.journeys.push({ name: 'arrival-work-career-contact-home', outcome: 'pass', visited, emailLinks, externalLinks, errors, blocked })
+  report.checks.push('200 root; unique H1/main; six work cards; six career entries; hash navigation; contact syntax; external HTTPS + noopener/noreferrer; zero browser errors')
+  await context.close()
+
+  const noJs = await localContext(browser, { javaScriptEnabled: false })
+  const noJsPage = await noJs.context.newPage()
+  const noJsResponse = await noJsPage.goto(baseUrl, { waitUntil: 'load' })
+  assert.equal(noJsResponse.status(), 200)
+  assert.equal(await noJsPage.locator('#work article').count(), 6)
+  assert.equal(await noJsPage.locator('#career ol > li').count(), 6)
+  const noJsVisited = await navigateSections(noJsPage)
+  assert.equal(await noJsPage.locator('a[href^="mailto:"]').count(), 2)
+  await noJsPage.screenshot({ path: path.join(output, 'no-js-contact.png') })
+  report.journeys.push({ name: 'javascript-disabled', outcome: 'pass', visited: noJsVisited, blocked: noJs.blocked })
+  await noJs.context.close()
+
+  const missing = await localContext(browser)
+  const missingPage = await missing.context.newPage()
+  const missingResponse = await missingPage.goto(baseUrl + '/qa-does-not-exist', { waitUntil: 'load' })
+  assert.equal(missingResponse.status(), 404)
+  assert(await missingPage.getByText('This page could not be found.').isVisible())
+  report.journeys.push({ name: 'unknown-route', outcome: 'pass', status: 404, limitation: 'UX pass assesses recovery and semantics' })
+  await missing.context.close()
+
+  const perf = await localContext(browser)
+  const perfPage = await perf.context.newPage()
+  const session = await perf.context.newCDPSession(perfPage)
+  await session.send('Network.enable')
+  await session.send('Network.setCacheDisabled', { cacheDisabled: true })
+  await session.send('Network.emulateNetworkConditions', { offline: false, latency: 150, downloadThroughput: 1_600_000 / 8, uploadThroughput: 750_000 / 8, connectionType: 'cellular4g' })
+  await session.send('Emulation.setCPUThrottlingRate', { rate: 4 })
+  await perfPage.addInitScript(() => {
+    window.__qa = { lcp: null, cls: 0, longTaskMs: 0 }
+    for (const [type, callback] of [
+      ['largest-contentful-paint', entries => { window.__qa.lcp = entries.at(-1)?.startTime ?? null }],
+      ['layout-shift', entries => { window.__qa.cls += entries.filter(entry => !entry.hadRecentInput).reduce((sum, entry) => sum + entry.value, 0) }],
+      ['longtask', entries => { window.__qa.longTaskMs += entries.reduce((sum, entry) => sum + Math.max(0, entry.duration - 50), 0) }],
+    ]) {
+      try { new PerformanceObserver(list => callback(list.getEntries())).observe({ type, buffered: true }) } catch { /* Browser support recorded by null LCP. */ }
+    }
+  })
+  await perfPage.goto(baseUrl, { waitUntil: 'networkidle' })
+  await perfPage.getByRole('link', { name: 'See the work', exact: true }).click()
+  report.performance = await perfPage.evaluate(() => ({
+    conditions: 'Single localhost Chromium sample, cold cache, 150ms simulated latency, 1.6Mbps download, 0.75Mbps upload, 4x CPU; not Lighthouse or field CWV',
+    navigation: performance.getEntriesByType('navigation').map(entry => entry.toJSON()),
+    paint: performance.getEntriesByType('paint').map(entry => entry.toJSON()),
+    webVitalsApproximation: window.__qa,
+    resources: performance.getEntriesByType('resource').map(entry => ({ name: entry.name, type: entry.initiatorType, duration: entry.duration, transferSize: entry.transferSize, encodedBodySize: entry.encodedBodySize })),
+  }))
+  await perf.context.close()
+  await browser.close()
+  browser = undefined
+
+  for (const name of ['firefox', 'webkit']) {
+    let alternate
+    try {
+      alternate = await engines[name].connect(process.env.PW_TEST_CONNECT_WS_ENDPOINT, { timeout: 10000 })
+      const actual = alternate.browserType().name()
+      if (actual !== name) {
+        report.engines.push({ requested: name, actual, outcome: 'unavailable', reason: 'The supplied endpoint serves another engine; no cross-browser claim' })
+      } else {
+        const smoke = await localContext(alternate)
+        const smokePage = await smoke.context.newPage()
+        const smokeResponse = await smokePage.goto(baseUrl, { waitUntil: 'load' })
+        assert.equal(smokeResponse.status(), 200)
+        assert.equal(await smokePage.locator('h1').count(), 1)
+        await navigateSections(smokePage)
+        report.engines.push({ requested: name, actual, version: alternate.version(), outcome: 'pass' })
+        await smoke.context.close()
+      }
+    } catch (error) {
+      report.engines.push({ requested: name, outcome: 'unavailable', reason: error.message })
+    } finally {
+      if (alternate) await alternate.close()
+    }
+  }
+  report.outcome = 'pass'
+} catch (error) {
+  report.outcome = 'fail'
+  report.error = error.stack
+  process.exitCode = 1
+} finally {
+  if (browser) await browser.close()
+  report.finished = new Date().toISOString()
+  await writeFile(path.join(output, 'runtime-report.json'), JSON.stringify(report, null, 2) + '\n')
+  console.log(JSON.stringify({ outcome: report.outcome, engines: report.engines, journeys: report.journeys.map(({ name, outcome }) => ({ name, outcome })), error: report.error, performance: report.performance.webVitalsApproximation }, null, 2))
+}
+
+
+FILE: docs/qa/2026-10-02/browser/ux.mjs 
+ /** Local-only UX evidence. Usage: node ux.mjs /path/to/qa-tools http://127.0.0.1:PORT */
+import { createRequire } from 'node:module';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import assert from 'node:assert/strict';
+
+const require = createRequire(resolve(process.argv[2], 'package.json'));
+const { chromium } = require('playwright');
+const axePath = require.resolve('axe-core/axe.min.js');
+const base = process.argv[3];
+assert.ok(['localhost', '127.0.0.1'].includes(new URL(base).hostname), 'Only local server allowed');
+assert.ok(process.env.PW_TEST_CONNECT_WS_ENDPOINT, 'Remote browser endpoint required');
+const directory = resolve('docs/qa/2026-10-02/artifacts/ux');
+await mkdir(directory, { recursive: true });
+const browser = await chromium.connect(process.env.PW_TEST_CONNECT_WS_ENDPOINT);
+const report = { startedAt: new Date().toISOString(), browser: browser.version(), scenarios: [], keyboard: {}, errorPage: {}, blockedRequests: [] };
+
+async function context(options = {}) {
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 }, ...options });
+  await ctx.route('**/*', async route => {
+    const url = new URL(route.request().url());
+    if (!['127.0.0.1', 'localhost'].includes(url.hostname)) {
+      report.blockedRequests.push(`${url.protocol}//${url.host}${url.pathname}`);
+      return route.abort('blockedbyclient');
+    }
+    return route.continue();
+  });
+  return ctx;
+}
+
+async function geometry(page) {
+  return page.evaluate(() => {
+    const box = el => {
+      const rect = el.getBoundingClientRect();
+      return { x: rect.x, y: rect.y, width: rect.width, height: rect.height, right: rect.right, bottom: rect.bottom };
+    };
+    return {
+      viewport: { width: innerWidth, height: innerHeight },
+      documentWidth: document.documentElement.scrollWidth,
+      bodyWidth: document.body.scrollWidth,
+      rootFontSize: getComputedStyle(document.documentElement).fontSize,
+      font: getComputedStyle(document.querySelector('h1')).fontFamily,
+      overflowing: [...document.querySelectorAll('body *')].filter(el => {
+        const r = el.getBoundingClientRect();
+        return r.width > 0 && (r.right > innerWidth + 1 || r.left < -1);
+      }).map(el => ({ tag: el.tagName, text: el.textContent.trim().slice(0, 100), box: box(el) })).slice(0, 40),
+      nav: [...document.querySelectorAll('nav a')].map(el => ({ text: el.textContent.trim(), box: box(el) })),
+      email: [...document.querySelectorAll('footer a[href^="mailto:"]')].map(el => ({ text: el.textContent.trim(), box: box(el) })),
+      headings: [...document.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(el => ({ level: el.tagName, text: el.textContent.trim() })),
+      landmarks: [...document.querySelectorAll('header,nav,main,footer')].map(el => ({ tag: el.tagName, label: el.getAttribute('aria-label'), id: el.id })),
+      focusStyles: getComputedStyle(document.querySelector('a')).outline,
+    };
+  });
+}
+
+async function axe(page) {
+  await page.addScriptTag({ path: axePath });
+  const result = await page.evaluate(async () => window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'] } }));
+  return { tool: result.testEngine, passes: result.passes.length, incomplete: result.incomplete.map(rule => ({ id: rule.id, impact: rule.impact, nodes: rule.nodes.map(node => ({ target: node.target, summary: node.failureSummary })) })), violations: result.violations.map(rule => ({ id: rule.id, impact: rule.impact, description: rule.description, help: rule.help, tags: rule.tags, nodes: rule.nodes.map(node => ({ target: node.target, summary: node.failureSummary })) })) };
+}
+
+try {
+  for (const spec of [
+    { name: 'desktop-light-1440', width: 1440, colorScheme: 'light' },
+    { name: 'desktop-dark-1440', width: 1440, colorScheme: 'dark' },
+    { name: 'tablet-light-768', width: 768, colorScheme: 'light' },
+    { name: 'mobile-light-375', width: 375, colorScheme: 'light' },
+    { name: 'mobile-light-320', width: 320, colorScheme: 'light' },
+    { name: 'mobile-dark-320', width: 320, colorScheme: 'dark' },
+    { name: 'desktop-text200-1280', width: 1280, colorScheme: 'light', text200: true },
+    { name: 'mobile-text200-375', width: 375, colorScheme: 'light', text200: true },
+    { name: 'reduced-motion-375', width: 375, colorScheme: 'light', reducedMotion: 'reduce' },
+  ]) {
+    const ctx = await context({ viewport: { width: spec.width, height: 900 }, colorScheme: spec.colorScheme, reducedMotion: spec.reducedMotion ?? 'no-preference' });
+    const page = await ctx.newPage();
+    const response = await page.goto(base, { waitUntil: 'networkidle' });
+    assert.equal(response.status(), 200);
+    await page.locator('h1').waitFor();
+    await page.evaluate(() => document.fonts.ready);
+    if (spec.text200) await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+    const data = { ...spec, geometry: await geometry(page), axe: await axe(page) };
+    await page.screenshot({ path: `${directory}/${spec.name}.png`, fullPage: true });
+    if (spec.width <= 375) {
+      await page.locator('footer').scrollIntoViewIfNeeded();
+      await page.screenshot({ path: `${directory}/${spec.name}-contact.png` });
+    }
+    report.scenarios.push(data);
+    await ctx.close();
+    console.log(`${spec.name}: document ${data.geometry.documentWidth}px / viewport ${spec.width}px; axe ${data.axe.violations.length} violations, ${data.axe.incomplete.length} incomplete`);
+  }
+
+  const ctx = await context();
+  const page = await ctx.newPage();
+  await page.goto(base, { waitUntil: 'networkidle' });
+  const keyboardSteps = [];
+  for (let i = 0; i < 13; i++) {
+    await page.keyboard.press('Tab');
+    keyboardSteps.push(await page.evaluate(() => {
+      const el = document.activeElement;
+      const r = el.getBoundingClientRect();
+      const style = getComputedStyle(el);
+      return { tag: el.tagName, text: el.textContent.trim(), label: el.getAttribute('aria-label'), href: el.getAttribute('href'), outline: style.outline, offset: style.outlineOffset, box: { x: r.x, y: r.y, width: r.width, height: r.height }, visibleInViewport: r.top >= 0 && r.bottom <= innerHeight && r.left >= 0 && r.right <= innerWidth };
+    }));
+    if (i === 0) {
+      await page.screenshot({ path: `${directory}/keyboard-skip-focus.png` });
+      await page.keyboard.press('Enter');
+      report.keyboard.skipDestination = await page.evaluate(() => ({ hash: location.hash, activeTag: document.activeElement.tagName, activeId: document.activeElement.id }));
+      await page.goto(base, { waitUntil: 'networkidle' });
+      await page.keyboard.press('Tab');
+    }
+  }
+  report.keyboard.steps = keyboardSteps;
+  report.keyboard.accessibilitySnapshot = await page.locator('body').ariaSnapshot();
+  const error = await page.goto(`${base}/qa-missing-page`, { waitUntil: 'networkidle' });
+  report.errorPage.status = error.status();
+  report.errorPage.axe = await axe(page);
+  report.errorPage.snapshot = await page.locator('body').ariaSnapshot();
+  report.errorPage.links = await page.locator('a').evaluateAll(elements => elements.map(el => ({ text: el.textContent, href: el.getAttribute('href'), targetExists: el.hash ? !!document.getElementById(el.hash.slice(1)) : null })));
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Enter');
+  report.errorPage.afterSkip = await page.evaluate(() => ({ hash: location.hash, mainCount: document.querySelectorAll('main').length, activeTag: document.activeElement.tagName, activeText: document.activeElement.textContent.trim() }));
+  await page.screenshot({ path: `${directory}/404-page.png` });
+  await ctx.close();
+} finally {
+  report.finishedAt = new Date().toISOString();
+  await writeFile(`${directory}/ux-report.json`, JSON.stringify(report, null, 2));
+  await browser.close();
+}
+
+
+FILE: docs/qa/2026-10-02/local-contracts.mjs 
+ // Run from the repository root after a production localhost server is ready.
+import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
+import { writeFile } from 'node:fs/promises'
+
+const base = new URL(process.argv[2] || 'http://127.0.0.1:3100')
+assert.equal(base.hostname, '127.0.0.1', 'QA requests must remain on loopback')
+assert.equal(base.protocol, 'http:')
+assert.equal(base.username + base.password, '')
+const artifactDir = new URL('./artifacts/', import.meta.url)
+const results = { startedAt: new Date().toISOString(), base: base.origin, checks: [] }
+
+async function request(path, method = 'GET') {
+  const url = new URL(path, base)
+  assert.equal(url.origin, base.origin)
+  const response = await fetch(url, { method, redirect: 'manual', signal: AbortSignal.timeout(15000) })
+  const bytes = Buffer.from(await response.arrayBuffer())
+  results.checks.push({
+    method, path: url.pathname + url.search, status: response.status,
+    contentType: response.headers.get('content-type'), bytes: bytes.length,
+    cacheControl: response.headers.get('cache-control'),
+  })
+  return { response, bytes, text: bytes.toString('utf8') }
+}
+
+try {
+  const home = await request('/')
+  assert.equal(home.response.status, 200)
+  assert.match(home.response.headers.get('content-type'), /text\/html/)
+  assert.match(home.text, /<html[^>]+lang="en"/)
+  assert.match(home.text, /<title>Christopher Sellers/)
+  assert.match(home.text, /<main id="main"/)
+  assert.equal(home.response.headers.get('set-cookie'), null)
+  const metadata = Object.fromEntries(
+    [...home.text.matchAll(/<meta\s+(?:name|property)="([^"]+)"\s+content="([^"]*)"\s*\/?\s*>/g)]
+      .map((match) => [match[1], match[2].replaceAll('&amp;', '&')]),
+  )
+  assert.ok(metadata.description?.length > 50)
+  assert.equal(metadata['og:type'], 'website')
+  assert.equal(metadata['twitter:card'], 'summary_large_image')
+  assert.equal(metadata['og:description'], metadata.description)
+  assert.equal(metadata['twitter:description'], metadata.description)
+  assert.equal(metadata['og:image:width'], '1200')
+  assert.equal(metadata['og:image:height'], '630')
+  assert.ok(metadata['og:image:alt']?.includes('Christopher Sellers'))
+  // Metadata contains the public URL. Fetch only its path at our local origin.
+  const imageUrl = new URL(metadata['og:image'])
+  const imagePath = imageUrl.pathname + imageUrl.search
+  const png = await request(imagePath)
+  assert.equal(png.response.status, 200)
+  assert.equal(png.response.headers.get('content-type'), 'image/png')
+  assert.equal(png.bytes.subarray(0, 8).toString('hex'), '89504e470d0a1a0a')
+  assert.equal(png.bytes.readUInt32BE(16), 1200)
+  assert.equal(png.bytes.readUInt32BE(20), 630)
+  await writeFile(new URL('BE-opengraph.png', artifactDir), png.bytes)
+  results.metadata = metadata
+  results.image = { width: 1200, height: 630, sha256: createHash('sha256').update(png.bytes).digest('hex') }
+  const imageHead = await request(imagePath, 'HEAD')
+  assert.equal(imageHead.response.status, 200)
+  assert.equal(imageHead.bytes.length, 0)
+  const imagePost = await request(imagePath, 'POST')
+  assert.equal(imagePost.response.status, 405)
+  const head = await request('/', 'HEAD')
+  assert.equal(head.response.status, 200)
+  assert.equal(head.bytes.length, 0)
+  const query = await request('/?qa_boundary=%3Cqa-marker%3E')
+  assert.equal(query.response.status, 200)
+  assert.ok(!query.text.includes('<qa-marker>'))
+  for (const path of ['/qa-does-not-exist', '/api/qa-does-not-exist', '/%ZZ']) {
+    const missing = await request(path)
+    assert.ok([400, 404].includes(missing.response.status))
+    assert.ok(!/Error:.*\n\s+at |node_modules\//.test(missing.text))
+    if (missing.response.status === 404) assert.match(missing.text, /name="robots" content="noindex"/)
+  }
+  // Five harmless parallel reads verify cached image consistency, not load capacity.
+  const repeated = await Promise.all(Array.from({ length: 5 }, () => request(imagePath)))
+  assert.ok(repeated.every(({ response, bytes }) => response.status === 200 && bytes.equals(png.bytes)))
+  results.outcome = 'PASS'
+} catch (error) {
+  results.outcome = 'FAIL'
+  results.error = error.message
+  process.exitCode = 1
+} finally {
+  results.finishedAt = new Date().toISOString()
+  await writeFile(new URL('BE-local-contracts.json', artifactDir), JSON.stringify(results, null, 2) + '\n')
+  console.log(JSON.stringify(results, null, 2))
+}
+
+
+FILE: docs/qa/2026-10-02/font-responses.cjs 
+ // QA-only offline replacement for next/font Google CSS responses.
+// Real font binaries come from public npm packages installed outside the repo.
+// This does not validate the live Google Fonts service or its exact font version.
+const path = require('node:path')
+const modules = process.env.QA_TOOLS_NODE_MODULES || '/private/tmp/chrissellers-qa-20261002-tools/node_modules'
+
+module.exports = Object.fromEntries([
+  ['Inter', 'inter', '100..900'],
+  ['Space Grotesk', 'space-grotesk', '300..700'],
+].map(([family, name, range]) => {
+  const relative = `@fontsource-variable/${name}/files/${name}-latin-wght-normal.woff2`
+  const file = process.env.QA_FONT_ORIGIN
+    ? `${process.env.QA_FONT_ORIGIN}/${relative}`
+    : path.join(modules, relative)
+  const url = `https://fonts.googleapis.com/css2?family=${family.replaceAll(' ', '+')}:wght@${range}&display=swap`
+  const css = `/* latin */\n@font-face { font-family: '${family}'; font-style: normal; font-weight: ${range.replace('..', ' ')}; font-display: swap; src: url(${file}) format('woff2'); }`
+  return [url, css]
+}))
+
+
+- 2026-10-03T01:27:05+00:00 [ROOT] END `gate-browser-scripts`: exit 0; elapsed 0.0s.

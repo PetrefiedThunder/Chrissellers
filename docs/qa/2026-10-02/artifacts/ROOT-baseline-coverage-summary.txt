@@ -1,0 +1,7 @@
+Started: 2026-10-03T01:25:22+00:00
+Command: python3 -c 'import json; from pathlib import Path; p=Path("docs/qa/2026-10-02/artifacts/coverage-before/coverage-summary.json"); d=json.loads(p.read_text()); print("app+src", d["total"]); src=[v for k,v in d.items() if "/src/" in k]; print("legacy src only",{m:{"covered":sum(v[m]["covered"] for v in src),"total":sum(v[m]["total"] for v in src)} for m in ("statements","branches","functions","lines")})'
+
+app+src {'lines': {'total': 46, 'covered': 4, 'skipped': 0, 'pct': 8.69}, 'statements': {'total': 54, 'covered': 8, 'skipped': 0, 'pct': 14.81}, 'functions': {'total': 18, 'covered': 0, 'skipped': 0, 'pct': 0}, 'branches': {'total': 5, 'covered': 0, 'skipped': 0, 'pct': 0}, 'branchesTrue': {'total': 0, 'covered': 0, 'skipped': 0, 'pct': 100}}
+legacy src only {'statements': {'covered': 8, 'total': 30}, 'branches': {'covered': 0, 'total': 5}, 'functions': {'covered': 0, 'total': 15}, 'lines': {'covered': 4, 'total': 26}}
+
+- 2026-10-03T01:25:22+00:00 [ROOT] END `baseline-coverage-summary`: exit 0; elapsed 0.0s.
