@@ -1,0 +1,6 @@
+Started: 2026-10-03T01:27:38+00:00
+Command: python3 -c 'from pathlib import Path; p=Path("docs/qa/2026-10-02/BE-FINDINGS.md"); s=p.read_text().replace("40 High development dependency nodes", "40 High development package entries (55 installed node paths)").replace("npm labels affected dependency nodes High", "npm labels affected package entries High").replace("URL equivalence classes were exercised against real static content with the platform URL parser", "Current content URLs were checked with the platform URL parser"); p.write_text(s); print("Independent review corrections: distinguish40advisory package entries from55paths; accurately describe valid-current-URL checks without claiming invalid-input equivalence classes. No blocking test/runner issue found.")'
+
+Independent review corrections: distinguish40advisory package entries from55paths; accurately describe valid-current-URL checks without claiming invalid-input equivalence classes. No blocking test/runner issue found.
+
+- 2026-10-03T01:27:38+00:00 [BE] END `review-corrections`: exit 0; elapsed 0.0s.

@@ -1,0 +1,265 @@
+{
+  "started": "2026-10-03T01:28:07.517Z",
+  "baseUrl": "http://127.0.0.1:3017",
+  "engines": [
+    {
+      "requested": "chromium",
+      "actual": "chromium",
+      "version": "153.0.8010.12",
+      "outcome": "connected"
+    },
+    {
+      "requested": "firefox",
+      "actual": "firefox",
+      "version": "155.0",
+      "outcome": "pass"
+    },
+    {
+      "requested": "webkit",
+      "actual": "webkit",
+      "version": "26.6",
+      "outcome": "pass"
+    }
+  ],
+  "journeys": [
+    {
+      "name": "arrival-work-career-contact-home",
+      "outcome": "pass",
+      "visited": [
+        {
+          "target": "work",
+          "heading": "Selected work",
+          "y": 96.078125
+        },
+        {
+          "target": "career",
+          "heading": "Career",
+          "y": 96.390625
+        },
+        {
+          "target": "contact",
+          "heading": "Get in touch",
+          "y": 610.203125
+        }
+      ],
+      "emailLinks": [
+        {
+          "label": "Get in touch",
+          "href": "mailto:1@christophersellers.com"
+        },
+        {
+          "label": "1@christophersellers.com",
+          "href": "mailto:1@christophersellers.com"
+        }
+      ],
+      "externalLinks": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/PetrefiedThunder",
+          "rel": "noopener noreferrer"
+        },
+        {
+          "label": "regengine.co/proof",
+          "href": "https://regengine.co/proof",
+          "rel": "noopener noreferrer"
+        },
+        {
+          "label": "thisisatest.tech",
+          "href": "https://www.thisisatest.tech/",
+          "rel": "noopener noreferrer"
+        },
+        {
+          "label": "support-carr-client.vercel.app",
+          "href": "https://support-carr-client.vercel.app/",
+          "rel": "noopener noreferrer"
+        },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/PetrefiedThunder",
+          "rel": "noopener noreferrer"
+        }
+      ],
+      "errors": {
+        "console": [],
+        "page": [],
+        "network": [],
+        "failed": []
+      },
+      "blocked": []
+    },
+    {
+      "name": "javascript-disabled",
+      "outcome": "pass",
+      "visited": [
+        {
+          "target": "work",
+          "heading": "Selected work",
+          "y": 96.078125
+        },
+        {
+          "target": "career",
+          "heading": "Career",
+          "y": 96.390625
+        },
+        {
+          "target": "contact",
+          "heading": "Get in touch",
+          "y": 610.203125
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "unknown-route",
+      "outcome": "pass",
+      "status": 404,
+      "limitation": "UX pass assesses recovery and semantics"
+    }
+  ],
+  "checks": [
+    "200 root; unique H1/main; six work cards; six career entries; hash navigation; contact syntax; external HTTPS + noopener/noreferrer; zero browser errors"
+  ],
+  "performance": {
+    "conditions": "Single localhost Chromium sample, cold cache, 150ms simulated latency, 1.6Mbps download, 0.75Mbps upload, 4x CPU; not Lighthouse or field CWV",
+    "navigation": [
+      {
+        "name": "http://127.0.0.1:3017/",
+        "entryType": "navigation",
+        "startTime": 0,
+        "duration": 1499.6000000000931,
+        "navigationId": 6355,
+        "initiatorType": "navigation",
+        "deliveryType": "",
+        "nextHopProtocol": "http/1.1",
+        "renderBlockingStatus": "non-blocking",
+        "contentType": "text/html",
+        "contentEncoding": "gzip",
+        "workerStart": 0,
+        "workerRouterEvaluationStart": 0,
+        "workerCacheLookupStart": 0,
+        "workerMatchedSourceType": "",
+        "workerFinalSourceType": "",
+        "redirectStart": 0,
+        "redirectEnd": 0,
+        "fetchStart": 0.10000000009313226,
+        "domainLookupStart": 1.5,
+        "domainLookupEnd": 1.6000000000931323,
+        "connectStart": 1.6000000000931323,
+        "secureConnectionStart": 0,
+        "connectEnd": 1.8000000000465661,
+        "requestStart": 1.8000000000465661,
+        "responseStart": 3.3999999999068677,
+        "firstInterimResponseStart": 0,
+        "finalResponseHeadersStart": 3.3999999999068677,
+        "responseEnd": 212.80000000004657,
+        "transferSize": 11768,
+        "encodedBodySize": 11468,
+        "decodedBodySize": 67329,
+        "responseStatus": 200,
+        "serverTiming": [],
+        "unloadEventStart": 0,
+        "unloadEventEnd": 0,
+        "domInteractive": 434.69999999995343,
+        "domContentLoadedEventStart": 434.69999999995343,
+        "domContentLoadedEventEnd": 434.80000000004657,
+        "domComplete": 1499.6000000000931,
+        "loadEventStart": 1499.6000000000931,
+        "loadEventEnd": 1499.6000000000931,
+        "type": "navigate",
+        "redirectCount": 0,
+        "activationStart": 0,
+        "criticalCHRestart": 0,
+        "notRestoredReasons": null,
+        "confidence": {
+          "randomizedTriggerRate": 0.4994798,
+          "value": "high"
+        }
+      }
+    ],
+    "paint": [
+      {
+        "name": "first-paint",
+        "entryType": "paint",
+        "startTime": 568,
+        "duration": 0,
+        "navigationId": 6355,
+        "paintTime": 559.3000000000466,
+        "presentationTime": 568
+      },
+      {
+        "name": "first-contentful-paint",
+        "entryType": "paint",
+        "startTime": 568,
+        "duration": 0,
+        "navigationId": 6355,
+        "paintTime": 559.3000000000466,
+        "presentationTime": 568
+      }
+    ],
+    "webVitalsApproximation": {
+      "lcp": 568,
+      "cls": 0,
+      "longTaskMs": 20
+    },
+    "resources": [
+      {
+        "name": "http://127.0.0.1:3017/_next/static/media/a2f110f9bb19740d-s.p.092gko6h6levo.woff2",
+        "type": "link",
+        "duration": 715.5,
+        "transferSize": 22588,
+        "encodedBodySize": 22288
+      },
+      {
+        "name": "http://127.0.0.1:3017/_next/static/chunks/2i1n3hdcimm2n.css",
+        "type": "link",
+        "duration": 259.5,
+        "transferSize": 3859,
+        "encodedBodySize": 3559
+      },
+      {
+        "name": "http://127.0.0.1:3017/_next/static/media/d2dd2210371334b0-s.p.0gsaq8ukbf34m.woff2",
+        "type": "link",
+        "duration": 1106.1999999999534,
+        "transferSize": 48556,
+        "encodedBodySize": 48256
+      },
+      {
+        "name": "http://127.0.0.1:3017/_next/static/chunks/3l04zcqx63h3y.js",
+        "type": "link",
+        "duration": 340.5,
+        "transferSize": 6138,
+        "encodedBodySize": 5838
+      },
+      {
+        "name": "http://127.0.0.1:3017/_next/static/chunks/0cegfsgm6lvdz.js",
+        "type": "script",
+        "duration": 1119.5999999998603,
+        "transferSize": 48642,
+        "encodedBodySize": 48342
+      },
+      {
+        "name": "http://127.0.0.1:3017/_next/static/chunks/3byuobrkyz9bj.js",
+        "type": "script",
+        "duration": 1247.0999999998603,
+        "transferSize": 71941,
+        "encodedBodySize": 71641
+      },
+      {
+        "name": "http://127.0.0.1:3017/_next/static/chunks/turbopack-1wwko4kps8k6m.js",
+        "type": "script",
+        "duration": 565,
+        "transferSize": 4594,
+        "encodedBodySize": 4294
+      },
+      {
+        "name": "http://127.0.0.1:3017/_next/static/chunks/3fntmmi971322.js",
+        "type": "script",
+        "duration": 617.6000000000931,
+        "transferSize": 3965,
+        "encodedBodySize": 3665
+      }
+    ]
+  },
+  "outcome": "pass",
+  "finished": "2026-10-03T01:28:12.479Z"
+}

@@ -1,0 +1,27 @@
+Started: 2026-10-03T01:24:47+00:00
+Command: npm test -- --runInBand __tests__/components.qa.test.tsx
+
+
+> chrissellers@2.0.0 test
+> jest --runInBand __tests__/components.qa.test.tsx
+
+PASS __tests__/components.qa.test.tsx
+  portfolio visitor contracts
+    ✓ renders the complete visitor journey with one main landmark and a unique page heading (57 ms)
+    ✓ connects every in-page navigation link to exactly one destination (12 ms)
+    ✓ provides the same valid email destination from the hero and footer (8 ms)
+    ✓ makes new-tab links explicitly named and isolates their opener (8 ms)
+    ✓ shows every project status and all career claims in the rendered page (44 ms)
+  optional content boundaries
+    ✓ renders a project without optional details or a destination without an empty link (3 ms)
+    ✓ uses an accessible default visit label when only an href is supplied (1 ms)
+    ✓ renders content as text, including HTML-looking strings and punctuation (1 ms)
+    ✓ keeps an undated career entry with no highlights readable without an empty bullet list (3 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       9 passed, 9 total
+Snapshots:   0 total
+Time:        0.436 s
+Ran all test suites matching __tests__/components.qa.test.tsx.
+
+- 2026-10-03T01:24:48+00:00 [FE] END `fe-component-tests`: exit 0; elapsed 0.8s.

@@ -1,0 +1,497 @@
+Started: 2026-10-03T01:26:36+00:00
+Command: cat __tests__/metadata.qa.test.tsx __tests__/components.qa.test.tsx docs/qa/2026-10-02/browser/frontend.mjs docs/qa/2026-10-02/local-contracts.mjs
+
+/** @jest-environment-options {"customExportConditions": ["node", "node-addons"]} */
+import { renderToStaticMarkup } from 'react-dom/server'
+import type { ReactElement } from 'react'
+import RootLayout, { metadata } from '@/app/layout'
+import OpengraphImage, { alt, contentType, size } from '@/app/opengraph-image'
+import { ImageResponse } from 'next/og'
+import { profile } from '@/src/content/profile'
+import { featured, other } from '@/src/content/work'
+
+jest.mock('next/font/google', () => ({
+  Inter: () => ({ variable: '--test-inter' }),
+  Space_Grotesk: () => ({ variable: '--test-space-grotesk' }),
+}))
+
+// Unit-test the app's renderer inputs. BE-local-contracts separately validates
+// a real PNG from the production localhost server; this mock is not image proof.
+jest.mock('next/og', () => ({
+  ImageResponse: jest.fn().mockImplementation(() => ({})),
+}))
+
+describe('public metadata contracts', () => {
+  it('keeps search, Open Graph and Twitter identity consistent', () => {
+    const title = `${profile.name} — ${profile.role}`
+    expect(metadata).toMatchObject({
+      title,
+      description: profile.summary,
+      openGraph: {
+        type: 'website',
+        url: profile.siteUrl,
+        title,
+        description: profile.summary,
+        siteName: profile.name,
+      },
+      twitter: { card: 'summary_large_image', title, description: profile.summary },
+    })
+    expect(metadata.metadataBase?.toString()).toBe(new URL(profile.siteUrl).href)
+  })
+
+  it.each([
+    ['metadata base', profile.siteUrl],
+    ['GitHub', profile.links.github],
+    ...[...featured, ...other]
+      .filter((project) => project.href)
+      .map((project) => [project.name, project.href!]),
+  ])('%s uses a valid public HTTPS URL without embedded credentials', (_name, href) => {
+    const url = new URL(href)
+    expect(url.protocol).toBe('https:')
+    expect(url.hostname).toContain('.')
+    expect(url.hostname).not.toMatch(/^(localhost|127\.|0\.|\[::1\])/)
+    expect(url.username).toBe('')
+    expect(url.password).toBe('')
+    expect(href).toBe(href.trim())
+  })
+
+  it('renders the declared language, skip target and supplied server content', () => {
+    const html = renderToStaticMarkup(
+      <RootLayout><main id="main">Server-rendered content</main></RootLayout>,
+    )
+    const document = new DOMParser().parseFromString(html, 'text/html')
+    expect(document.documentElement.lang).toBe('en')
+    expect(document.querySelector('a')?.getAttribute('href')).toBe('#main')
+    expect(document.querySelector('#main')?.textContent).toBe('Server-rendered content')
+  })
+
+  it('declares a large landscape PNG with a meaningful accessible description', () => {
+    expect(size).toEqual({ width: 1200, height: 630 })
+    expect(contentType).toBe('image/png')
+    expect(alt).toBe(`${profile.name} — ${profile.role}`)
+  })
+
+  it('passes current profile content and the declared size to ImageResponse', () => {
+    const imageResponse = ImageResponse as unknown as jest.Mock
+    imageResponse.mockClear()
+    OpengraphImage()
+    expect(imageResponse).toHaveBeenCalledTimes(1)
+    const [element, options] = imageResponse.mock.calls[0] as [ReactElement, typeof size]
+    const html = renderToStaticMarkup(element)
+    const text = new DOMParser().parseFromString(html, 'text/html').body.textContent
+    expect(options).toEqual(size)
+    expect(text).toContain(profile.name)
+    expect(text).toContain(profile.role)
+    expect(text).toContain(profile.headline)
+    expect(text).toContain(new URL(profile.siteUrl).hostname)
+  })
+})
+import "@testing-library/jest-dom"
+import { render, screen, within } from '@testing-library/react'
+import Home from '@/app/page'
+import Work from '@/src/components/Work'
+import Career from '@/src/components/Career'
+import { profile } from '@/src/content/profile'
+import { featured, other, type Project } from '@/src/content/work'
+import { career } from '@/src/content/career'
+
+const originalFeatured = [...featured]
+const originalOther = [...other]
+const originalCareer = [...career]
+
+afterEach(() => {
+  featured.splice(0, featured.length, ...originalFeatured)
+  other.splice(0, other.length, ...originalOther)
+  career.splice(0, career.length, ...originalCareer)
+})
+
+describe('portfolio visitor contracts', () => {
+  it('renders the complete visitor journey with one main landmark and a unique page heading', () => {
+    render(<Home />)
+    expect(screen.getByRole('main')).toHaveAttribute('id', 'main')
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(profile.headline)
+    expect(screen.getByRole('heading', { name: 'Selected work' })).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'Career' })).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'Get in touch' })).toBeVisible()
+    for (const paragraph of profile.bio) expect(screen.getByText(paragraph)).toBeVisible()
+  })
+
+  it('connects every in-page navigation link to exactly one destination', () => {
+    const { container } = render(<Home />)
+    const links = Array.from(container.querySelectorAll<HTMLAnchorElement>('a[href^="#"]'))
+    expect(links.length).toBeGreaterThan(0)
+    for (const link of links) {
+      const target = link.getAttribute('href')!
+      expect(target).not.toBe('#')
+      expect(container.querySelectorAll(target)).toHaveLength(1)
+    }
+    const navigation = screen.getByRole('navigation', { name: 'Primary' })
+    expect(within(navigation).getByRole('link', { name: 'Work' })).toHaveAttribute('href', '#work')
+    expect(within(navigation).getByRole('link', { name: 'Career' })).toHaveAttribute('href', '#career')
+    expect(within(navigation).getByRole('link', { name: 'Contact' })).toHaveAttribute('href', '#contact')
+  })
+
+  it('provides the same valid email destination from the hero and footer', () => {
+    render(<Home />)
+    const expected = `mailto:${profile.links.email}`
+    expect(screen.getByRole('link', { name: 'Get in touch' })).toHaveAttribute('href', expected)
+    expect(screen.getByRole('link', { name: profile.links.email })).toHaveAttribute('href', expected)
+    expect(profile.links.email).not.toMatch(/[\r\n?&#]/)
+    expect(profile.links.email).toMatch(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+  })
+
+  it('makes new-tab links explicitly named and isolates their opener', () => {
+    const { container } = render(<Home />)
+    const links = Array.from(container.querySelectorAll<HTMLAnchorElement>('a[target="_blank"]'))
+    expect(links).toHaveLength(featured.filter(project => project.href).length + 2)
+    for (const link of links) {
+      expect(link).toHaveAccessibleName()
+      const destination = new URL(link.href)
+      expect(destination.protocol).toBe('https:')
+      expect(destination.username).toBe('')
+      expect(destination.password).toBe('')
+      expect(link.rel.split(/\s+/)).toEqual(expect.arrayContaining(['noopener', 'noreferrer']))
+    }
+  })
+
+  it('shows every project status and all career claims in the rendered page', () => {
+    render(<Home />)
+    for (const project of [...featured, ...other]) {
+      const card = screen.getByRole('heading', { name: project.name }).closest('article')!
+      expect(within(card).getByText(project.description)).toBeVisible()
+      expect(within(card).getByText(project.status)).toBeVisible()
+    }
+    const careerSection = screen.getByRole('heading', { name: 'Career' }).closest('section')!
+    for (const role of career) {
+      expect(within(careerSection).getByRole('heading', { name: role.role })).toBeVisible()
+      expect(within(careerSection).getByText(role.organization, { exact: true })).toBeVisible()
+      expect(within(careerSection).getByText(role.summary, { exact: true })).toBeVisible()
+      for (const highlight of role.highlights) expect(within(careerSection).getByText(highlight)).toBeVisible()
+    }
+  })
+})
+
+describe('optional content boundaries', () => {
+  const fixture: Project = {
+    name: 'QA fixture project',
+    tagline: 'Boundary content',
+    description: 'A local fixture used only to test optional portfolio fields.',
+    status: 'Prototype',
+    stack: ['TypeScript'],
+  }
+
+  it('renders a project without optional details or a destination without an empty link', () => {
+    featured.splice(0, featured.length, fixture)
+    other.splice(0, other.length)
+    render(<Work />)
+    const card = screen.getByRole('article')
+    expect(within(card).queryByRole('link')).not.toBeInTheDocument()
+    expect(within(card).getAllByRole('list')).toHaveLength(1)
+    expect(within(card).getByText('TypeScript')).toBeVisible()
+    expect(within(card).getByText('Prototype')).toBeVisible()
+  })
+
+  it('uses an accessible default visit label when only an href is supplied', () => {
+    featured.splice(0, featured.length, { ...fixture, href: 'https://portfolio.example.org/project' })
+    other.splice(0, other.length)
+    render(<Work />)
+    expect(screen.getByRole('link', { name: 'Visit' })).toHaveAttribute('href', 'https://portfolio.example.org/project')
+  })
+
+  it('renders content as text, including HTML-looking strings and punctuation', () => {
+    const text = '<script>window.qaUnexpected = true</script> & "quoted"'
+    featured.splice(0, featured.length, { ...fixture, description: text, detail: [text] })
+    other.splice(0, other.length)
+    const { container } = render(<Work />)
+    expect(screen.getAllByText(text)).toHaveLength(2)
+    expect(container.querySelector('script')).not.toBeInTheDocument()
+  })
+
+  it('keeps an undated career entry with no highlights readable without an empty bullet list', () => {
+    career.splice(0, career.length, {
+      role: 'QA learning fixture',
+      organization: 'Local example',
+      period: '',
+      summary: 'An undated education entry with intentionally absent highlights.',
+      highlights: [],
+    })
+    render(<Career />)
+    expect(screen.getByRole('heading', { name: 'QA learning fixture' })).toBeVisible()
+    expect(screen.getByText('Local example')).toBeVisible()
+    expect(screen.getAllByRole('list')).toHaveLength(1)
+    expect(screen.getAllByRole('listitem')).toHaveLength(1)
+  })
+})
+import assert from 'node:assert/strict'
+import { createRequire } from 'node:module'
+import { mkdir, writeFile } from 'node:fs/promises'
+import path from 'node:path'
+
+// Usage: node frontend.mjs /private/tmp/qa-tools http://127.0.0.1:3000
+// Connect only: the orchestrator owns the already-running browser server.
+const [toolRoot, baseUrl] = process.argv.slice(2)
+assert(toolRoot && baseUrl, 'Supply isolated tools path and loopback base URL')
+assert(['localhost', '127.0.0.1', '[::1]'].includes(new URL(baseUrl).hostname))
+assert(process.env.PW_TEST_CONNECT_WS_ENDPOINT, 'Browser server endpoint required')
+const require = createRequire(path.join(toolRoot, 'package.json'))
+const engines = require('playwright')
+const output = path.resolve('docs/qa/2026-10-02/artifacts/frontend')
+await mkdir(output, { recursive: true })
+const report = { started: new Date().toISOString(), baseUrl, engines: [], journeys: [], checks: [], performance: {} }
+
+async function localContext(browser, options = {}) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, ...options })
+  const blocked = []
+  await context.route('**/*', async route => {
+    const url = new URL(route.request().url())
+    if (['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) && ['http:', 'https:'].includes(url.protocol)) {
+      await route.continue()
+    } else {
+      blocked.push(url.origin + url.pathname)
+      await route.abort('blockedbyclient')
+    }
+  })
+  return { context, blocked }
+}
+
+function observe(page) {
+  const errors = { console: [], page: [], network: [], failed: [] }
+  page.on('console', message => {
+    if (message.type() === 'error' || message.type() === 'warning') errors.console.push({ type: message.type(), text: message.text() })
+  })
+  page.on('pageerror', error => errors.page.push(error.message))
+  page.on('response', response => {
+    if (response.status() >= 400) errors.network.push({ url: response.url(), status: response.status() })
+  })
+  page.on('requestfailed', request => errors.failed.push({ url: request.url(), error: request.failure()?.errorText }))
+  return errors
+}
+
+async function navigateSections(page) {
+  const visited = []
+  for (const [name, target, heading] of [
+    ['Work', 'work', 'Selected work'],
+    ['Career', 'career', 'Career'],
+    ['Contact', 'contact', 'Get in touch'],
+  ]) {
+    await page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name, exact: true }).click()
+    assert.equal(new URL(page.url()).hash, '#' + target)
+    const section = page.locator('#' + target)
+    assert(await section.getByRole('heading', { name: heading, exact: true }).isVisible())
+    const box = await section.getByRole('heading', { name: heading, exact: true }).boundingBox()
+    assert(box && box.y >= 0 && box.y < 1000, `${target} heading is in the viewport`)
+    visited.push({ target, heading, y: box.y })
+  }
+  return visited
+}
+
+let browser
+try {
+  browser = await engines.chromium.connect(process.env.PW_TEST_CONNECT_WS_ENDPOINT, { timeout: 15000 })
+  report.engines.push({ requested: 'chromium', actual: browser.browserType().name(), version: browser.version(), outcome: 'connected' })
+  const { context, blocked } = await localContext(browser)
+  const page = await context.newPage()
+  const errors = observe(page)
+  const response = await page.goto(baseUrl, { waitUntil: 'networkidle' })
+  assert.equal(response.status(), 200)
+  assert.equal(await page.locator('h1').count(), 1)
+  assert.match(await page.title(), /Christopher Sellers/)
+  assert.equal(await page.getByRole('main').count(), 1)
+  assert.equal(await page.locator('#work article').count(), 6)
+  assert.equal(await page.locator('#career ol > li').count(), 6)
+  await page.screenshot({ path: path.join(output, 'desktop-home.png'), fullPage: false })
+  await page.getByRole('link', { name: 'See the work', exact: true }).click()
+  assert.equal(new URL(page.url()).hash, '#work')
+  const visited = await navigateSections(page)
+  const emailLinks = await page.locator('a[href^="mailto:"]').evaluateAll(links => links.map(link => ({ label: link.textContent.trim(), href: link.getAttribute('href') })))
+  assert.equal(emailLinks.length, 2)
+  for (const link of emailLinks) assert.match(link.href, /^mailto:[^@\s]+@[^@\s]+\.[^@\s]+$/)
+  const externalLinks = await page.locator('a[target="_blank"]').evaluateAll(links => links.map(link => ({ label: link.textContent.trim() || link.getAttribute('aria-label'), href: link.href, rel: link.rel })))
+  for (const link of externalLinks) {
+    assert.equal(new URL(link.href).protocol, 'https:')
+    assert.match(link.rel, /noopener/)
+    assert.match(link.rel, /noreferrer/)
+  }
+  await page.screenshot({ path: path.join(output, 'desktop-contact.png'), fullPage: false })
+  await page.getByRole('navigation').getByRole('link', { name: 'Christopher Sellers', exact: true }).click()
+  assert.equal(new URL(page.url()).hash, '#main')
+  assert.deepEqual(errors, { console: [], page: [], network: [], failed: [] })
+  assert.equal(blocked.length, 0)
+  report.journeys.push({ name: 'arrival-work-career-contact-home', outcome: 'pass', visited, emailLinks, externalLinks, errors, blocked })
+  report.checks.push('200 root; unique H1/main; six work cards; six career entries; hash navigation; contact syntax; external HTTPS + noopener/noreferrer; zero browser errors')
+  await context.close()
+
+  const noJs = await localContext(browser, { javaScriptEnabled: false })
+  const noJsPage = await noJs.context.newPage()
+  const noJsResponse = await noJsPage.goto(baseUrl, { waitUntil: 'load' })
+  assert.equal(noJsResponse.status(), 200)
+  assert.equal(await noJsPage.locator('#work article').count(), 6)
+  assert.equal(await noJsPage.locator('#career ol > li').count(), 6)
+  const noJsVisited = await navigateSections(noJsPage)
+  assert.equal(await noJsPage.locator('a[href^="mailto:"]').count(), 2)
+  await noJsPage.screenshot({ path: path.join(output, 'no-js-contact.png') })
+  report.journeys.push({ name: 'javascript-disabled', outcome: 'pass', visited: noJsVisited, blocked: noJs.blocked })
+  await noJs.context.close()
+
+  const missing = await localContext(browser)
+  const missingPage = await missing.context.newPage()
+  const missingResponse = await missingPage.goto(baseUrl + '/qa-does-not-exist', { waitUntil: 'load' })
+  assert.equal(missingResponse.status(), 404)
+  assert(await missingPage.getByText('This page could not be found.').isVisible())
+  report.journeys.push({ name: 'unknown-route', outcome: 'pass', status: 404, limitation: 'UX pass assesses recovery and semantics' })
+  await missing.context.close()
+
+  const perf = await localContext(browser)
+  const perfPage = await perf.context.newPage()
+  const session = await perf.context.newCDPSession(perfPage)
+  await session.send('Network.enable')
+  await session.send('Network.setCacheDisabled', { cacheDisabled: true })
+  await session.send('Network.emulateNetworkConditions', { offline: false, latency: 150, downloadThroughput: 1_600_000 / 8, uploadThroughput: 750_000 / 8, connectionType: 'cellular4g' })
+  await session.send('Emulation.setCPUThrottlingRate', { rate: 4 })
+  await perfPage.addInitScript(() => {
+    window.__qa = { lcp: null, cls: 0, longTaskMs: 0 }
+    for (const [type, callback] of [
+      ['largest-contentful-paint', entries => { window.__qa.lcp = entries.at(-1)?.startTime ?? null }],
+      ['layout-shift', entries => { window.__qa.cls += entries.filter(entry => !entry.hadRecentInput).reduce((sum, entry) => sum + entry.value, 0) }],
+      ['longtask', entries => { window.__qa.longTaskMs += entries.reduce((sum, entry) => sum + Math.max(0, entry.duration - 50), 0) }],
+    ]) {
+      try { new PerformanceObserver(list => callback(list.getEntries())).observe({ type, buffered: true }) } catch { /* Browser support recorded by null LCP. */ }
+    }
+  })
+  await perfPage.goto(baseUrl, { waitUntil: 'networkidle' })
+  await perfPage.getByRole('link', { name: 'See the work', exact: true }).click()
+  report.performance = await perfPage.evaluate(() => ({
+    conditions: 'Single localhost Chromium sample, cold cache, 150ms simulated latency, 1.6Mbps download, 0.75Mbps upload, 4x CPU; not Lighthouse or field CWV',
+    navigation: performance.getEntriesByType('navigation').map(entry => entry.toJSON()),
+    paint: performance.getEntriesByType('paint').map(entry => entry.toJSON()),
+    webVitalsApproximation: window.__qa,
+    resources: performance.getEntriesByType('resource').map(entry => ({ name: entry.name, type: entry.initiatorType, duration: entry.duration, transferSize: entry.transferSize, encodedBodySize: entry.encodedBodySize })),
+  }))
+  await perf.context.close()
+  await browser.close()
+  browser = undefined
+
+  for (const name of ['firefox', 'webkit']) {
+    let alternate
+    try {
+      alternate = await engines[name].connect(process.env.PW_TEST_CONNECT_WS_ENDPOINT, { timeout: 10000 })
+      const actual = alternate.browserType().name()
+      if (actual !== name) {
+        report.engines.push({ requested: name, actual, outcome: 'unavailable', reason: 'The supplied endpoint serves another engine; no cross-browser claim' })
+      } else {
+        const smoke = await localContext(alternate)
+        const smokePage = await smoke.context.newPage()
+        const smokeResponse = await smokePage.goto(baseUrl, { waitUntil: 'load' })
+        assert.equal(smokeResponse.status(), 200)
+        assert.equal(await smokePage.locator('h1').count(), 1)
+        await navigateSections(smokePage)
+        report.engines.push({ requested: name, actual, version: alternate.version(), outcome: 'pass' })
+        await smoke.context.close()
+      }
+    } catch (error) {
+      report.engines.push({ requested: name, outcome: 'unavailable', reason: error.message })
+    } finally {
+      if (alternate) await alternate.close()
+    }
+  }
+  report.outcome = 'pass'
+} catch (error) {
+  report.outcome = 'fail'
+  report.error = error.stack
+  process.exitCode = 1
+} finally {
+  if (browser) await browser.close()
+  report.finished = new Date().toISOString()
+  await writeFile(path.join(output, 'runtime-report.json'), JSON.stringify(report, null, 2) + '\n')
+  console.log(JSON.stringify({ outcome: report.outcome, engines: report.engines, journeys: report.journeys.map(({ name, outcome }) => ({ name, outcome })), error: report.error, performance: report.performance.webVitalsApproximation }, null, 2))
+}
+// Run from the repository root after a production localhost server is ready.
+import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
+import { writeFile } from 'node:fs/promises'
+
+const base = new URL(process.argv[2] || 'http://127.0.0.1:3100')
+assert.equal(base.hostname, '127.0.0.1', 'QA requests must remain on loopback')
+assert.equal(base.protocol, 'http:')
+assert.equal(base.username + base.password, '')
+const artifactDir = new URL('./artifacts/', import.meta.url)
+const results = { startedAt: new Date().toISOString(), base: base.origin, checks: [] }
+
+async function request(path, method = 'GET') {
+  const url = new URL(path, base)
+  assert.equal(url.origin, base.origin)
+  const response = await fetch(url, { method, redirect: 'manual', signal: AbortSignal.timeout(15000) })
+  const bytes = Buffer.from(await response.arrayBuffer())
+  results.checks.push({
+    method, path: url.pathname + url.search, status: response.status,
+    contentType: response.headers.get('content-type'), bytes: bytes.length,
+    cacheControl: response.headers.get('cache-control'),
+  })
+  return { response, bytes, text: bytes.toString('utf8') }
+}
+
+try {
+  const home = await request('/')
+  assert.equal(home.response.status, 200)
+  assert.match(home.response.headers.get('content-type'), /text\/html/)
+  assert.match(home.text, /<html[^>]+lang="en"/)
+  assert.match(home.text, /<title>Christopher Sellers/)
+  assert.match(home.text, /<main id="main"/)
+  assert.equal(home.response.headers.get('set-cookie'), null)
+  const metadata = Object.fromEntries(
+    [...home.text.matchAll(/<meta\s+(?:name|property)="([^"]+)"\s+content="([^"]*)"\s*\/?\s*>/g)]
+      .map((match) => [match[1], match[2].replaceAll('&amp;', '&')]),
+  )
+  assert.ok(metadata.description?.length > 50)
+  assert.equal(metadata['og:type'], 'website')
+  assert.equal(metadata['twitter:card'], 'summary_large_image')
+  assert.equal(metadata['og:description'], metadata.description)
+  assert.equal(metadata['twitter:description'], metadata.description)
+  assert.equal(metadata['og:image:width'], '1200')
+  assert.equal(metadata['og:image:height'], '630')
+  assert.ok(metadata['og:image:alt']?.includes('Christopher Sellers'))
+  // Metadata contains the public URL. Fetch only its path at our local origin.
+  const imageUrl = new URL(metadata['og:image'])
+  const imagePath = imageUrl.pathname + imageUrl.search
+  const png = await request(imagePath)
+  assert.equal(png.response.status, 200)
+  assert.equal(png.response.headers.get('content-type'), 'image/png')
+  assert.equal(png.bytes.subarray(0, 8).toString('hex'), '89504e470d0a1a0a')
+  assert.equal(png.bytes.readUInt32BE(16), 1200)
+  assert.equal(png.bytes.readUInt32BE(20), 630)
+  await writeFile(new URL('BE-opengraph.png', artifactDir), png.bytes)
+  results.metadata = metadata
+  results.image = { width: 1200, height: 630, sha256: createHash('sha256').update(png.bytes).digest('hex') }
+  const imageHead = await request(imagePath, 'HEAD')
+  assert.equal(imageHead.response.status, 200)
+  assert.equal(imageHead.bytes.length, 0)
+  const imagePost = await request(imagePath, 'POST')
+  assert.equal(imagePost.response.status, 405)
+  const head = await request('/', 'HEAD')
+  assert.equal(head.response.status, 200)
+  assert.equal(head.bytes.length, 0)
+  const query = await request('/?qa_boundary=%3Cqa-marker%3E')
+  assert.equal(query.response.status, 200)
+  assert.ok(!query.text.includes('<qa-marker>'))
+  for (const path of ['/qa-does-not-exist', '/api/qa-does-not-exist', '/%ZZ']) {
+    const missing = await request(path)
+    assert.ok([400, 404].includes(missing.response.status))
+    assert.ok(!/Error:.*\n\s+at |node_modules\//.test(missing.text))
+    if (missing.response.status === 404) assert.match(missing.text, /name="robots" content="noindex"/)
+  }
+  // Five harmless parallel reads verify cached image consistency, not load capacity.
+  const repeated = await Promise.all(Array.from({ length: 5 }, () => request(imagePath)))
+  assert.ok(repeated.every(({ response, bytes }) => response.status === 200 && bytes.equals(png.bytes)))
+  results.outcome = 'PASS'
+} catch (error) {
+  results.outcome = 'FAIL'
+  results.error = error.message
+  process.exitCode = 1
+} finally {
+  results.finishedAt = new Date().toISOString()
+  await writeFile(new URL('BE-local-contracts.json', artifactDir), JSON.stringify(results, null, 2) + '\n')
+  console.log(JSON.stringify(results, null, 2))
+}
+
+- 2026-10-03T01:26:36+00:00 [ROOT] END `read-qa-tests`: exit 0; elapsed 0.0s.

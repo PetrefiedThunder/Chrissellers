@@ -1,0 +1,50 @@
+Started: 2026-10-03T01:25:35+00:00
+Command: python3 -c 'from pathlib import Path; lines=Path("package-lock.json").read_text().splitlines(); ranges=[(695,701),(3522,3539),(7275,7294)]; [(print("\n".join(str(i)+": "+lines[i-1] for i in range(a,b+1)))) for a,b in ranges]'
+
+695:     "node_modules/@eslint/config-array/node_modules/brace-expansion": {
+696:       "version": "1.1.18",
+697:       "dev": true,
+698:       "license": "MIT",
+699:       "dependencies": {
+700:         "balanced-match": "^1.0.0",
+701:         "concat-map": "0.0.1"
+3522:     "node_modules/brace-expansion": {
+3523:       "version": "2.1.4",
+3524:       "dev": true,
+3525:       "license": "MIT",
+3526:       "dependencies": {
+3527:         "balanced-match": "^1.0.0"
+3528:       }
+3529:     },
+3530:     "node_modules/braces": {
+3531:       "version": "3.0.3",
+3532:       "dev": true,
+3533:       "license": "MIT",
+3534:       "dependencies": {
+3535:         "fill-range": "^7.1.1"
+3536:       },
+3537:       "engines": {
+3538:         "node": ">=8"
+3539:       }
+7275:     "node_modules/next": {
+7276:       "version": "16.3.3",
+7277:       "license": "MIT",
+7278:       "dependencies": {
+7279:         "@next/env": "16.3.3",
+7280:         "@swc/helpers": "0.5.23",
+7281:         "baseline-browser-mapping": "^2.9.19",
+7282:         "caniuse-lite": "^1.0.30001579",
+7283:         "postcss": "8.5.23",
+7284:         "styled-jsx": "5.1.6"
+7285:       },
+7286:       "bin": {
+7287:         "next": "dist/bin/next"
+7288:       },
+7289:       "engines": {
+7290:         "node": ">=20.9.0"
+7291:       },
+7292:       "optionalDependencies": {
+7293:         "@next/swc-darwin-arm64": "16.3.3",
+7294:         "@next/swc-darwin-x64": "16.3.3",
+
+- 2026-10-03T01:25:35+00:00 [BE] END `dependency-lines`: exit 0; elapsed 0.0s.

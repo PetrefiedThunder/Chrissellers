@@ -1,0 +1,15 @@
+Started: 2026-10-03T01:32:18+00:00
+Command: python3 -c 'from pathlib import Path; import re,datetime; q=Path("docs/qa/2026-10-02"); p=q/"SESSION-LOG.md"; lines=p.read_text().splitlines(); labels=["ROOT-baseline-shell-failure-note","ROOT-correct-bootstrap-timing"]; 
+for label in labels:
+ command=(q/"artifacts"/(label+".txt")).read_text().split("Command: ",1)[1].split("\n\n",1)[0]
+ for i,line in enumerate(lines):
+  if line.startswith("- ") and "[ROOT] START" in line and line.endswith("output: `artifacts/"+label+".txt`"):
+   lines[i]=line.split(" START ",1)[0]+" START `"+command+"`; output: `artifacts/"+label+".txt`"
+ for i,line in enumerate(lines):
+  if line.startswith("- 2026-10-03T01:22:58Z") and "retrospective interval" in line:
+   lines[i]=line.replace("2026-10-03T01:22:58Z–01:23:20Z (retrospective interval)","2026-10-03T01:22:44Z (batch timestamp; shell rejection occurred before logger)")
+p.write_text("\n".join(lines)+"\n"); print("Restored two exact original command strings from immutable artifact headers; corrected standalone shell failure event to batch timestamp01:22:44. Prior preliminary estimates remain only within historical commands/output, not asserted event timing.")'
+
+Restored two exact original command strings from immutable artifact headers; corrected standalone shell failure event to batch timestamp01:22:44. Prior preliminary estimates remain only within historical commands/output, not asserted event timing.
+
+- 2026-10-03T01:32:18+00:00 [ROOT] END `preserve-command-provenance`: exit 0; elapsed 0.0s.

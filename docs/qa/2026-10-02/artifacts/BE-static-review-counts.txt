@@ -1,0 +1,13 @@
+Started: 2026-10-03T01:27:04+00:00
+Command: python3 -c 'import json; from pathlib import Path; d=json.loads(Path('"'"'docs/qa/2026-10-02/artifacts/BE-audit-lock.json'"'"').read_text()); high=[v for v in d['"'"'vulnerabilities'"'"'].values() if v['"'"'severity'"'"']=='"'"'high'"'"']; print('"'"'High package entries:'"'"',len(high)); print('"'"'High installed node paths:'"'"',sum(len(v['"'"'nodes'"'"']) for v in high)); print('"'"'metadata:'"'"',d['"'"'metadata'"'"']['"'"'vulnerabilities'"'"']); print('"'"'Parser evidence lines:'"'"'); lines=Path('"'"'package-lock.json'"'"').read_text().splitlines(); [(print(f'"'"'{i}: {lines[i-1]}'"'"')) for i in [696,3523,3531,7276]]'
+
+High package entries: 40
+High installed node paths: 55
+metadata: {'info': 0, 'low': 0, 'moderate': 0, 'high': 40, 'critical': 1, 'total': 41}
+Parser evidence lines:
+696:       "version": "1.1.18",
+3523:       "version": "2.1.4",
+3531:       "version": "3.0.3",
+7276:       "version": "16.3.3",
+
+- 2026-10-03T01:27:04+00:00 [BE] END `static-review-counts`: exit 0; elapsed 0.0s.

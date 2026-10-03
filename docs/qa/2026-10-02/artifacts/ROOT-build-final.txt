@@ -1,0 +1,34 @@
+Started: 2026-10-03T01:25:39+00:00
+Command: env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build
+
+
+> chrissellers@2.0.0 build
+> next build
+
+▲ Next.js 16.3.3 (Turbopack)
+✓ Running next.config.js took 5ms
+- Experiments (use with caution):
+  · optimizePackageImports
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 160ms
+  Running TypeScript ...
+  Finished TypeScript in 677ms ...
+  Collecting page data using 5 workers ...
+  Generating static pages using 5 workers (0/4) ...
+  Generating static pages using 5 workers (1/4) 
+  Generating static pages using 5 workers (2/4) 
+  Generating static pages using 5 workers (3/4) 
+✓ Generating static pages using 5 workers (4/4) in 643ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+└ ○ /opengraph-image
+
+
+○  (Static)  prerendered as static content
+
+
+- 2026-10-03T01:25:42+00:00 [ROOT] END `build-final`: exit 0; elapsed 2.1s.

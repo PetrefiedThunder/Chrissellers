@@ -1,0 +1,118 @@
+Started: 2026-10-03T01:27:29+00:00
+Command: python3 -c 'import json;from pathlib import Path;d=json.loads(Path("docs/qa/2026-10-02/artifacts/ux/ux-report.json").read_text()); print(json.dumps({"checks":d["checks"],"skip":d["keyboard"]["steps"][0],"afterSkip":d["keyboard"]["afterSkipTab"],"timing":[d["startedAt"],d["finishedAt"]]},indent=2))'
+
+{
+  "checks": [
+    {
+      "name": "desktop-light-1440: viewport reflow",
+      "status": "passed"
+    },
+    {
+      "name": "desktop-light-1440: axe WCAG rules",
+      "status": "passed"
+    },
+    {
+      "name": "desktop-dark-1440: viewport reflow",
+      "status": "passed"
+    },
+    {
+      "name": "desktop-dark-1440: axe WCAG rules",
+      "status": "passed"
+    },
+    {
+      "name": "tablet-light-768: viewport reflow",
+      "status": "passed"
+    },
+    {
+      "name": "tablet-light-768: axe WCAG rules",
+      "status": "passed"
+    },
+    {
+      "name": "mobile-light-375: viewport reflow",
+      "status": "passed"
+    },
+    {
+      "name": "mobile-light-375: axe WCAG rules",
+      "status": "passed"
+    },
+    {
+      "name": "mobile-light-320: viewport reflow",
+      "status": "passed"
+    },
+    {
+      "name": "mobile-light-320: axe WCAG rules",
+      "status": "passed"
+    },
+    {
+      "name": "mobile-dark-320: viewport reflow",
+      "status": "passed"
+    },
+    {
+      "name": "mobile-dark-320: axe WCAG rules",
+      "status": "passed"
+    },
+    {
+      "name": "desktop-text200-1280: viewport reflow",
+      "status": "passed"
+    },
+    {
+      "name": "desktop-text200-1280: axe WCAG rules",
+      "status": "passed"
+    },
+    {
+      "name": "mobile-text200-375: viewport reflow",
+      "status": "expected-failure",
+      "findingId": "UX-001"
+    },
+    {
+      "name": "mobile-text200-375: axe WCAG rules",
+      "status": "passed"
+    },
+    {
+      "name": "reduced-motion-375: viewport reflow",
+      "status": "passed"
+    },
+    {
+      "name": "reduced-motion-375: axe WCAG rules",
+      "status": "passed"
+    },
+    {
+      "name": "Skip link bypasses navigation to first main link",
+      "status": "passed"
+    },
+    {
+      "name": "Keyboard focus is visible after transition settles",
+      "status": "passed"
+    },
+    {
+      "name": "404 has a valid main skip target and a route home",
+      "status": "expected-failure",
+      "findingId": "UX-002"
+    }
+  ],
+  "skip": {
+    "tag": "A",
+    "text": "Skip to main content",
+    "label": null,
+    "href": "#main",
+    "outline": "rgb(94, 112, 94) solid 2px",
+    "offset": "3px",
+    "box": {
+      "x": 16,
+      "y": 0,
+      "width": 205.828125,
+      "height": 48
+    },
+    "visibleInViewport": true
+  },
+  "afterSkip": {
+    "text": "Get in touch",
+    "href": "mailto:1@christophersellers.com"
+  },
+  "timing": [
+    "2026-10-03T01:27:11.286Z",
+    "2026-10-03T01:27:21.951Z"
+  ]
+}
+
+- 2026-10-03T01:27:29+00:00 [UX] END `keyboard-final-report`: exit 0; elapsed 0.0s.

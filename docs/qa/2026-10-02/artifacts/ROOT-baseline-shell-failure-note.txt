@@ -1,0 +1,5 @@
+Started: 2026-10-03T01:23:33+00:00
+Command: python3 -c 'from pathlib import Path; p=Path("docs/qa/2026-10-02/SESSION-LOG.md"); p.open("a").write("\n- 2026-10-03T01:29Z (minute precision): first baseline command failed before logger started because zsh expanded unquoted coverage globs: `--collectCoverageFrom=src/**/*.{ts,tsx} --collectCoverageFrom=app/**/*.{ts,tsx}`. Shell exit 1; quoted retry passed. QA-only font fixture authored with apply_patch.\n")'
+
+
+- 2026-10-03T01:23:33+00:00 [ROOT] END `baseline-shell-failure-note`: exit 0; elapsed 0.0s.

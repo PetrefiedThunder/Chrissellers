@@ -1,0 +1,499 @@
+Started: 2026-10-03T01:22:41+00:00
+Command: python3 -c 'from pathlib import Path; files=['"'"'src/components/Nav.tsx'"'"','"'"'src/components/Hero.tsx'"'"','"'"'src/components/Work.tsx'"'"','"'"'src/components/Career.tsx'"'"','"'"'src/components/Contact.tsx'"'"','"'"'README.md'"'"','"'"'jest.config.js'"'"','"'"'tsconfig.json'"'"','"'"'.github/workflows/ci.yml'"'"']; [(print('"'"'\nFILE '"'"'+f),*[print(f'"'"'{i}: {line}'"'"') for i,line in enumerate(Path(f).read_text().splitlines(),1)]) for f in files if Path(f).is_file()]'
+
+
+FILE src/components/Nav.tsx
+1: import { profile } from '@/src/content/profile'
+2: 
+3: const sections = [
+4:   { href: '#work', label: 'Work' },
+5:   { href: '#career', label: 'Career' },
+6:   { href: '#contact', label: 'Contact' },
+7: ]
+8: 
+9: export default function Nav() {
+10:   return (
+11:     <header className="sticky top-0 z-40 border-b border-rule/10 bg-bg-page/85 backdrop-blur-sm">
+12:       <nav
+13:         aria-label="Primary"
+14:         className="mx-auto flex max-w-5xl items-center justify-between gap-6 px-6 py-4 md:px-10"
+15:       >
+16:         <a href="#main" className="font-display text-base font-semibold tracking-tight">
+17:           {profile.name}
+18:         </a>
+19:         <ul className="flex items-center gap-5 text-body-sm">
+20:           {sections.map((section) => (
+21:             <li key={section.href}>
+22:               <a
+23:                 href={section.href}
+24:                 className="text-text-secondary transition-colors hover:text-text-primary"
+25:               >
+26:                 {section.label}
+27:               </a>
+28:             </li>
+29:           ))}
+30:         </ul>
+31:       </nav>
+32:     </header>
+33:   )
+34: }
+
+FILE src/components/Hero.tsx
+1: import { ArrowUpRight } from 'lucide-react'
+2: import { profile } from '@/src/content/profile'
+3: 
+4: export default function Hero() {
+5:   return (
+6:     <section className="border-b border-rule/10 px-6 py-24 md:px-10 md:py-32">
+7:       <div className="mx-auto max-w-5xl">
+8:         <p className="text-label uppercase tracking-widest text-text-accent">
+9:           {profile.role}
+10:         </p>
+11: 
+12:         <h1 className="mt-6 max-w-4xl font-display text-display-md text-text-primary">
+13:           {profile.headline}
+14:         </h1>
+15: 
+16:         <div className="mt-10 max-w-2xl space-y-5">
+17:           {profile.bio.map((paragraph) => (
+18:             <p key={paragraph} className="text-body-lg text-text-secondary">
+19:               {paragraph}
+20:             </p>
+21:           ))}
+22:         </div>
+23: 
+24:         <div className="mt-12 flex flex-wrap items-center gap-3">
+25:           <a
+26:             href={`mailto:${profile.links.email}`}
+27:             className="rounded-lg bg-text-primary px-6 py-3 text-body-md font-medium text-bg-page transition-opacity hover:opacity-90"
+28:           >
+29:             Get in touch
+30:           </a>
+31:           <a
+32:             href="#work"
+33:             className="rounded-lg border border-rule/20 px-6 py-3 text-body-md font-medium text-text-primary transition-colors hover:bg-bg-surface"
+34:           >
+35:             See the work
+36:           </a>
+37:           <a
+38:             href={profile.links.github}
+39:             target="_blank"
+40:             rel="noopener noreferrer"
+41:             className="inline-flex items-center gap-1 px-2 py-3 text-body-md text-text-secondary transition-colors hover:text-text-primary"
+42:           >
+43:             GitHub
+44:             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+45:           </a>
+46:         </div>
+47:       </div>
+48:     </section>
+49:   )
+50: }
+
+FILE src/components/Work.tsx
+1: import { ArrowUpRight } from 'lucide-react'
+2: import { featured, other, type Project } from '@/src/content/work'
+3: 
+4: function StackList({ stack }: { stack: string[] }) {
+5:   return (
+6:     <ul className="flex flex-wrap gap-2">
+7:       {stack.map((item) => (
+8:         <li
+9:           key={item}
+10:           className="rounded-full border border-rule/15 px-3 py-1 text-body-sm text-text-secondary"
+11:         >
+12:           {item}
+13:         </li>
+14:       ))}
+15:     </ul>
+16:   )
+17: }
+18: 
+19: function FeaturedProject({ project }: { project: Project }) {
+20:   return (
+21:     <article className="rounded-2xl border border-rule/10 bg-bg-surface p-8 md:p-10">
+22:       <div className="flex flex-col md:grid md:grid-cols-[1fr_auto] md:items-baseline md:gap-x-6">
+23:         <h3 className="font-display text-title-lg text-text-primary md:col-start-1">
+24:           {project.name}
+25:         </h3>
+26:         <p className="mt-2 text-body-lg text-text-accent md:col-start-1 md:mt-1">
+27:           {project.tagline}
+28:         </p>
+29:         <p className="mt-3 text-body-sm text-text-secondary md:col-start-2 md:row-start-1 md:mt-0 md:text-right">
+30:           {project.status}
+31:         </p>
+32:       </div>
+33: 
+34:       <p className="mt-5 max-w-2xl text-body-md text-text-secondary">
+35:         {project.description}
+36:       </p>
+37: 
+38:       {project.detail && (
+39:         <ul className="mt-6 max-w-2xl space-y-2.5 border-t border-rule/10 pt-6">
+40:           {project.detail.map((item) => (
+41:             <li key={item} className="flex gap-3 text-body-sm text-text-secondary">
+42:               <span aria-hidden="true" className="text-text-accent">
+43:                 —
+44:               </span>
+45:               <span>{item}</span>
+46:             </li>
+47:           ))}
+48:         </ul>
+49:       )}
+50: 
+51:       <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+52:         <StackList stack={project.stack} />
+53: 
+54:         {project.href && (
+55:           <a
+56:             href={project.href}
+57:             target="_blank"
+58:             rel="noopener noreferrer"
+59:             className="inline-flex shrink-0 items-center gap-1 text-body-sm font-medium text-text-primary underline decoration-text-accent underline-offset-4 transition-colors hover:text-text-accent"
+60:           >
+61:             {project.hrefLabel ?? 'Visit'}
+62:             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+63:           </a>
+64:         )}
+65:       </div>
+66:     </article>
+67:   )
+68: }
+69: 
+70: export default function Work() {
+71:   return (
+72:     <section id="work" className="border-b border-rule/10 bg-bg-sunken px-6 py-24 md:px-10">
+73:       <div className="mx-auto max-w-5xl">
+74:         <h2 className="font-display text-title-lg text-text-primary">Selected work</h2>
+75:         <p className="mt-4 max-w-2xl text-body-lg text-text-secondary">
+76:           Systems where being wrong has a cost — regulatory evidence, autonomous
+77:           agent authority, and dispatch. Status is stated plainly; nothing here
+78:           claims traction it does not have.
+79:         </p>
+80: 
+81:         <div className="mt-14 space-y-6">
+82:           {featured.map((project) => (
+83:             <FeaturedProject key={project.name} project={project} />
+84:           ))}
+85:         </div>
+86: 
+87:         <h3 className="mt-20 font-display text-title-md text-text-primary">Also built</h3>
+88: 
+89:         <div className="mt-8 grid gap-6 md:grid-cols-3">
+90:           {other.map((project) => (
+91:             <article key={project.name}>
+92:               <h4 className="font-display text-body-lg font-semibold text-text-primary">
+93:                 {project.name}
+94:               </h4>
+95:               <p className="mt-1 text-body-sm text-text-accent">{project.tagline}</p>
+96:               <p className="mt-3 text-body-sm text-text-secondary">
+97:                 {project.description}
+98:               </p>
+99:               <p className="mt-3 text-body-sm text-text-secondary">{project.status}</p>
+100:             </article>
+101:           ))}
+102:         </div>
+103:       </div>
+104:     </section>
+105:   )
+106: }
+
+FILE src/components/Career.tsx
+1: import { career } from '@/src/content/career'
+2: 
+3: export default function Career() {
+4:   return (
+5:     <section id="career" className="border-b border-rule/10 px-6 py-24 md:px-10">
+6:       <div className="mx-auto max-w-5xl">
+7:         <h2 className="font-display text-title-lg text-text-primary">Career</h2>
+8:         <p className="mt-4 max-w-2xl text-body-lg text-text-secondary">
+9:           Public service, enterprise software, and the U.S. Senate — then building
+10:           the thing myself.
+11:         </p>
+12: 
+13:         <ol className="mt-14 space-y-12">
+14:           {career.map((role) => (
+15:             <li key={`${role.organization}-${role.role}`}>
+16:               <div className="grid gap-x-10 gap-y-3 md:grid-cols-[9rem_1fr]">
+17:                 <p className="pt-1 text-body-sm tabular-nums text-text-secondary">
+18:                   {role.period}
+19:                 </p>
+20: 
+21:                 <div>
+22:                   <h3 className="font-display text-title-md text-text-primary">
+23:                     {role.role}
+24:                   </h3>
+25:                   <p className="mt-1 text-body-md text-text-accent">
+26:                     {role.organization}
+27:                   </p>
+28:                   <p className="mt-3 max-w-xl text-body-md text-text-secondary">
+29:                     {role.summary}
+30:                   </p>
+31: 
+32:                   {role.highlights.length > 0 && (
+33:                     <ul className="mt-4 max-w-xl space-y-2">
+34:                       {role.highlights.map((highlight) => (
+35:                         <li
+36:                           key={highlight}
+37:                           className="flex gap-3 text-body-sm text-text-secondary"
+38:                         >
+39:                           <span aria-hidden="true" className="text-text-accent">
+40:                             —
+41:                           </span>
+42:                           <span>{highlight}</span>
+43:                         </li>
+44:                       ))}
+45:                     </ul>
+46:                   )}
+47:                 </div>
+48:               </div>
+49:             </li>
+50:           ))}
+51:         </ol>
+52:       </div>
+53:     </section>
+54:   )
+55: }
+
+FILE src/components/Contact.tsx
+1: import { Github, Mail } from 'lucide-react'
+2: import { profile } from '@/src/content/profile'
+3: 
+4: export default function Contact() {
+5:   return (
+6:     <footer id="contact" className="px-6 py-24 md:px-10">
+7:       <div className="mx-auto max-w-5xl">
+8:         <h2 className="font-display text-title-lg text-text-primary">Get in touch</h2>
+9:         <p className="mt-4 max-w-xl text-body-lg text-text-secondary">
+10:           Open to conversations about regulatory infrastructure, compliance tooling,
+11:           and building in constrained environments.
+12:         </p>
+13: 
+14:         <a
+15:           href={`mailto:${profile.links.email}`}
+16:           className="mt-8 inline-flex items-center gap-3 font-display text-title-md text-text-primary underline decoration-text-accent decoration-2 underline-offset-8 transition-colors hover:text-text-accent"
+17:         >
+18:           <Mail className="h-6 w-6 shrink-0" aria-hidden="true" />
+19:           {profile.links.email}
+20:         </a>
+21: 
+22:         <div className="mt-16 flex items-center justify-between border-t border-rule/10 pt-8">
+23:           <p className="text-body-sm text-text-secondary">
+24:             © {new Date().getFullYear()} {profile.name}
+25:           </p>
+26: 
+27:           <div className="flex gap-5">
+28:             <a
+29:               href={profile.links.github}
+30:               target="_blank"
+31:               rel="noopener noreferrer"
+32:               aria-label="GitHub"
+33:               className="text-text-secondary transition-colors hover:text-text-primary"
+34:             >
+35:               <Github className="h-5 w-5" />
+36:             </a>
+37:           </div>
+38:         </div>
+39:       </div>
+40:     </footer>
+41:   )
+42: }
+
+FILE README.md
+1: # chrissellers.com
+2: 
+3: Personal site and portfolio for Christopher Sellers. A single statically-rendered
+4: page: positioning, selected work, career, and contact.
+5: 
+6: ## Design constraints
+7: 
+8: The site is a credibility surface — the thing linked from LinkedIn, email
+9: signatures, and cold outreach. That drives three rules:
+10: 
+11: 1. **Zero client JavaScript components.** Every component is a React Server
+12:    Component. Content arrives in the HTML, so it survives slow connections,
+13:    crawlers, and link-preview bots. The only JS shipped is the React runtime.
+14: 2. **Content lives in `src/content/`, not in JSX.** Copy is edited in three data
+15:    files; components only lay it out.
+16: 3. **No claim the code cannot back up.** Every project states its real status —
+17:    including "pre-production" and "built, not shipped."
+18: 
+19: ## Editing content
+20: 
+21: | File | What it holds |
+22: | --- | --- |
+23: | `src/content/profile.ts` | Name, headline, bio, contact links. Also feeds page metadata and the generated OG image. |
+24: | `src/content/work.ts` | Projects, split into `featured` and `other`. |
+25: | `src/content/career.ts` | Roles, in reverse-chronological order. |
+26: 
+27: The social preview image (`app/opengraph-image.tsx`) is generated at build time
+28: from `profile.ts` — edit the headline and the card follows.
+29: 
+30: ## Commands
+31: 
+32: ```bash
+33: npm run dev     # local dev server
+34: npm run build   # production build
+35: npm run lint    # eslint (flat config)
+36: npm test        # content validation tests
+37: ```
+38: 
+39: ## Tests
+40: 
+41: `__tests__/content.test.ts` validates the content files rather than the markup:
+42: every project has a status, descriptions are non-trivial, and links are
+43: well-formed. This catches a half-finished content edit before it ships. It does
+44: **not** check that links resolve — see the note in that file for the trade-off.
+45: 
+46: ## Stack
+47: 
+48: Next.js 16 (App Router) · React 18 · TypeScript · Tailwind CSS · Jest
+49: 
+50: ## Deployment
+51: 
+52: Live at **https://chrissellers.vercel.app**, deployed automatically from `main`
+53: by Vercel's GitHub integration. That integration is configured in the Vercel
+54: dashboard, which is why there is no `vercel.json` or `.vercel/` directory here —
+55: their absence does not mean the site is unwired.
+56: 
+57: **`chrissellers.com` is not connected to this project.** It resolves to HostGator
+58: shared hosting and returns 403. Until the domain is added to the Vercel project,
+59: `siteUrl` in `src/content/profile.ts` must keep pointing at the `.vercel.app`
+60: host: it feeds `metadataBase`, so every social preview image is resolved against
+61: it, and pointing it at an unserved domain silently breaks every link preview.
+
+FILE jest.config.js
+1: const nextJest = require('next/jest')
+2: 
+3: const createJestConfig = nextJest({
+4:   dir: './',
+5: })
+6: 
+7: const customJestConfig = {
+8:   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+9:   testEnvironment: 'jest-environment-jsdom',
+10:   moduleNameMapper: {
+11:     '^@/(.*)$': '<rootDir>/$1',
+12:   },
+13:   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
+14:   transform: {
+15:     '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+16:   },
+17:   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
+18:   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts'],
+19: }
+20: 
+21: module.exports = createJestConfig(customJestConfig)
+
+FILE tsconfig.json
+1: {
+2:   "compilerOptions": {
+3:     "target": "ES2020",
+4:     "lib": [
+5:       "DOM",
+6:       "DOM.Iterable",
+7:       "ES2020"
+8:     ],
+9:     "allowJs": true,
+10:     "skipLibCheck": true,
+11:     "strict": true,
+12:     "noEmit": true,
+13:     "esModuleInterop": true,
+14:     "module": "esnext",
+15:     "moduleResolution": "bundler",
+16:     "resolveJsonModule": true,
+17:     "isolatedModules": true,
+18:     "jsx": "react-jsx",
+19:     "incremental": true,
+20:     "plugins": [
+21:       {
+22:         "name": "next"
+23:       }
+24:     ],
+25:     "paths": {
+26:       "@/*": [
+27:         "./*"
+28:       ]
+29:     }
+30:   },
+31:   "include": [
+32:     "next-env.d.ts",
+33:     "**/*.ts",
+34:     "**/*.tsx",
+35:     ".next/types/**/*.ts",
+36:     ".next/dev/types/**/*.ts"
+37:   ],
+38:   "exclude": [
+39:     "node_modules",
+40:     "src/_lab-wip"
+41:   ]
+42: }
+
+FILE .github/workflows/ci.yml
+1: name: CI
+2: 
+3: on:
+4:   push:
+5:     branches: [main]
+6:   pull_request:
+7:     branches: [main]
+8: 
+9: jobs:
+10:   test:
+11:     name: Test & Lint
+12:     runs-on: ubuntu-latest
+13: 
+14:     steps:
+15:       - name: Checkout
+16:         uses: actions/checkout@v4
+17: 
+18:       - name: Setup Node.js
+19:         uses: actions/setup-node@v4
+20:         with:
+21:           node-version: '20'
+22:           cache: 'npm'
+23: 
+24:       - name: Install dependencies
+25:         run: npm ci
+26: 
+27:       - name: Run lint
+28:         run: npm run lint
+29: 
+30:       - name: Run tests
+31:         run: npm test -- --ci --coverage
+32: 
+33:       - name: Upload coverage
+34:         uses: actions/upload-artifact@v4
+35:         with:
+36:           name: coverage
+37:           path: coverage/
+38: 
+39:   build:
+40:     name: Build
+41:     runs-on: ubuntu-latest
+42:     needs: test
+43: 
+44:     steps:
+45:       - name: Checkout
+46:         uses: actions/checkout@v4
+47: 
+48:       - name: Setup Node.js
+49:         uses: actions/setup-node@v4
+50:         with:
+51:           node-version: '20'
+52:           cache: 'npm'
+53: 
+54:       - name: Install dependencies
+55:         run: npm ci
+56: 
+57:       - name: Build
+58:         run: npm run build
+59: 
+60:       - name: Upload build artifacts
+61:         uses: actions/upload-artifact@v4
+62:         with:
+63:           name: build
+64:           path: .next/
+65:           retention-days: 7
+
+- 2026-10-03T01:22:41+00:00 [BE] END `static-components`: exit 0; elapsed 0.0s.

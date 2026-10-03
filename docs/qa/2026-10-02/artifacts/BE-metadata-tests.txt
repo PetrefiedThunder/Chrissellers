@@ -1,0 +1,32 @@
+Started: 2026-10-03T01:23:49+00:00
+Command: npm test -- --runInBand __tests__/metadata.qa.test.tsx
+
+
+> chrissellers@2.0.0 test
+> jest --runInBand __tests__/metadata.qa.test.tsx
+
+FAIL __tests__/metadata.qa.test.tsx
+  ● Test suite failed to run
+
+    ReferenceError: TextEncoder is not defined
+
+      17 |   ImageResponse: jest.fn().mockImplementation(() => ({})),
+      18 | }))
+    > 19 |
+         | ^
+      20 | describe('public metadata contracts', () => {
+      21 |   it('keeps search, Open Graph and Twitter identity consistent', () => {
+      22 |     const title = `${profile.name} — ${profile.role}`
+
+      at node_modules/react-dom/cjs/react-dom-server.browser.development.js:145:19
+      at Object.<anonymous> (node_modules/react-dom/cjs/react-dom-server.browser.development.js:7013:5)
+      at Object.<anonymous> (node_modules/react-dom/server.browser.js:9:7)
+      at Object.<anonymous> (__tests__/metadata.qa.test.tsx:19:17)
+
+Test Suites: 1 failed, 1 total
+Tests:       0 total
+Snapshots:   0 total
+Time:        0.27 s
+Ran all test suites matching __tests__/metadata.qa.test.tsx.
+
+- 2026-10-03T01:23:50+00:00 [BE] END `metadata-tests`: exit 1; elapsed 0.7s.

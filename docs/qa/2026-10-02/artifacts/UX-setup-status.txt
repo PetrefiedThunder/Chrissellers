@@ -1,0 +1,40 @@
+Started: 2026-10-03T01:25:41+00:00
+Command: tail -n 35 docs/qa/2026-10-02/ROOT-LOG.md
+
+- 2026-10-03T01:23:44+00:00 [ROOT] END `font-export-source`: exit 1; elapsed 0.1s.
+
+- 2026-10-03T01:24:18+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-retry.txt`
+
+- 2026-10-03T01:24:20+00:00 [ROOT] END `build-retry`: exit 1; elapsed 1.8s.
+
+- 2026-10-03T01:24:32+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build -- --webpack`; output: `artifacts/ROOT-build-webpack.txt`
+
+- 2026-10-03T01:24:36+00:00 [ROOT] END `build-webpack`: exit 1; elapsed 3.8s.
+
+- 2026-10-03T01:24:44+00:00 [ROOT] START `npm run lint`; output: `artifacts/ROOT-lint.txt`
+
+- 2026-10-03T01:24:44+00:00 [ROOT] START `git status --short`; output: `artifacts/ROOT-changes.txt`
+
+- 2026-10-03T01:24:44+00:00 [ROOT] START `node node_modules/typescript/bin/tsc --noEmit`; output: `artifacts/ROOT-typecheck.txt`
+
+- 2026-10-03T01:24:44+00:00 [ROOT] END `changes`: exit 0; elapsed 0.0s.
+
+- 2026-10-03T01:24:45+00:00 [ROOT] END `typecheck`: exit 2; elapsed 0.8s.
+
+- 2026-10-03T01:24:45+00:00 [ROOT] END `lint`: exit 0; elapsed 1.7s.
+
+- 2026-10-03T01:25:03+00:00 [ROOT] START `python3 -m http.server 3977 --bind 127.0.0.1 --directory /private/tmp/chrissellers-qa-20261002-tools/node_modules`; output: `artifacts/ROOT-font-fixture-server.txt`
+
+- 2026-10-03T01:25:16+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-turbopack-local-font-server.txt`
+
+- 2026-10-03T01:25:18+00:00 [ROOT] END `build-turbopack-local-font-server`: exit 1; elapsed 2.4s.
+
+- 2026-10-03T01:25:22+00:00 [ROOT] START `python3 -c 'import json; from pathlib import Path; p=Path("docs/qa/2026-10-02/artifacts/coverage-before/coverage-summary.json"); d=json.loads(p.read_text()); print("app+src", d["total"]); src=[v for k,v in d.items() if "/src/" in k]; print("legacy src only",{m:{"covered":sum(v[m]["covered"] for v in src),"total":sum(v[m]["total"] for v in src)} for m in ("statements","branches","functions","lines")})'`; output: `artifacts/ROOT-baseline-coverage-summary.txt`
+
+- 2026-10-03T01:25:22+00:00 [ROOT] END `baseline-coverage-summary`: exit 0; elapsed 0.0s.
+
+- 2026-10-03T01:25:39+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-final.txt`
+
+- 2026-10-03T01:25:41+00:00 [ROOT] START `npm test -- --ci --runInBand --coverage --coverageDirectory=docs/qa/2026-10-02/artifacts/coverage-after --coverageReporters=json-summary --coverageReporters=text --coverageReporters=json '--collectCoverageFrom=src/**/*.{ts,tsx}' '--collectCoverageFrom=app/**/*.{ts,tsx}'`; output: `artifacts/ROOT-final-coverage.txt`
+
+- 2026-10-03T01:25:41+00:00 [UX] END `setup-status`: exit 0; elapsed 0.0s.

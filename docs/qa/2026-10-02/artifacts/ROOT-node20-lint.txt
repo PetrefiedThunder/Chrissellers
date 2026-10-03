@@ -1,0 +1,5 @@
+Started: 2026-10-03T01:29:24+00:00
+Command: /private/tmp/chrissellers-qa-node20/node_modules/node/bin/node node_modules/eslint/bin/eslint.js .
+
+
+- 2026-10-03T01:29:26+00:00 [ROOT] END `node20-lint`: exit 0; elapsed 1.5s.

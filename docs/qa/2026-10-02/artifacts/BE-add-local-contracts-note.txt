@@ -1,0 +1,6 @@
+Started: 2026-10-03T01:24:55+00:00
+Command: python3 -c 'print("QA-only edit: add local-contracts.mjs to validate homepage/metadata image/404 HTTP responses on 127.0.0.1 only, deny redirects, and persist binary PNG plus JSON evidence.")'
+
+QA-only edit: add local-contracts.mjs to validate homepage/metadata image/404 HTTP responses on 127.0.0.1 only, deny redirects, and persist binary PNG plus JSON evidence.
+
+- 2026-10-03T01:24:55+00:00 [BE] END `add-local-contracts-note`: exit 0; elapsed 0.0s.

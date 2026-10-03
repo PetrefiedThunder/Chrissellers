@@ -1,0 +1,5 @@
+Started: 2026-10-03T01:26:46+00:00
+Command: rg --files -g AGENTS.md -g '!node_modules' -g '!docs/qa/2026-10-02/artifacts/**'
+
+
+- 2026-10-03T01:26:46+00:00 [ROOT] END `gate-files`: exit 1; elapsed 0.0s.

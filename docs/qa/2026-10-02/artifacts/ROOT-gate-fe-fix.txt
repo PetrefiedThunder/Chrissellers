@@ -1,0 +1,105 @@
+Started: 2026-10-03T01:29:01+00:00
+Command: python3 -c 'import json; from pathlib import Path; p=Path("docs/qa/2026-10-02/browser/frontend.mjs"); lines=p.read_text().splitlines(); print("\n".join(str(i+1)+":"+line for i,line in enumerate(lines) if i>=160)); qa=Path("docs/qa/2026-10-02/artifacts"); print((qa/"FE-fe-browser-gate-negative-control.txt").read_text()); [print(p, json.dumps({k:json.loads(p.read_text()).get(k) for k in ["outcome","engines","error"]},indent=2)) for p in [qa/"frontend/runtime-report.json",qa/"frontend-gate-negative/runtime-report.json"]]'
+
+161:        const smokePage = await smoke.context.newPage()
+162:        const smokeResponse = await smokePage.goto(baseUrl, { waitUntil: 'load' })
+163:        assert.equal(smokeResponse.status(), 200)
+164:        assert.equal(await smokePage.locator('h1').count(), 1)
+165:        await navigateSections(smokePage)
+166:        report.engines.push({ requested: name, actual, version: alternate.version(), outcome: 'pass' })
+167:        await smoke.context.close()
+168:      }
+169:    } catch (error) {
+170:      if (connectedToRequestedEngine) throw error
+171:      report.engines.push({ requested: name, outcome: 'unavailable', reason: error.message })
+172:    } finally {
+173:      if (alternate) await alternate.close()
+174:    }
+175:  }
+176:  report.outcome = 'pass'
+177:} catch (error) {
+178:  report.outcome = 'fail'
+179:  report.error = error.stack
+180:  process.exitCode = 1
+181:} finally {
+182:  if (browser) await browser.close()
+183:  report.finished = new Date().toISOString()
+184:  await writeFile(path.join(output, 'runtime-report.json'), JSON.stringify(report, null, 2) + '\n')
+185:  console.log(JSON.stringify({ outcome: report.outcome, engines: report.engines, journeys: report.journeys.map(({ name, outcome }) => ({ name, outcome })), error: report.error, performance: report.performance.webVitalsApproximation }, null, 2))
+186:}
+Started: 2026-10-03T01:28:22+00:00
+Command: python3 -c 'from pathlib import Path; import subprocess,json; source=Path("docs/qa/2026-10-02/browser/frontend.mjs").read_text(); old="assert.equal(smokeResponse.status(), 200)"; assert source.count(old)==1; source=source.replace(old,"assert.equal(smokeResponse.status(), 201, \"GATE-001 deliberately injected Firefox smoke failure\")"); source=source.replace("artifacts/frontend\x27", "artifacts/frontend-gate-negative\x27"); source="\n".join(line for line in source.splitlines() if ".screenshot(" not in line); temporary=Path("/private/tmp/chrissellers-frontend-gate-negative.mjs"); temporary.write_text(source); result=subprocess.run(["node",str(temporary),"/private/tmp/chrissellers-qa-20261002-tools","http://127.0.0.1:3017"]); report=json.loads(Path("docs/qa/2026-10-02/artifacts/frontend-gate-negative/runtime-report.json").read_text()); assert result.returncode==1,result.returncode; assert report["outcome"]=="fail"; assert "GATE-001 deliberately injected" in report["error"]; print("EXPECTED FAILURE VERIFIED: a post-connect Firefox assertion produces outcome=fail and process exit=1; no product defect.")'
+
+{
+  "outcome": "fail",
+  "engines": [
+    {
+      "requested": "chromium",
+      "actual": "chromium",
+      "version": "153.0.8010.12",
+      "outcome": "connected"
+    }
+  ],
+  "journeys": [
+    {
+      "name": "arrival-work-career-contact-home",
+      "outcome": "pass"
+    },
+    {
+      "name": "javascript-disabled",
+      "outcome": "pass"
+    },
+    {
+      "name": "unknown-route",
+      "outcome": "pass"
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: GATE-001 deliberately injected Firefox smoke failure\n\n200 !== 201\n\n    at file:///private/tmp/chrissellers-frontend-gate-negative.mjs:160:16",
+  "performance": {
+    "lcp": 564,
+    "cls": 0,
+    "longTaskMs": 17
+  }
+}
+EXPECTED FAILURE VERIFIED: a post-connect Firefox assertion produces outcome=fail and process exit=1; no product defect.
+
+- 2026-10-03T01:28:27+00:00 [FE] END `fe-browser-gate-negative-control`: exit 0; elapsed 4.5s.
+
+docs/qa/2026-10-02/artifacts/frontend/runtime-report.json {
+  "outcome": "pass",
+  "engines": [
+    {
+      "requested": "chromium",
+      "actual": "chromium",
+      "version": "153.0.8010.12",
+      "outcome": "connected"
+    },
+    {
+      "requested": "firefox",
+      "actual": "firefox",
+      "version": "155.0",
+      "outcome": "pass"
+    },
+    {
+      "requested": "webkit",
+      "actual": "webkit",
+      "version": "26.6",
+      "outcome": "pass"
+    }
+  ],
+  "error": null
+}
+docs/qa/2026-10-02/artifacts/frontend-gate-negative/runtime-report.json {
+  "outcome": "fail",
+  "engines": [
+    {
+      "requested": "chromium",
+      "actual": "chromium",
+      "version": "153.0.8010.12",
+      "outcome": "connected"
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: GATE-001 deliberately injected Firefox smoke failure\n\n200 !== 201\n\n    at file:///private/tmp/chrissellers-frontend-gate-negative.mjs:160:16"
+}
+
+- 2026-10-03T01:29:01+00:00 [ROOT] END `gate-fe-fix`: exit 0; elapsed 0.0s.

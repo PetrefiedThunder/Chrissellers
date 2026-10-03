@@ -1,0 +1,67 @@
+Started: 2026-10-03T01:22:31+00:00
+Command: python3 -c 'from pathlib import Path; import subprocess; print(Path('"'"'docs/qa/2026-10-02/PLAN.md'"'"').read_text()); subprocess.run(['"'"'rg'"'"','"'"'--files'"'"','"'"'-g'"'"','"'"'!.env*'"'"','"'"'-g'"'"','"'"'!package-lock.json'"'"','"'"'-g'"'"','"'"'!docs/qa/**'"'"'])'
+
+src/components/Career.tsx
+src/components/Contact.tsx
+src/components/Work.tsx
+src/components/Nav.tsx
+src/components/Hero.tsx
+src/content/profile.ts
+src/content/work.ts
+src/content/career.ts
+eslint.config.mjs
+tsconfig.json
+package.json
+tailwind.config.cjs
+__tests__/content.test.ts
+README.md
+next-env.d.ts
+postcss.config.cjs
+next.config.js
+jest.config.js
+jest.setup.js
+app/globals.css
+app/page.tsx
+app/layout.tsx
+app/opengraph-image.tsx
+RegEngine_PRD.md
+WARP.md
+# QA plan — 2026-10-02
+
+PR: opened by orchestrator
+
+CI status: pending at time of writing
+
+## Scope and repository map
+
+Confirmed checkout: `/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers`; branch `qa/2026-10-02-sweep`; initial HEAD `0632a6b`; origin `PetrefiedThunder/Chrissellers`. Initial worktree clean; no repository-local AGENTS.md found. User-supplied instructions apply. Timebox: 60–90 minutes. UTC logging crosses into October 3 while the requested report date remains October 2.
+
+Single public Next.js 16 / React 18 page. `app/page.tsx` composes five server components in `src/components/`; three typed files in `src/content/` supply copy. `app/layout.tsx` defines metadata and Google build-time fonts; `app/opengraph-image.tsx` renders PNG metadata. `app/globals.css` and `tailwind.config.cjs` define styles. Jest currently tests content only. CI runs npm install, lint, Jest coverage, then build. No application API, persistent state, auth, database, OpenAPI schema, or SDK is present.
+
+## Risk ranking
+
+Scores use impact (1–5) × likelihood (1–5), before execution; scores prioritize effort, not finding severity.
+
+| Rank | Area | Impact | Likelihood | Score | Reason |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Build/install and public page availability | 5 | 4 | 20 | A single route is the entire product; framework and remote font dependencies can prevent delivery. |
+| 2 | Mobile/contact/navigation usability | 4 | 4 | 16 | Long text, sticky navigation, and an email-only conversion path are central to visitors. |
+| 3 | Accessibility and keyboard access | 4 | 3 | 12 | Portfolio content must remain reachable without pointer input and at narrow widths. |
+| 4 | Social metadata/image and credibility copy | 4 | 3 | 12 | Shared links and claims are the site's stated purpose. |
+| 5 | Supply-chain and public server surface | 4 | 3 | 12 | Framework exposure exists even without app-owned APIs. |
+| 6 | Performance, no-JS and dark mode | 3 | 3 | 9 | Readability and first content delivery matter on constrained devices. |
+
+## Three separate QA passes
+
+1. **Backend QA → server/build/content-contract lens** (`BE-LOG.md`): existing suite with baseline coverage; production rendering and PNG/metadata checks; deterministic content/URL boundary cases; dependency audit from the public package registry; static OWASP API applicability matrix. Auth, idempotency, concurrency, database and API-contract fuzzing are inapplicable to this static, read-only application. Favor exact rendering contracts over inventing an API or adding a fuzzing dependency without a parser target. Charter BE-X1 (20 minutes): try to break delivery, preview generation and invalid-route handling using local requests only.
+2. **Frontend QA** (`FE-LOG.md`): lint/type/build, component tests, browser journeys against localhost, console/network evidence, no-JS rendering, responsive viewports and browser Resource/Performance APIs for a Lighthouse-style performance pass. Production build preferred; local development server fallback documented if build unavailable. Attempt Chromium/Firefox/WebKit through the provided remote browser endpoint only. Charter FE-X1 (20 minutes): navigate from arrival to work, career and contact; inspect resource failures, invalid routes and reduced connectivity. Test pyramid: many cheap content/component assertions; a small number of real page flow checks.
+3. **UX QA** (`UX-LOG.md`): axe WCAG 2.2 AA subset, keyboard/focus and accessibility semantics, Nielsen's ten heuristics, mobile/desktop, light/dark, 320px reflow, reduced motion and 200% text sizing, plus screenshots. Inspect loading/empty/error applicability for a static page and its 404. Charter UX-X1 (20 minutes): evaluate whether a first-time visitor using keyboard or mobile can understand the work and reach contact. Automated axe does not certify full WCAG conformance; native screen-reader speech requires separate validation.
+
+Each lane has separate ownership and artifacts. Shared setup and aggregate verification are recorded in ROOT-LOG.md; SESSION-LOG.md is the combined timestamped command index. Added tests must preserve product behavior and mark reproduced defects expected-failure or skipped with finding IDs. Baseline and final coverage use identical denominators; report the legacy `src` scope and a broader app-inclusive scope if feasible.
+
+## Boundaries
+
+No product edits, commits, pushes, PR commands, deploys, production URLs, third-party credentialed APIs, databases, credentials or billing. Do not read environment/credential files. External links are checked syntactically and intercepted in browser tests; destination availability and email delivery remain unverified. Public npm metadata/package downloads are allowed. Browser contexts deny non-loopback requests. No direct browser launch/install. Google font fetches are outside the permitted network scope: build will use test-only local font response mocks if needed, clearly limiting font-fidelity evidence. No CI, migration, deploy or secret-baseline changes. CodeRabbit cloud review is excluded because it would transmit code to a third-party API; use an independent local reviewer instead. The orchestrator handles secret scanning, commit/push, and the single draft PR.
+
+
+- 2026-10-03T01:22:31+00:00 [BE] END `static-filemap`: exit 0; elapsed 0.0s.
