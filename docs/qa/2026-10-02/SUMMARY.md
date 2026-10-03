@@ -46,3 +46,5 @@ Added only two Jest test files plus QA documents, runners, font-response test fi
 Unverified: deployed behavior and hosting settings, third-party link availability, email delivery, native screen-reader speech, physical devices, complete WCAG conformance, field performance/INP, exploitability of the advisory and load capacity. Application APIs/auth/database testing is inapplicable to this static portfolio. Full details, exact reproductions and suggested fixes are in [FINDINGS.md](FINDINGS.md).
 
 The orchestrator's next step is to review this QA-only diff, perform its secret scan, commit/push this branch, open the single draft PR and record hosted CI results. No merge or deployment is authorized.
+
+Fix pass: see FIXES.md
