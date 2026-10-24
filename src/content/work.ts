@@ -44,8 +44,8 @@ export const featured: Project[] = [
       'Crash-recovery harness kills a worker mid-commit across two live processes to prove one effect, one debit, one receipt',
       'Adversarial black-box audit against production found zero fail-open conditions — and the report publishes the two P1 bugs it did find',
     ],
-    href: 'https://www.thisisatest.tech',
-    hrefLabel: 'thisisatest.tech',
+    href: 'https://www.agentmiddleware.dev',
+    hrefLabel: 'agentmiddleware.dev',
   },
   {
     name: 'SupportCarr',
