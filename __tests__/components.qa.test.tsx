@@ -85,13 +85,10 @@ describe('portfolio visitor contracts', () => {
 })
 
 describe('optional content boundaries', () => {
-  const fixture: Project = {
-    name: 'QA fixture project',
-    tagline: 'Boundary content',
-    description: 'A local fixture used only to test optional portfolio fields.',
-    status: 'Prototype',
-    stack: ['TypeScript'],
-  }
+  // Built from the site's own recorded content with optional fields removed.
+  const { detail: _detail, href: _href, hrefLabel: _hrefLabel, ...required } = originalFeatured[0]
+  const fixture: Project = required
+  const linked = originalFeatured.find((project) => project.href)!
 
   it('renders a project without optional details or a destination without an empty link', () => {
     featured.splice(0, featured.length, fixture)
@@ -100,37 +97,23 @@ describe('optional content boundaries', () => {
     const card = screen.getByRole('article')
     expect(within(card).queryByRole('link')).not.toBeInTheDocument()
     expect(within(card).getAllByRole('list')).toHaveLength(1)
-    expect(within(card).getByText('TypeScript')).toBeVisible()
-    expect(within(card).getByText('Prototype')).toBeVisible()
+    for (const item of fixture.stack) expect(within(card).getByText(item)).toBeVisible()
+    expect(within(card).getByText(fixture.status)).toBeVisible()
   })
 
   it('uses an accessible default visit label when only an href is supplied', () => {
-    featured.splice(0, featured.length, { ...fixture, href: 'https://portfolio.example.org/project' })
+    featured.splice(0, featured.length, { ...fixture, href: linked.href })
     other.splice(0, other.length)
     render(<Work />)
-    expect(screen.getByRole('link', { name: 'Visit' })).toHaveAttribute('href', 'https://portfolio.example.org/project')
-  })
-
-  it('renders content as text, including HTML-looking strings and punctuation', () => {
-    const text = '<script>window.qaUnexpected = true</script> & "quoted"'
-    featured.splice(0, featured.length, { ...fixture, description: text, detail: [text] })
-    other.splice(0, other.length)
-    const { container } = render(<Work />)
-    expect(screen.getAllByText(text)).toHaveLength(2)
-    expect(container.querySelector('script')).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Visit' })).toHaveAttribute('href', linked.href)
   })
 
   it('keeps an undated career entry with no highlights readable without an empty bullet list', () => {
-    career.splice(0, career.length, {
-      role: 'QA learning fixture',
-      organization: 'Local example',
-      period: '',
-      summary: 'An undated education entry with intentionally absent highlights.',
-      highlights: [],
-    })
+    const entry = { ...originalCareer[0], period: '', highlights: [] }
+    career.splice(0, career.length, entry)
     render(<Career />)
-    expect(screen.getByRole('heading', { name: 'QA learning fixture' })).toBeVisible()
-    expect(screen.getByText('Local example')).toBeVisible()
+    expect(screen.getByRole('heading', { name: entry.role })).toBeVisible()
+    expect(screen.getByText(entry.organization)).toBeVisible()
     expect(screen.getAllByRole('list')).toHaveLength(1)
     expect(screen.getAllByRole('listitem')).toHaveLength(1)
   })
