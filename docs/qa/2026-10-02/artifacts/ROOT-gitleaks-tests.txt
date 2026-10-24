@@ -1,0 +1,7 @@
+Started: 2026-10-03T01:30:41+00:00
+Command: gitleaks dir __tests__ --redact=100 --no-banner --no-color --report-format json --report-path docs/qa/2026-10-02/artifacts/gitleaks-tests.json
+
+6:30PM INF scanned ~12413 bytes (12.41 KB) in 3.52ms
+6:30PM INF no leaks found
+
+- 2026-10-03T01:30:41+00:00 [ROOT] END `gitleaks-tests`: exit 0; elapsed 0.0s.

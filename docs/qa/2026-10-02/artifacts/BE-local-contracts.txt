@@ -1,0 +1,153 @@
+Started: 2026-10-03T01:26:19+00:00
+Command: node docs/qa/2026-10-02/local-contracts.mjs http://127.0.0.1:3017
+
+{
+  "startedAt": "2026-10-03T01:26:19.512Z",
+  "base": "http://127.0.0.1:3017",
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 67329,
+      "cacheControl": "s-maxage=31536000"
+    },
+    {
+      "method": "GET",
+      "path": "/opengraph-image?848fcb5258c2105b",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 61461,
+      "cacheControl": "public, max-age=0, must-revalidate"
+    },
+    {
+      "method": "HEAD",
+      "path": "/opengraph-image?848fcb5258c2105b",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 0,
+      "cacheControl": "public, max-age=0, must-revalidate"
+    },
+    {
+      "method": "POST",
+      "path": "/opengraph-image?848fcb5258c2105b",
+      "status": 405,
+      "contentType": null,
+      "bytes": 18,
+      "cacheControl": null
+    },
+    {
+      "method": "HEAD",
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 0,
+      "cacheControl": "s-maxage=31536000"
+    },
+    {
+      "method": "GET",
+      "path": "/?qa_boundary=%3Cqa-marker%3E",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 67329,
+      "cacheControl": "s-maxage=31536000"
+    },
+    {
+      "method": "GET",
+      "path": "/qa-does-not-exist",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 12507,
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "method": "GET",
+      "path": "/api/qa-does-not-exist",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 12507,
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "method": "GET",
+      "path": "/%ZZ",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 12507,
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "method": "GET",
+      "path": "/opengraph-image?848fcb5258c2105b",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 61461,
+      "cacheControl": "public, max-age=0, must-revalidate"
+    },
+    {
+      "method": "GET",
+      "path": "/opengraph-image?848fcb5258c2105b",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 61461,
+      "cacheControl": "public, max-age=0, must-revalidate"
+    },
+    {
+      "method": "GET",
+      "path": "/opengraph-image?848fcb5258c2105b",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 61461,
+      "cacheControl": "public, max-age=0, must-revalidate"
+    },
+    {
+      "method": "GET",
+      "path": "/opengraph-image?848fcb5258c2105b",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 61461,
+      "cacheControl": "public, max-age=0, must-revalidate"
+    },
+    {
+      "method": "GET",
+      "path": "/opengraph-image?848fcb5258c2105b",
+      "status": 200,
+      "contentType": "image/png",
+      "bytes": 61461,
+      "cacheControl": "public, max-age=0, must-revalidate"
+    }
+  ],
+  "metadata": {
+    "viewport": "width=device-width, initial-scale=1",
+    "next-size-adjust": "",
+    "description": "Technical founder building RegEngine, a compliance platform for food supply chain traceability. Previously business development at RadarFirst through its Vista Equity growth round, technical account management at SeatGeek, and personal aide to a sitting U.S. Senator.",
+    "og:title": "Christopher Sellers — Technical Founder",
+    "og:description": "Technical founder building RegEngine, a compliance platform for food supply chain traceability. Previously business development at RadarFirst through its Vista Equity growth round, technical account management at SeatGeek, and personal aide to a sitting U.S. Senator.",
+    "og:url": "https://chrissellers.vercel.app",
+    "og:site_name": "Christopher Sellers",
+    "og:image": "https://chrissellers.vercel.app/opengraph-image?848fcb5258c2105b",
+    "og:image:type": "image/png",
+    "og:image:width": "1200",
+    "og:image:height": "630",
+    "og:image:alt": "Christopher Sellers — Technical Founder",
+    "og:type": "website",
+    "twitter:card": "summary_large_image",
+    "twitter:title": "Christopher Sellers — Technical Founder",
+    "twitter:description": "Technical founder building RegEngine, a compliance platform for food supply chain traceability. Previously business development at RadarFirst through its Vista Equity growth round, technical account management at SeatGeek, and personal aide to a sitting U.S. Senator.",
+    "twitter:image": "https://chrissellers.vercel.app/opengraph-image?848fcb5258c2105b",
+    "twitter:image:alt": "Christopher Sellers — Technical Founder",
+    "twitter:image:type": "image/png",
+    "twitter:image:width": "1200",
+    "twitter:image:height": "630"
+  },
+  "image": {
+    "width": 1200,
+    "height": 630,
+    "sha256": "aabd8d99856f66e8785310aa55ca4168fb556cf68f6bf0e3ae14c1d0f4e8eacd"
+  },
+  "outcome": "PASS",
+  "finishedAt": "2026-10-03T01:26:19.558Z"
+}
+
+- 2026-10-03T01:26:19+00:00 [BE] END `local-contracts`: exit 0; elapsed 0.1s.

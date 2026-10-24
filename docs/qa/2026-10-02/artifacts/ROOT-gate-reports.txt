@@ -1,0 +1,268 @@
+Started: 2026-10-03T01:27:05+00:00
+Command: python3 -c 'from pathlib import Path; files=["docs/qa/2026-10-02/PLAN.md","docs/qa/2026-10-02/BE-FINDINGS.md","docs/qa/2026-10-02/UX-FINDINGS.md","jest.config.js"]; [print("\nFILE:",p,"\n",Path(p).read_text()) for p in files if Path(p).exists()]; print("ARTIFACT_FILES:"); [print(p) for p in Path("docs/qa/2026-10-02/artifacts").rglob("*") if p.is_file()]'
+
+
+FILE: docs/qa/2026-10-02/PLAN.md 
+ # QA plan — 2026-10-02
+
+PR: opened by orchestrator
+
+CI status: pending at time of writing
+
+## Scope and repository map
+
+Confirmed checkout: `/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers`; branch `qa/2026-10-02-sweep`; initial HEAD `0632a6b`; origin `PetrefiedThunder/Chrissellers`. Initial worktree clean; no repository-local AGENTS.md found. User-supplied instructions apply. Timebox: 60–90 minutes. UTC logging crosses into October 3 while the requested report date remains October 2.
+
+Single public Next.js 16 / React 18 page. `app/page.tsx` composes five server components in `src/components/`; three typed files in `src/content/` supply copy. `app/layout.tsx` defines metadata and Google build-time fonts; `app/opengraph-image.tsx` renders PNG metadata. `app/globals.css` and `tailwind.config.cjs` define styles. Jest currently tests content only. CI runs npm install, lint, Jest coverage, then build. No application API, persistent state, auth, database, OpenAPI schema, or SDK is present.
+
+## Risk ranking
+
+Scores use impact (1–5) × likelihood (1–5), before execution; scores prioritize effort, not finding severity.
+
+| Rank | Area | Impact | Likelihood | Score | Reason |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Build/install and public page availability | 5 | 4 | 20 | A single route is the entire product; framework and remote font dependencies can prevent delivery. |
+| 2 | Mobile/contact/navigation usability | 4 | 4 | 16 | Long text, sticky navigation, and an email-only conversion path are central to visitors. |
+| 3 | Accessibility and keyboard access | 4 | 3 | 12 | Portfolio content must remain reachable without pointer input and at narrow widths. |
+| 4 | Social metadata/image and credibility copy | 4 | 3 | 12 | Shared links and claims are the site's stated purpose. |
+| 5 | Supply-chain and public server surface | 4 | 3 | 12 | Framework exposure exists even without app-owned APIs. |
+| 6 | Performance, no-JS and dark mode | 3 | 3 | 9 | Readability and first content delivery matter on constrained devices. |
+
+## Three separate QA passes
+
+1. **Backend QA → server/build/content-contract lens** (`BE-LOG.md`): existing suite with baseline coverage; production rendering and PNG/metadata checks; deterministic content/URL boundary cases; dependency audit from the public package registry; static OWASP API applicability matrix. Auth, idempotency, concurrency, database and API-contract fuzzing are inapplicable to this static, read-only application. Favor exact rendering contracts over inventing an API or adding a fuzzing dependency without a parser target. Charter BE-X1 (20 minutes): try to break delivery, preview generation and invalid-route handling using local requests only.
+2. **Frontend QA** (`FE-LOG.md`): lint/type/build, component tests, browser journeys against localhost, console/network evidence, no-JS rendering, responsive viewports and browser Resource/Performance APIs for a Lighthouse-style performance pass. Production build preferred; local development server fallback documented if build unavailable. Attempt Chromium/Firefox/WebKit through the provided remote browser endpoint only. Charter FE-X1 (20 minutes): navigate from arrival to work, career and contact; inspect resource failures, invalid routes and reduced connectivity. Test pyramid: many cheap content/component assertions; a small number of real page flow checks.
+3. **UX QA** (`UX-LOG.md`): axe WCAG 2.2 AA subset, keyboard/focus and accessibility semantics, Nielsen's ten heuristics, mobile/desktop, light/dark, 320px reflow, reduced motion and 200% text sizing, plus screenshots. Inspect loading/empty/error applicability for a static page and its 404. Charter UX-X1 (20 minutes): evaluate whether a first-time visitor using keyboard or mobile can understand the work and reach contact. Automated axe does not certify full WCAG conformance; native screen-reader speech requires separate validation.
+
+Each lane has separate ownership and artifacts. Shared setup and aggregate verification are recorded in ROOT-LOG.md; SESSION-LOG.md is the combined timestamped command index. Added tests must preserve product behavior and mark reproduced defects expected-failure or skipped with finding IDs. Baseline and final coverage use identical denominators; report the legacy `src` scope and a broader app-inclusive scope if feasible.
+
+## Boundaries
+
+No product edits, commits, pushes, PR commands, deploys, production URLs, third-party credentialed APIs, databases, credentials or billing. Do not read environment/credential files. External links are checked syntactically and intercepted in browser tests; destination availability and email delivery remain unverified. Public npm metadata/package downloads are allowed. Browser contexts deny non-loopback requests. No direct browser launch/install. Google font fetches are outside the permitted network scope: build will use test-only local font response mocks if needed, clearly limiting font-fidelity evidence. No CI, migration, deploy or secret-baseline changes. CodeRabbit cloud review is excluded because it would transmit code to a third-party API; use an independent local reviewer instead. The orchestrator handles secret scanning, commit/push, and the single draft PR.
+
+
+FILE: docs/qa/2026-10-02/BE-FINDINGS.md 
+ # Backend QA — static delivery, metadata and dependencies
+
+This repository has no application backend API, authentication, database, request-bound data models, or state-changing business flow. The useful backend lens is the Next.js server/build output, metadata/image contracts and dependency supply chain. This pass made no product changes.
+
+## Findings
+
+| ID | Severity | Group | Title | Exact reproduction | Expected vs actual | Evidence | Suggested fix |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| BE-001 | Critical | Backend | Production Next.js dependency matches a Critical `next/og` RCE advisory | At the repository root run `npm audit --package-lock-only --omit=dev --json --registry=https://registry.npmjs.org --cache /private/tmp/chrissellers-qa-npm-cache`. Inspect the `next` entry and compare installed `16.3.3` with affected range `>=16.2.0 <16.3.6`. | Expected: no known Critical production dependency advisory. Actual: registry reports GHSA-vcvr-r3jv-pc5j, “Remote Code Execution in next/og ImageResponse”; the application imports and constructs this renderer. The affected dependency is confirmed; remote exploitability of this static, constant-input route is **not** established. No exploit was attempted. Severity is the registry advisory classification. | `package-lock.json:7276`; `app/opengraph-image.tsx:1`, `:9`; [production audit JSON](artifacts/BE-audit-production.json); [available patch](artifacts/BE-patch-version-retry.txt). | Upgrade and lock Next.js to a supported patched version at least `16.3.6`, confirmed available in the public registry. Review the advisory conditions, rebuild, rerun metadata/PNG/browser tests and audit. Audit currently reports `fixAvailable:false`, so do not assume an automatic `npm audit fix` will resolve it. |
+| BE-002 | Medium | Backend | Development dependency tree contains known glob-parser denial-of-service advisories | Run the full `npm audit --package-lock-only --json --registry=https://registry.npmjs.org --cache /private/tmp/chrissellers-qa-npm-cache`, then `npm ls brace-expansion braces --all`. Compare the full audit with `--omit=dev`. | Expected: maintained QA/build tools without known parser DoS advisories. Actual: locked `brace-expansion` 1.1.18/2.1.4 and `braces` 3.0.3 match recursion/CPU-exhaustion advisories, propagating to 40 High development dependency nodes. These are **not 40 independent application vulnerabilities**; the production-only audit excludes all 40. Exploitability through this site's fixed build patterns is unproven. | `package-lock.json:696`, `:3523`, `:3531`; [full audit JSON](artifacts/BE-audit-lock.json); [dependency paths](artifacts/BE-audit-paths.txt). | Update compatible lint/test/Tailwind dependency chains and lockfile to remove the affected parser versions, checking upstream compatibility. Avoid forced major upgrades or blanket overrides without tests. Re-run lint, Jest, production build and both audits. |
+
+Advisories were read from the public npm registry audit response. Advisory links identify the registry's sources; no GitHub advisory page, production URL or third-party service was contacted. BE-002 is rated Medium for conditional tooling availability impact; npm labels affected dependency nodes High. No exploit or attack payload was executed.
+
+## OWASP API Top 10 applicability
+
+| OWASP API 2023 area | Repository evidence and disposition |
+| --- | --- |
+| API1 — Broken object-level authorization | Not applicable: no request-controlled object lookups. `app/page.tsx:7` composes fixed server components. |
+| API2 — Broken authentication | Not applicable: no login, session, protected resources or authentication handlers. Public anonymous reading is intended. |
+| API3 — Broken object-property authorization | Not applicable: content comes from checked-in TypeScript constants; no request binding or mutable models. |
+| API4 — Unrestricted resource consumption | No app-owned request-driven work found. OG content/dimensions are fixed in `app/opengraph-image.tsx:4-9`. Local five-request image consistency checks are not a load/capacity test. Framework/hosting resource controls remain outside scope; see BE-001 for the dependency advisory. |
+| API5 — Broken function-level authorization | Not applicable: no privileged application functions or mutation routes. |
+| API6 — Unrestricted access to sensitive business flows | Not applicable: contact is a `mailto:` link (`src/components/Hero.tsx:25-26`); project destinations are ordinary links (`src/components/Work.tsx:54-58`). No checkout, booking or send operation exists. |
+| API7 — Server-side request forgery | No runtime request-dependent outbound fetches found. Build-time Google fonts are declared in `app/layout.tsx:2-16`; QA used local font responses rather than contacting that service. |
+| API8 — Security misconfiguration | Production scripts use `next build`/`next start` (`package.json:8-9`). BE-001/BE-002 document dependency risk. Deployed TLS, CDN headers and provider policy were not contacted and remain unverified. |
+| API9 — Improper inventory management | Source inventory contains homepage/layout/generated OG image and no application API, route-handler or middleware files. Next-generated framework routes are covered only by normal local HTTP behavior checks. |
+| API10 — Unsafe consumption of APIs | Not applicable at application runtime: no API clients or consumed remote responses found. Package supply chain reviewed by registry audit. |
+
+Source inspection found no raw HTML, dynamic code execution, request-derived URLs or runtime secret references in `app/`/`src/`. External new-tab links include `noopener noreferrer`. These are bounded source observations, not a comprehensive security certification or secret scan.
+
+## Test and exploration evidence
+
+- Baseline existing suite: 11/11 pass (shared root evidence). The existing suite only validates content values and does not cover `app/` files.
+- Added `__tests__/metadata.qa.test.tsx`: 9/9 pass. Contracts cover metadata consistency, actual profile/project URL parsing and credentials absence, layout language/skip-link/server content, OG size/type/alt, and renderer input content. The renderer is mocked only in unit tests; those tests do not prove PNG output.
+- Initial unit harness failed because jsdom selected React's browser server export without `TextEncoder`; the test-only environment export condition was corrected. A later build found the new metadata assertion needed to handle `string | URL`; only the assertion was corrected. Both dead ends remain in the logs.
+- Production localhost HTTP contracts: **14 responses passed** on `http://127.0.0.1:3017`: homepage GET/HEAD, social metadata, actual 1200×630 PNG, image HEAD and POST rejection (405), inert query input, three nonexistent/malformed paths (404 with noindex), and five parallel byte-identical image reads. [JSON](artifacts/BE-local-contracts.json), [command output](artifacts/BE-local-contracts.txt), [actual PNG](artifacts/BE-opengraph.png). No remote image URL was fetched: only the metadata image path was requested on loopback.
+- Visual inspection of the actual OG PNG confirms the complete headline, role, name and hostname fit without clipping. PNG size is 61,461 bytes; the image hash and dimensions are in the JSON. This checks present content; arbitrarily long future headlines are not guaranteed to fit.
+- Registry package lookup first failed because npm's home cache was unwritable; rerunning with the temporary cache succeeded. No permission or cache ownership was changed.
+
+## Limits
+
+No production, external destination, SMTP, native hosting setting, credential file or environment file was accessed. No auth/permission matrix, replay/mutation/idempotency test, application OpenAPI contract, database concurrency check or property-based API fuzzing applies because those surfaces do not exist. URL equivalence classes were exercised against real static content with the platform URL parser; no synthetic parser or new fuzzing dependency was introduced. Five parallel cached-image reads only check output consistency. Advisory exploit conditions, untrusted-input reachability, deployed edge defenses, external link availability and delivery of email remain unverified. Source-only checks do not validate the truth or freshness of portfolio claims.
+
+
+FILE: docs/qa/2026-10-02/UX-FINDINGS.md 
+ # UX QA pass
+
+PR: opened by orchestrator
+
+CI status: pending at time of writing
+
+Browser execution is pending; source review completed. This file will be replaced with verified findings and evidence.
+
+
+FILE: jest.config.js 
+ const nextJest = require('next/jest')
+
+const createJestConfig = nextJest({
+  dir: './',
+})
+
+const customJestConfig = {
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testEnvironment: 'jest-environment-jsdom',
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/$1',
+  },
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts'],
+}
+
+module.exports = createJestConfig(customJestConfig)
+
+ARTIFACT_FILES:
+docs/qa/2026-10-02/artifacts/BE-branch.txt
+docs/qa/2026-10-02/artifacts/ROOT-gate-inspect.txt
+docs/qa/2026-10-02/artifacts/ROOT-gate-files.txt
+docs/qa/2026-10-02/artifacts/BE-docs-update.txt
+docs/qa/2026-10-02/artifacts/ROOT-install-retry.txt
+docs/qa/2026-10-02/artifacts/ROOT-baseline-shell-failure-note.txt
+docs/qa/2026-10-02/artifacts/BE-audit-lock.txt
+docs/qa/2026-10-02/artifacts/BE-edit-test-note.txt
+docs/qa/2026-10-02/artifacts/BE-static-review-evidence.txt
+docs/qa/2026-10-02/artifacts/BE-identity.txt
+docs/qa/2026-10-02/artifacts/ROOT-tool-install.txt
+docs/qa/2026-10-02/artifacts/BE-local-contracts.txt
+docs/qa/2026-10-02/artifacts/ROOT-font-fixture-server.txt
+docs/qa/2026-10-02/artifacts/ROOT-build-webpack.txt
+docs/qa/2026-10-02/artifacts/UX-source-review.txt
+docs/qa/2026-10-02/artifacts/FE-fe-browser-runtime.txt
+docs/qa/2026-10-02/artifacts/BE-opengraph.png
+docs/qa/2026-10-02/artifacts/BE-patch-version-retry.txt
+docs/qa/2026-10-02/artifacts/ROOT-ux-report-read.txt
+docs/qa/2026-10-02/artifacts/ROOT-final-coverage.txt
+docs/qa/2026-10-02/artifacts/UX-source-inventory.txt
+docs/qa/2026-10-02/artifacts/BE-security-reference-2.txt
+docs/qa/2026-10-02/artifacts/BE-static-review-counts.txt
+docs/qa/2026-10-02/artifacts/ROOT-lint.txt
+docs/qa/2026-10-02/artifacts/BE-security-reference-0.txt
+docs/qa/2026-10-02/artifacts/BE-plan.txt
+docs/qa/2026-10-02/artifacts/BE-audit-lock.json
+docs/qa/2026-10-02/artifacts/BE-lock-versions.txt
+docs/qa/2026-10-02/artifacts/BE-worktrees.txt
+docs/qa/2026-10-02/artifacts/UX-plan.txt
+docs/qa/2026-10-02/artifacts/BE-security-reference-1.txt
+docs/qa/2026-10-02/artifacts/UX-identity.txt
+docs/qa/2026-10-02/artifacts/BE-source-read.txt
+docs/qa/2026-10-02/artifacts/UX-worktrees.txt
+docs/qa/2026-10-02/artifacts/BE-findings-draft-note.txt
+docs/qa/2026-10-02/artifacts/BE-sources.txt
+docs/qa/2026-10-02/artifacts/ROOT-install.txt
+docs/qa/2026-10-02/artifacts/UX-charter-setup.txt
+docs/qa/2026-10-02/artifacts/ROOT-gate-reports.txt
+docs/qa/2026-10-02/artifacts/ROOT-font-mock-inspect.txt
+docs/qa/2026-10-02/artifacts/ROOT-font-mock-source.txt
+docs/qa/2026-10-02/artifacts/BE-audit-paths.txt
+docs/qa/2026-10-02/artifacts/ROOT-font-export-source.txt
+docs/qa/2026-10-02/artifacts/BE-static-filemap.txt
+docs/qa/2026-10-02/artifacts/ROOT-file-safety.txt
+docs/qa/2026-10-02/artifacts/BE-local-contracts.json
+docs/qa/2026-10-02/artifacts/ROOT-build-turbopack-local-font-server.txt
+docs/qa/2026-10-02/artifacts/BE-test-type-fix.txt
+docs/qa/2026-10-02/artifacts/FE-fe-initial-inspection.txt
+docs/qa/2026-10-02/artifacts/ROOT-gate-memory.txt
+docs/qa/2026-10-02/artifacts/BE-image-review-note.txt
+docs/qa/2026-10-02/artifacts/BE-metadata-tests-typefix.txt
+docs/qa/2026-10-02/artifacts/BE-security-reference-list.txt
+docs/qa/2026-10-02/artifacts/ROOT-typecheck-final.txt
+docs/qa/2026-10-02/artifacts/BE-static-identity.txt
+docs/qa/2026-10-02/artifacts/BE-charter-start.txt
+docs/qa/2026-10-02/artifacts/UX-source-heuristics.txt
+docs/qa/2026-10-02/artifacts/UX-playwright-skill.txt
+docs/qa/2026-10-02/artifacts/ROOT-gate-worktrees.txt
+docs/qa/2026-10-02/artifacts/ROOT-tools-versions.txt
+docs/qa/2026-10-02/artifacts/UX-artifact-preparation.txt
+docs/qa/2026-10-02/artifacts/BE-metadata-tests-retry.txt
+docs/qa/2026-10-02/artifacts/FE-fe-component-tests.txt
+docs/qa/2026-10-02/artifacts/FE-fe-component-tests-typed.txt
+docs/qa/2026-10-02/artifacts/BE-dependency-lines.txt
+docs/qa/2026-10-02/artifacts/ROOT-baseline-coverage-summary.txt
+docs/qa/2026-10-02/artifacts/BE-audit-production.txt
+docs/qa/2026-10-02/artifacts/UX-browser-pass.txt
+docs/qa/2026-10-02/artifacts/FE-fe-harness-record.txt
+docs/qa/2026-10-02/artifacts/ROOT-lint-final.txt
+docs/qa/2026-10-02/artifacts/UX-npx-version.txt
+docs/qa/2026-10-02/artifacts/BE-patch-version.txt
+docs/qa/2026-10-02/artifacts/ROOT-build-final.txt
+docs/qa/2026-10-02/artifacts/ROOT-gate-review-skill.txt
+docs/qa/2026-10-02/artifacts/ROOT-typecheck.txt
+docs/qa/2026-10-02/artifacts/FE-fe-test-config.txt
+docs/qa/2026-10-02/artifacts/BE-audit-report-summary.txt
+docs/qa/2026-10-02/artifacts/BE-metadata-test-harness-fix.txt
+docs/qa/2026-10-02/artifacts/UX-instructions.txt
+docs/qa/2026-10-02/artifacts/BE-static-server-contracts.txt
+docs/qa/2026-10-02/artifacts/UX-script-syntax.txt
+docs/qa/2026-10-02/artifacts/BE-audit-production.json
+docs/qa/2026-10-02/artifacts/ROOT-gate-browser-scripts.txt
+docs/qa/2026-10-02/artifacts/ROOT-changes.txt
+docs/qa/2026-10-02/artifacts/BE-static-read-source.txt
+docs/qa/2026-10-02/artifacts/ROOT-font-paths.txt
+docs/qa/2026-10-02/artifacts/BE-static-review-files.txt
+docs/qa/2026-10-02/artifacts/ROOT-build-retry.txt
+docs/qa/2026-10-02/artifacts/BE-security-skill.txt
+docs/qa/2026-10-02/artifacts/ROOT-font-packages.txt
+docs/qa/2026-10-02/artifacts/FE-fe-throttle-validity.txt
+docs/qa/2026-10-02/artifacts/BE-metadata-tests.txt
+docs/qa/2026-10-02/artifacts/UX-remote.txt
+docs/qa/2026-10-02/artifacts/BE-add-local-contracts-note.txt
+docs/qa/2026-10-02/artifacts/ROOT-report-status.txt
+docs/qa/2026-10-02/artifacts/BE-tracked-source.txt
+docs/qa/2026-10-02/artifacts/BE-content-read.txt
+docs/qa/2026-10-02/artifacts/ROOT-gate-origin.txt
+docs/qa/2026-10-02/artifacts/UX-setup-status.txt
+docs/qa/2026-10-02/artifacts/FE-fe-charter-start.txt
+docs/qa/2026-10-02/artifacts/ROOT-build.txt
+docs/qa/2026-10-02/artifacts/BE-static-components.txt
+docs/qa/2026-10-02/artifacts/UX-report-read.txt
+docs/qa/2026-10-02/artifacts/ROOT-log-time-review.txt
+docs/qa/2026-10-02/artifacts/UX-runner-review.txt
+docs/qa/2026-10-02/artifacts/UX-copy-review.txt
+docs/qa/2026-10-02/artifacts/ROOT-local-server.txt
+docs/qa/2026-10-02/artifacts/FE-fe-source-review.txt
+docs/qa/2026-10-02/artifacts/ROOT-baseline-retry.txt
+docs/qa/2026-10-02/artifacts/FE-fe-performance-summary.txt
+docs/qa/2026-10-02/artifacts/BE-targeted-static-check.txt
+docs/qa/2026-10-02/artifacts/ROOT-qa-file-inventory.txt
+docs/qa/2026-10-02/artifacts/ROOT-read-qa-tests.txt
+docs/qa/2026-10-02/artifacts/FE-fe-browser-syntax.txt
+docs/qa/2026-10-02/artifacts/BE-next-security-guidance.txt
+docs/qa/2026-10-02/artifacts/ROOT-gate-identity.txt
+docs/qa/2026-10-02/artifacts/BE-remote.txt
+docs/qa/2026-10-02/artifacts/FE-fe-type-compatibility.txt
+docs/qa/2026-10-02/artifacts/ROOT-tool-install-retry.txt
+docs/qa/2026-10-02/artifacts/frontend/no-js-contact.png
+docs/qa/2026-10-02/artifacts/frontend/runtime-report.json
+docs/qa/2026-10-02/artifacts/frontend/desktop-contact.png
+docs/qa/2026-10-02/artifacts/frontend/desktop-home.png
+docs/qa/2026-10-02/artifacts/ux/reduced-motion-375-contact.png
+docs/qa/2026-10-02/artifacts/ux/tablet-light-768.png
+docs/qa/2026-10-02/artifacts/ux/mobile-text200-375.png
+docs/qa/2026-10-02/artifacts/ux/mobile-light-320-contact.png
+docs/qa/2026-10-02/artifacts/ux/keyboard-skip-focus.png
+docs/qa/2026-10-02/artifacts/ux/reduced-motion-375.png
+docs/qa/2026-10-02/artifacts/ux/mobile-light-320.png
+docs/qa/2026-10-02/artifacts/ux/ux-report.json
+docs/qa/2026-10-02/artifacts/ux/mobile-dark-320.png
+docs/qa/2026-10-02/artifacts/ux/desktop-dark-1440.png
+docs/qa/2026-10-02/artifacts/ux/mobile-dark-320-contact.png
+docs/qa/2026-10-02/artifacts/ux/mobile-text200-375-contact.png
+docs/qa/2026-10-02/artifacts/ux/mobile-light-375.png
+docs/qa/2026-10-02/artifacts/ux/desktop-text200-1280.png
+docs/qa/2026-10-02/artifacts/ux/desktop-light-1440.png
+docs/qa/2026-10-02/artifacts/ux/mobile-light-375-contact.png
+docs/qa/2026-10-02/artifacts/ux/404-page.png
+docs/qa/2026-10-02/artifacts/coverage-before/coverage-summary.json
+docs/qa/2026-10-02/artifacts/coverage-before/coverage-final.json
+docs/qa/2026-10-02/artifacts/coverage-after/coverage-summary.json
+docs/qa/2026-10-02/artifacts/coverage-after/coverage-final.json
+
+- 2026-10-03T01:27:05+00:00 [ROOT] END `gate-reports`: exit 0; elapsed 0.0s.

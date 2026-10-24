@@ -1,0 +1,6 @@
+Started: 2026-10-03T01:27:09+00:00
+Command: python3 -c 'from datetime import datetime, timezone; from pathlib import Path; import json; now=datetime.now(timezone.utc).isoformat(timespec="seconds"); r=json.loads(Path("docs/qa/2026-10-02/artifacts/frontend/runtime-report.json").read_text()); entry="\n## FE-X1 closeout\n\n"+now+" — Runtime session "+r["started"]+" to "+r["finished"]+"; command elapsed 5.4 seconds. The 20-minute charter was an upper bound: all scoped scripted journeys and screenshot inspection completed within it. Chromium, Firefox and WebKit actual engines all passed local navigation. JavaScript-disabled journey and local 404 passed. Zero homepage console/page/network errors or external requests. Requested throttled sample: FCP/LCP 568 ms, CLS 0, observed long-task excess 9 ms; not a Lighthouse or field-performance claim.\n\nReviewed local `desktop-home.png` and `desktop-contact.png` with image viewer; no desktop visual defect observed. Created `FE-FINDINGS.md` with apply_patch: no confirmed FE product defect, exact evidence and limitations. No product edits.\n"; p=Path("docs/qa/2026-10-02/FE-LOG.md"); p.write_text(p.read_text()+entry); print("Frontend pass artifacts and closeout recorded.")'
+
+Frontend pass artifacts and closeout recorded.
+
+- 2026-10-03T01:27:09+00:00 [FE] END `fe-closeout-record`: exit 0; elapsed 0.0s.

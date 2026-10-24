@@ -1,0 +1,22 @@
+Started: 2026-10-03T01:25:16+00:00
+Command: env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build
+
+
+> chrissellers@2.0.0 build
+> next build
+
+▲ Next.js 16.3.3 (Turbopack)
+✓ Running next.config.js took 5ms
+- Experiments (use with caution):
+  · optimizePackageImports
+
+  Creating an optimized production build ...
+⚠ Turbopack's filesystem cache has been deleted because we previously detected an internal error in Turbopack. Builds or page loads may be slower as a result.
+✓ Compiled successfully in 1206ms
+  Running TypeScript ...
+__tests__/metadata.qa.test.tsx(36,35): error TS2339: Property 'href' does not exist on type 'string | URL'.
+  Property 'href' does not exist on type 'string'.
+Failed to type check.
+
+
+- 2026-10-03T01:25:18+00:00 [ROOT] END `build-turbopack-local-font-server`: exit 1; elapsed 2.4s.

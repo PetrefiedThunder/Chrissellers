@@ -1,0 +1,104 @@
+Started: 2026-10-03T01:24:18+00:00
+Command: env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build
+
+
+> chrissellers@2.0.0 build
+> next build
+
+▲ Next.js 16.3.3 (Turbopack)
+✓ Running next.config.js took 5ms
+- Experiments (use with caution):
+  · optimizePackageImports
+
+  Creating an optimized production build ...
+⚠ Turbopack's filesystem cache has been deleted because we previously detected an internal error in Turbopack. Builds or page loads may be slower as a result.
+
+thread 'tokio-rt-worker' (191436) panicked at turbopack/crates/turbo-tasks-fetch/src/client.rs:188:55:
+request should be cloneable
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'tokio-rt-worker' (191447) panicked at turbopack/crates/turbo-tasks-fetch/src/client.rs:188:55:
+request should be cloneable
+
+> Build error occurred
+Error: Turbopack build failed with 2 errors:
+[next]/internal/font/google/inter_c15e96cb.module.css:2:103
+Error: Module not found: Can't resolve '@vercel/turbopack-next/internal/font/google/font'
+  [90m1 |[0m ...
+[31m[1m>[0m [90m2 |[0m ...t-weight: [35m100[0m [35m900[0m; font-display: swap; src: url(@vercel/turbopack-next/internal/font/goo...
+  [90m  |[0m                                                [31m[1m^[0m
+  [90m3 |[0m ...
+  [90m4 |[0m ...
+  [90m5 |[0m ...
+
+request should be cloneable
+
+Debug info:
+- Execution of *<ModuleAssetContext as AssetContext>::process_resolve_result failed
+- Execution of resolve failed
+- Execution of resolve_internal failed
+- Execution of <NextFontGoogleFontFileReplacer as ImportMappingReplacement>::result failed
+- Execution of FetchClientConfig::fetch failed
+- Execution of FetchClientConfig::fetch_inner failed
+- request should be cloneable
+Error while looking up import map: request should be cloneable
+
+Debug info:
+- Execution of <NextFontGoogleFontFileReplacer as ImportMappingReplacement>::result failed
+- Execution of FetchClientConfig::fetch failed
+- Execution of FetchClientConfig::fetch_inner failed
+- request should be cloneable
+
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/inter_c15e96cb.module.css
+    [next]/internal/font/google/inter_c15e96cb.js
+    ./app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[next]/internal/font/google/space_grotesk_e6988195.module.css:2:111
+Error: Module not found: Can't resolve '@vercel/turbopack-next/internal/font/google/font'
+  [90m1 |[0m ...
+[31m[1m>[0m [90m2 |[0m ...t-weight: [35m300[0m [35m700[0m; font-display: swap; src: url(@vercel/turbopack-next/internal/font/goo...
+  [90m  |[0m                                                [31m[1m^[0m
+  [90m3 |[0m ...
+  [90m4 |[0m ...
+  [90m5 |[0m ...
+
+request should be cloneable
+
+Debug info:
+- Execution of *<ModuleAssetContext as AssetContext>::process_resolve_result failed
+- Execution of resolve failed
+- Execution of resolve_internal failed
+- Execution of <NextFontGoogleFontFileReplacer as ImportMappingReplacement>::result failed
+- Execution of FetchClientConfig::fetch failed
+- Execution of FetchClientConfig::fetch_inner failed
+- request should be cloneable
+Error while looking up import map: request should be cloneable
+
+Debug info:
+- Execution of <NextFontGoogleFontFileReplacer as ImportMappingReplacement>::result failed
+- Execution of FetchClientConfig::fetch failed
+- Execution of FetchClientConfig::fetch_inner failed
+- request should be cloneable
+
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/space_grotesk_e6988195.module.css
+    [next]/internal/font/google/space_grotesk_e6988195.js
+    ./app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> ([next]/internal/font/google/inter_c15e96cb.module.css:2:103)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> ([next]/internal/font/google/space_grotesk_e6988195.module.css:2:111)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+
+- 2026-10-03T01:24:20+00:00 [ROOT] END `build-retry`: exit 1; elapsed 1.8s.

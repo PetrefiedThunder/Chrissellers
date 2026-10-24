@@ -1,0 +1,6 @@
+Started: 2026-10-03T01:24:28+00:00
+Command: python3 -c 'print("Nielsen source-review notes: explicit project states support visibility; headings/nav match portfolio concepts; anchor navigation supports control; no editable fields or irreversible actions to validate; visible work/career/contact options reduce recall; skip link and clear focus CSS support keyboard efficiency; technical copy targets infrastructure audience; contact address is readable/copyable when layout fits. Error recovery requires browser verification. No speculative content claims filed because external proof is out of scope.")'
+
+Nielsen source-review notes: explicit project states support visibility; headings/nav match portfolio concepts; anchor navigation supports control; no editable fields or irreversible actions to validate; visible work/career/contact options reduce recall; skip link and clear focus CSS support keyboard efficiency; technical copy targets infrastructure audience; contact address is readable/copyable when layout fits. Error recovery requires browser verification. No speculative content claims filed because external proof is out of scope.
+
+- 2026-10-03T01:24:28+00:00 [UX] END `source-heuristics`: exit 0; elapsed 0.0s.

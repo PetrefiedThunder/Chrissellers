@@ -1,0 +1,14 @@
+Started: 2026-10-03T01:29:24+00:00
+Command: /private/tmp/chrissellers-qa-node20/node_modules/node/bin/node node_modules/jest/bin/jest.js --ci --runInBand
+
+PASS __tests__/components.qa.test.tsx
+PASS __tests__/metadata.qa.test.tsx
+PASS __tests__/content.test.ts
+
+Test Suites: 3 passed, 3 total
+Tests:       29 passed, 29 total
+Snapshots:   0 total
+Time:        0.879 s, estimated 1 s
+Ran all test suites.
+
+- 2026-10-03T01:29:25+00:00 [ROOT] END `node20-tests`: exit 0; elapsed 1.5s.

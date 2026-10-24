@@ -1,0 +1,49 @@
+Started: 2026-10-03T01:22:58+00:00
+Command: npm test -- --ci --runInBand --coverage --coverageDirectory=docs/qa/2026-10-02/artifacts/coverage-before --coverageReporters=json-summary --coverageReporters=text --coverageReporters=json '--collectCoverageFrom=src/**/*.{ts,tsx}' '--collectCoverageFrom=app/**/*.{ts,tsx}'
+
+
+> chrissellers@2.0.0 test
+> jest --ci --runInBand --coverage --coverageDirectory=docs/qa/2026-10-02/artifacts/coverage-before --coverageReporters=json-summary --coverageReporters=text --coverageReporters=json --collectCoverageFrom=src/**/*.{ts,tsx} --collectCoverageFrom=app/**/*.{ts,tsx}
+
+PASS __tests__/content.test.ts
+  profile
+    ✓ has the copy every preview card depends on (1 ms)
+    ✓ only links somewhere publishable
+  work
+    ✓ RegEngine is fully described (1 ms)
+    ✓ Agent Middleware API is fully described
+    ✓ SupportCarr is fully described
+    ✓ PrepChef is fully described
+    ✓ TopoSonics is fully described
+    ✓ PopFact is fully described (1 ms)
+    ✓ states a status for every project so nothing reads as shipped by default
+    ✓ only links somewhere publishable
+  career
+    ✓ describes every role (1 ms)
+
+----------------------|---------|----------|---------|---------|-------------------
+File                  | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------------------|---------|----------|---------|---------|-------------------
+All files             |   14.81 |        0 |       0 |    8.69 |                   
+ app                  |       0 |      100 |       0 |       0 |                   
+  layout.tsx          |       0 |      100 |       0 |       0 | 2-36              
+  opengraph-image.tsx |       0 |      100 |       0 |       0 | 1-9               
+  page.tsx            |       0 |      100 |       0 |       0 | 1-7               
+ src/components       |       0 |        0 |       0 |       0 |                   
+  Career.tsx          |       0 |        0 |       0 |       0 | 1-35              
+  Contact.tsx         |       0 |      100 |       0 |       0 | 1-4               
+  Hero.tsx            |       0 |      100 |       0 |       0 | 1-18              
+  Nav.tsx             |       0 |      100 |       0 |       0 | 1-21              
+  Work.tsx            |       0 |        0 |       0 |       0 | 1-91              
+ src/content          |     100 |      100 |     100 |     100 |                   
+  career.ts           |     100 |      100 |     100 |     100 |                   
+  profile.ts          |     100 |      100 |     100 |     100 |                   
+  work.ts             |     100 |      100 |     100 |     100 |                   
+----------------------|---------|----------|---------|---------|-------------------
+Test Suites: 1 passed, 1 total
+Tests:       11 passed, 11 total
+Snapshots:   0 total
+Time:        0.392 s
+Ran all test suites.
+
+- 2026-10-03T01:23:00+00:00 [ROOT] END `baseline-retry`: exit 0; elapsed 1.9s.

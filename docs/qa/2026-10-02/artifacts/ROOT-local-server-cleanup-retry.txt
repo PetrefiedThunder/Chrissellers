@@ -1,0 +1,15 @@
+Started: 2026-10-03T01:33:38+00:00
+Command: python3 -c 'import subprocess,os,signal,datetime; from pathlib import Path; root=Path.cwd();
+for port,pid in [(3017,53015),(3977,50508)]:
+ active=subprocess.check_output(["lsof","-tiTCP:"+str(port),"-sTCP:LISTEN"],text=True).split(); assert str(pid) in active
+ cwd=subprocess.check_output(["lsof","-a","-p",str(pid),"-d","cwd","-Fn"],text=True); assert "n"+str(root) in cwd
+ os.kill(pid,signal.SIGTERM); print("Gracefully stopped verified QA listener",port,"PID",pid)
+(root/"docs/qa/2026-10-02/SESSION-LOG.md").open("a").write("\n- "+datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")+" [ROOT] QA application/font servers deliberately terminated after verification. Related signal/nonzero exits mean cleanup, not failing tests. Browser server remains owned by orchestrator. Initial cleanup used ps, denied by sandbox; lsof verified port/PID/repository cwd before successful retry.\n")'
+
+Traceback (most recent call last):
+  File "<string>", line 5, in <module>
+    os.kill(pid,signal.SIGTERM); print("Gracefully stopped verified QA listener",port,"PID",pid)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted
+
+- 2026-10-03T01:33:38+00:00 [ROOT] END `local-server-cleanup-retry`: exit 1; elapsed 0.1s.

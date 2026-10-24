@@ -1,0 +1,59 @@
+Started: 2026-10-03T01:26:30+00:00
+Command: python3 -c 'import json; from pathlib import Path; r=json.loads(Path("docs/qa/2026-10-02/artifacts/frontend/runtime-report.json").read_text()); p=r["performance"]; print(json.dumps({"paints":p["paint"],"metrics":p["webVitalsApproximation"],"resource_count":len(p["resources"]),"encoded_resource_bytes":sum(x["encodedBodySize"] for x in p["resources"]),"transferred_resource_bytes":sum(x["transferSize"] for x in p["resources"]),"script_encoded_bytes":sum(x["encodedBodySize"] for x in p["resources"] if x["type"] == "script"),"script_count":sum(x["type"] == "script" for x in p["resources"]),"document_TTFB_ms":p["navigation"][0]["responseStart"]-p["navigation"][0]["requestStart"],"dom_content_loaded_ms":p["navigation"][0]["domContentLoadedEventEnd"],"engine_smokes":r["engines"]},indent=2))'
+
+{
+  "paints": [
+    {
+      "name": "first-paint",
+      "entryType": "paint",
+      "startTime": 568,
+      "duration": 0,
+      "navigationId": 8684,
+      "paintTime": 560.5,
+      "presentationTime": 568
+    },
+    {
+      "name": "first-contentful-paint",
+      "entryType": "paint",
+      "startTime": 568,
+      "duration": 0,
+      "navigationId": 8684,
+      "paintTime": 560.5,
+      "presentationTime": 568
+    }
+  ],
+  "metrics": {
+    "lcp": 568,
+    "cls": 0,
+    "longTaskMs": 9
+  },
+  "resource_count": 8,
+  "encoded_resource_bytes": 207883,
+  "transferred_resource_bytes": 210283,
+  "script_encoded_bytes": 127942,
+  "script_count": 4,
+  "document_TTFB_ms": 2.0,
+  "dom_content_loaded_ms": 435,
+  "engine_smokes": [
+    {
+      "requested": "chromium",
+      "actual": "chromium",
+      "version": "153.0.8010.12",
+      "outcome": "connected"
+    },
+    {
+      "requested": "firefox",
+      "actual": "firefox",
+      "version": "155.0",
+      "outcome": "pass"
+    },
+    {
+      "requested": "webkit",
+      "actual": "webkit",
+      "version": "26.6",
+      "outcome": "pass"
+    }
+  ]
+}
+
+- 2026-10-03T01:26:30+00:00 [FE] END `fe-performance-summary`: exit 0; elapsed 0.0s.

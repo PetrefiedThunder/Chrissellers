@@ -1,0 +1,6 @@
+Started: 2026-10-03T01:24:07+00:00
+Command: python3 -c 'from pathlib import Path; p=Path("__tests__/metadata.qa.test.tsx"); p.write_text("/** @jest-environment-options {\"customExportConditions\": [\"node\", \"node-addons\"]} */\n"+p.read_text()); print("Use Node React server exports inside jsdom so SSR tests do not require browser TextEncoder; product unchanged.")'
+
+Use Node React server exports inside jsdom so SSR tests do not require browser TextEncoder; product unchanged.
+
+- 2026-10-03T01:24:07+00:00 [BE] END `metadata-test-harness-fix`: exit 0; elapsed 0.0s.

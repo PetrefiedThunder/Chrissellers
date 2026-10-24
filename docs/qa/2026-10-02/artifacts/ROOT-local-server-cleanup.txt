@@ -1,0 +1,37 @@
+Started: 2026-10-03T01:33:10+00:00
+Command: python3 -c 'import subprocess,os,signal; from pathlib import Path; import shutil,datetime; q=Path("docs/qa/2026-10-02"); shutil.copyfile("/private/tmp/chrissellers-qa-gitleaks-final.json",q/"artifacts/gitleaks-qa-final.json");
+for port,expected in [(3017,"next-server"),(3977,"http.server")]:
+ result=subprocess.run(["lsof","-tiTCP:"+str(port),"-sTCP:LISTEN"],capture_output=True,text=True)
+ for value in result.stdout.split():
+  pid=int(value); command=subprocess.check_output(["ps","-p",str(pid),"-o","command="],text=True).strip()
+  assert expected in command, "Unexpected local port owner; refusing shutdown"
+  os.kill(pid,signal.SIGTERM); print("Gracefully stopped QA listener on port",port,"pid",pid)
+(q/"SESSION-LOG.md").open("a").write("\n- "+datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")+" [ROOT] Local application and font servers deliberately terminated after verification; related nonzero process exit codes are expected cleanup, not failed product tests. Public browser server was not terminated.\n")'
+
+Traceback (most recent call last):
+  File "<string>", line 5, in <module>
+    pid=int(value); command=subprocess.check_output(["ps","-p",str(pid),"-o","command="],text=True).strip()
+                            ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 473, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               **kwargs).stdout
+               ^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 555, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 1990, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: 'ps'
+
+- 2026-10-03T01:33:10+00:00 [ROOT] END `local-server-cleanup`: exit 1; elapsed 0.1s.
