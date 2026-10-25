@@ -47,7 +47,7 @@
 
 - 2026-10-03T01:22:35+00:00 [BE] END `static-read-source`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:22:38+00:00 [BE] START `cat /Users/sellers/.codex/skills/security-best-practices/SKILL.md`; output: `artifacts/BE-security-skill.txt`
+- 2026-10-03T01:22:38+00:00 [BE] START `cat ~/.codex/skills/security-best-practices/SKILL.md`; output: `artifacts/BE-security-skill.txt`
 
 - 2026-10-03T01:22:38+00:00 [BE] END `security-skill`: exit 0; elapsed 0.0s.
 
@@ -55,15 +55,15 @@
 
 - 2026-10-03T01:22:41+00:00 [BE] END `static-components`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:22:44+00:00 [BE] START `rg --files /Users/sellers/.codex/skills/security-best-practices/references`; output: `artifacts/BE-security-reference-list.txt`
+- 2026-10-03T01:22:44+00:00 [BE] START `rg --files ~/.codex/skills/security-best-practices/references`; output: `artifacts/BE-security-reference-list.txt`
 
 - 2026-10-03T01:22:44+00:00 [BE] END `security-reference-list`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:22:47+00:00 [BE] START `cat /Users/sellers/.codex/skills/security-best-practices/references/javascript-typescript-react-web-frontend-security.md`; output: `artifacts/BE-security-reference-0.txt`
+- 2026-10-03T01:22:47+00:00 [BE] START `cat ~/.codex/skills/security-best-practices/references/javascript-typescript-react-web-frontend-security.md`; output: `artifacts/BE-security-reference-0.txt`
 
-- 2026-10-03T01:22:47+00:00 [BE] START `cat /Users/sellers/.codex/skills/security-best-practices/references/javascript-general-web-frontend-security.md`; output: `artifacts/BE-security-reference-2.txt`
+- 2026-10-03T01:22:47+00:00 [BE] START `cat ~/.codex/skills/security-best-practices/references/javascript-general-web-frontend-security.md`; output: `artifacts/BE-security-reference-2.txt`
 
-- 2026-10-03T01:22:47+00:00 [BE] START `cat /Users/sellers/.codex/skills/security-best-practices/references/javascript-typescript-nextjs-web-server-security.md`; output: `artifacts/BE-security-reference-1.txt`
+- 2026-10-03T01:22:47+00:00 [BE] START `cat ~/.codex/skills/security-best-practices/references/javascript-typescript-nextjs-web-server-security.md`; output: `artifacts/BE-security-reference-1.txt`
 
 - 2026-10-03T01:22:47+00:00 [BE] END `security-reference-2`: exit 0; elapsed 0.0s.
 
@@ -75,7 +75,7 @@
 
 - 2026-10-03T01:22:49+00:00 [BE] END `static-server-contracts`: exit 0; elapsed 0.1s.
 
-- 2026-10-03T01:22:54+00:00 [BE] START `sed -n 1,230p /Users/sellers/.codex/skills/security-best-practices/references/javascript-typescript-nextjs-web-server-security.md`; output: `artifacts/BE-next-security-guidance.txt`
+- 2026-10-03T01:22:54+00:00 [BE] START `sed -n 1,230p ~/.codex/skills/security-best-practices/references/javascript-typescript-nextjs-web-server-security.md`; output: `artifacts/BE-next-security-guidance.txt`
 
 - 2026-10-03T01:22:54+00:00 [BE] END `next-security-guidance`: exit 0; elapsed 0.0s.
 

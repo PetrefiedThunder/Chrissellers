@@ -1,8 +1,0 @@
-Started: 2026-10-03T01:29:16+00:00
-Command: python3 -c 'from pathlib import Path; q=Path("docs/qa/2026-10-02"); names=["FINDINGS.md","COVERAGE.md","SUMMARY.md"]; [print(n, "READY" if (q/n).exists() else "PENDING") for n in names]; [print("FILE",n,"\n",(q/n).read_text()) for n in names if (q/n).exists()]'
-
-FINDINGS.md PENDING
-COVERAGE.md PENDING
-SUMMARY.md PENDING
-
-- 2026-10-03T01:29:16+00:00 [ROOT] END `gate-report-readiness`: exit 0; elapsed 0.0s.

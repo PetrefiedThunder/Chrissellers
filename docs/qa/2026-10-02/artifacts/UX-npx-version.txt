@@ -1,6 +1,0 @@
-Started: 2026-10-03T01:22:37+00:00
-Command: npx --version
-
-11.19.0
-
-- 2026-10-03T01:22:37+00:00 [UX] END `npx-version`: exit 0; elapsed 0.1s.

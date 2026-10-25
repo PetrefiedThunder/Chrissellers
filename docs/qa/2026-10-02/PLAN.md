@@ -6,7 +6,7 @@ CI status: pending at time of writing
 
 ## Scope and repository map
 
-Confirmed checkout: `/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers`; branch `qa/2026-10-02-sweep`; initial HEAD `0632a6b`; origin `PetrefiedThunder/Chrissellers`. Initial worktree clean; no repository-local AGENTS.md found. User-supplied instructions apply. Timebox: 60–90 minutes. UTC logging crosses into October 3 while the requested report date remains October 2.
+Confirmed checkout: `.`; branch `qa/2026-10-02-sweep`; initial HEAD `0632a6b`; origin `PetrefiedThunder/Chrissellers`. Initial worktree clean; no repository-local AGENTS.md found. User-supplied instructions apply. Timebox: 60–90 minutes. UTC logging crosses into October 3 while the requested report date remains October 2.
 
 Single public Next.js 16 / React 18 page. `app/page.tsx` composes five server components in `src/components/`; three typed files in `src/content/` supply copy. `app/layout.tsx` defines metadata and Google build-time fonts; `app/opengraph-image.tsx` renders PNG metadata. `app/globals.css` and `tailwind.config.cjs` define styles. Jest currently tests content only. CI runs npm install, lint, Jest coverage, then build. No application API, persistent state, auth, database, OpenAPI schema, or SDK is present.
 

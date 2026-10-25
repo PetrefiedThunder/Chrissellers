@@ -40,3 +40,6 @@ out/
 # Build artifacts
 *.tsbuildinfo
 coverage/
+
+# QA run raw artifacts (logs, screenshots, coverage)
+docs/qa/*/artifacts/

@@ -1,7 +1,0 @@
-Started: 2026-10-03T01:28:37+00:00
-Command: python3 -c 'import json,re;from pathlib import Path;qa=Path("docs/qa/2026-10-02");d=json.loads((qa/"artifacts/ux/ux-report.json").read_text());assert sum(c["status"]=="passed" for c in d["checks"])==19;assert {c.get("findingId") for c in d["checks"] if c["status"]=="expected-failure"}=={"UX-001","UX-002"}; assert d["blockedRequests"]==[]; doc=(qa/"UX-FINDINGS.md").read_text();links=re.findall(r"\]\(([^)]+)\)",doc);assert all((qa/p).exists() for p in links); print("UX documentation written via apply_patch; referenced artifacts exist; 19 passed/2 expected failures; zero external requests; product source unchanged by UX lane."); print("UX-X1 complete: Medium=1 Low=1. Manual/automated limitations recorded in UX-FINDINGS.md.")'
-
-UX documentation written via apply_patch; referenced artifacts exist; 19 passed/2 expected failures; zero external requests; product source unchanged by UX lane.
-UX-X1 complete: Medium=1 Low=1. Manual/automated limitations recorded in UX-FINDINGS.md.
-
-- 2026-10-03T01:28:37+00:00 [UX] END `final-validation`: exit 0; elapsed 0.0s.

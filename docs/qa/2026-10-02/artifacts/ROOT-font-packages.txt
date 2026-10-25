@@ -1,7 +1,0 @@
-Started: 2026-10-03T01:23:07+00:00
-Command: npm install --prefix /private/tmp/chrissellers-qa-20261002-tools --ignore-scripts --no-audit --no-fund --save-exact --cache /private/tmp/chrissellers-qa-npm-cache @fontsource-variable/inter @fontsource-variable/space-grotesk
-
-
-added 2 packages in 636ms
-
-- 2026-10-03T01:23:07+00:00 [ROOT] END `font-packages`: exit 0; elapsed 0.7s.

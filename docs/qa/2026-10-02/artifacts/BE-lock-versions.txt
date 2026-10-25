@@ -1,9 +1,0 @@
-Started: 2026-10-03T01:23:12+00:00
-Command: python3 -c 'import json; from pathlib import Path; p=Path("package-lock.json"); data=json.loads(p.read_text()); wanted=["node_modules/next","node_modules/braces","node_modules/brace-expansion","node_modules/@eslint/config-array/node_modules/brace-expansion"]; lines=p.read_text().splitlines(); [(print(k, "version="+data["packages"][k]["version"], "dev="+str(data["packages"][k].get("dev",False)), "line="+str(next(i for i,l in enumerate(lines,1) if chr(34)+k+chr(34) in l)))) for k in wanted]'
-
-node_modules/next version=16.3.3 dev=False line=7275
-node_modules/braces version=3.0.3 dev=True line=3530
-node_modules/brace-expansion version=2.1.4 dev=True line=3522
-node_modules/@eslint/config-array/node_modules/brace-expansion version=1.1.18 dev=True line=695
-
-- 2026-10-03T01:23:12+00:00 [BE] END `lock-versions`: exit 0; elapsed 0.0s.

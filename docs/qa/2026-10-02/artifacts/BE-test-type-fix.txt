@@ -1,7 +1,0 @@
-Started: 2026-10-03T01:25:25+00:00
-Command: python3 -c 'from pathlib import Path; p=Path("__tests__/metadata.qa.test.tsx"); p.write_text(p.read_text().replace("metadata.metadataBase?.href", "metadata.metadataBase?.toString()")); print("Correct QA assertion for Metadata metadataBase union string|URL; behavior assertion unchanged."); print("Previous local-contracts.mjs patch used incorrect parent path and was sandbox-rejected; no file was written.")'
-
-Correct QA assertion for Metadata metadataBase union string|URL; behavior assertion unchanged.
-Previous local-contracts.mjs patch used incorrect parent path and was sandbox-rejected; no file was written.
-
-- 2026-10-03T01:25:25+00:00 [BE] END `test-type-fix`: exit 0; elapsed 0.0s.

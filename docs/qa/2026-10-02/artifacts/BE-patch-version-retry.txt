@@ -1,6 +1,0 @@
-Started: 2026-10-03T01:23:48+00:00
-Command: npm view next@16.3.6 version --registry=https://registry.npmjs.org --cache /private/tmp/chrissellers-qa-npm-cache
-
-16.3.6
-
-- 2026-10-03T01:23:49+00:00 [BE] END `patch-version-retry`: exit 0; elapsed 0.9s.

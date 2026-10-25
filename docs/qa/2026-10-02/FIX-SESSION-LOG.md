@@ -2,9 +2,9 @@
 
 All timestamps UTC. Local fix pass started 2026-10-03; findings retain their sweep date. No remote mutations, production access, environment-file reads or secret changes authorized.
 
-- 2026-10-03T02:38:08Z BOOTSTRAP commands: `pwd && git worktree list && git status --short && git branch --show-current && git remote get-url origin` returned clean checkout `/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers`, sole worktree, branch `qa/2026-10-02-fixes`, HEAD `2a08522`, origin `https://github.com/PetrefiedThunder/Chrissellers.git`.
+- 2026-10-03T02:38:08Z BOOTSTRAP commands: `pwd && git worktree list && git status --short && git branch --show-current && git remote get-url origin` returned clean checkout `.`, sole worktree, branch `qa/2026-10-02-fixes`, HEAD `2a08522`, origin `https://github.com/PetrefiedThunder/Chrissellers.git`.
 - 2026-10-03T02:38:08Z BOOTSTRAP commands: searched memory registry for `Chrissellers|portfolio|QA sweep`; read debug-bug and code-review skill files; enumerated QA/config files with `rg --files`. All exit 0. Memory provides historical server-rendering context only; current repository controls decisions. CodeRabbit network review excluded by task network restriction; local independent review used instead.
-- 2026-10-03T02:38:20Z BOOTSTRAP commands: read `FINDINGS.md`, `SUMMARY.md`, `COVERAGE.md`, `package.json`, existing `run_logged.py`, memory registry lines 1199–1232; checked ancestor AGENTS.md paths. All exit 0. One Critical (BE-001), zero High; optional order UX-001, BE-002, UX-002. `/Users/sellers/AGENTS.md:7` names a stale default repository; explicit task path and instructions take precedence. No repository-local AGENTS.md exists.
+- 2026-10-03T02:38:20Z BOOTSTRAP commands: read `FINDINGS.md`, `SUMMARY.md`, `COVERAGE.md`, `package.json`, existing `run_logged.py`, memory registry lines 1199–1232; checked ancestor AGENTS.md paths. All exit 0. One Critical (BE-001), zero High; optional order UX-001, BE-002, UX-002. `~/AGENTS.md:7` names a stale default repository; explicit task path and instructions take precedence. No repository-local AGENTS.md exists.
 - 2026-10-03T02:38:35Z DECISION: required work list is BE-001 only; patch to advisory's minimum 16.3.6 on same major and validate before any optional fixes. Separate read-only agents assess UX and dependency evidence; no concurrent edits or git index operations.
 - 2026-10-03T02:38:50Z BOOTSTRAP: created temporary command logger `/private/tmp/chrissellers-fix-run.py` and this log. Subsequent commands record exact arguments, sanitized output, UTC start/end and exit. Tool-driven edits/decisions receive explicit entries.
 
@@ -182,7 +182,7 @@ src/content/profile.ts
 src/content/work.ts
 src/content/career.ts
 Started: 2026-10-03T01:31:54+00:00
-Command: env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs /private/tmp/chrissellers-qa-node20/node_modules/node/bin/node node_modules/next/dist/bin/next build
+Command: env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs /private/tmp/chrissellers-qa-node20/node_modules/node/bin/node node_modules/next/dist/bin/next build
 
 ▲ Next.js 16.3.3 (Turbopack)
 ✓ Running next.config.js took 9ms
@@ -710,7 +710,7 @@ npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install
 ```
 - 2026-10-03T02:39:27+00:00 END be001-install: exit 0; elapsed 5.7s.
 
-- 2026-10-03T02:39:28+00:00 START `sh -c 'cat docs/qa/2026-10-02/artifacts/BE-audit-production.json; sed -n "1,100p" docs/qa/2026-10-02/browser/ux.mjs; cat app/globals.css src/components/Nav.tsx src/components/Contact.tsx src/components/Hero.tsx src/components/Work.tsx; test -n "$PW_TEST_CONNECT_WS_ENDPOINT" && echo "Browser endpoint available (value withheld)"; command -v gitleaks; git ls-files tsconfig.tsbuildinfo; cat eslint.config.mjs; cat /Users/sellers/.codex/skills/review-pr/SKILL.md'` (inspect-audit-browser)
+- 2026-10-03T02:39:28+00:00 START `sh -c 'cat docs/qa/2026-10-02/artifacts/BE-audit-production.json; sed -n "1,100p" docs/qa/2026-10-02/browser/ux.mjs; cat app/globals.css src/components/Nav.tsx src/components/Contact.tsx src/components/Hero.tsx src/components/Work.tsx; test -n "$PW_TEST_CONNECT_WS_ENDPOINT" && echo "Browser endpoint available (value withheld)"; command -v gitleaks; git ls-files tsconfig.tsbuildinfo; cat eslint.config.mjs; cat ~/.codex/skills/review-pr/SKILL.md'` (inspect-audit-browser)
 ```text
 {
   "auditReportVersion": 2,
@@ -1203,9 +1203,9 @@ and state residual risk.
 ```
 - 2026-10-03T02:39:28+00:00 END inspect-audit-browser: exit 0; elapsed 0.0s.
 
-- 2026-10-03T02:39:37+00:00 START `sh -c 'git diff --stat; git diff -- package.json package-lock.json; cat /Users/sellers/.codex/skills/playwright/SKILL.md; ls /Users/sellers/Library/Caches/ms-playwright; ls .git/hooks'` (be001-diff)
+- 2026-10-03T02:39:37+00:00 START `sh -c 'git diff --stat; git diff -- package.json package-lock.json; cat ~/.codex/skills/playwright/SKILL.md; ls ~/Library/Caches/ms-playwright; ls .git/hooks'` (be001-diff)
 
-- 2026-10-03T02:39:37+00:00 START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs /private/tmp/chrissellers-qa-node20/node_modules/node/bin/node node_modules/next/dist/bin/next build` (be001-build)
+- 2026-10-03T02:39:37+00:00 START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs /private/tmp/chrissellers-qa-node20/node_modules/node/bin/node node_modules/next/dist/bin/next build` (be001-build)
 
 - 2026-10-03T02:39:37+00:00 START `npm test -- --runInBand` (be001-tests)
 ```text
@@ -1879,7 +1879,7 @@ Copied unchanged HTTP runner to temporary directory; original sweep evidence wil
 ```
 - 2026-10-03T02:40:07+00:00 END be001-http: exit 0; elapsed 0.1s.
 
-- 2026-10-03T02:40:18+00:00 START `env PW_TEST_CONNECT_WS_ENDPOINT=ws://127.0.0.1:3988/ sh -c 'cd /private/tmp/chrissellers-fix-validation && node /Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/browser/frontend.mjs /private/tmp/chrissellers-qa-20261002-tools http://127.0.0.1:3017'` (be001-browser)
+- 2026-10-03T02:40:18+00:00 START `env PW_TEST_CONNECT_WS_ENDPOINT=ws://127.0.0.1:3988/ sh -c 'cd /private/tmp/chrissellers-fix-validation && node ./docs/qa/2026-10-02/browser/frontend.mjs /private/tmp/chrissellers-qa-20261002-tools http://127.0.0.1:3017'` (be001-browser)
 
 - 2026-10-03T02:40:19+00:00 START `python3 -` (be001-note)
 ```text
@@ -2219,7 +2219,7 @@ index 84bba4f..0d32a58 100644
        "dev": true,
        "license": "MIT",
        "dependencies": {
-chrissellers@2.0.0 /Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers
+chrissellers@2.0.0 .
 ├─┬ @typescript-eslint/parser@8.48.1
 │ └─┬ @typescript-eslint/typescript-estree@8.48.1
 │   └─┬ minimatch@9.0.9
@@ -2357,7 +2357,7 @@ Temporary logger now records interrupted owned-server output and exit status.
 ```
 - 2026-10-03T02:42:25+00:00 END update-temporary-logger: exit 0; elapsed 0.0s.
 
-- 2026-10-03T02:42:38+00:00 START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs /private/tmp/chrissellers-qa-node20/node_modules/node/bin/node node_modules/next/dist/bin/next build` (final-build)
+- 2026-10-03T02:42:38+00:00 START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs /private/tmp/chrissellers-qa-node20/node_modules/node/bin/node node_modules/next/dist/bin/next build` (final-build)
 
 - 2026-10-03T02:42:38+00:00 START `/private/tmp/chrissellers-qa-node20/node_modules/node/bin/node node_modules/jest/bin/jest.js --runInBand --coverage '--collectCoverageFrom=src/**/*.{ts,tsx}' '--collectCoverageFrom=app/**/*.{ts,tsx}' --coverageDirectory=/private/tmp/chrissellers-fix-validation/coverage` (final-tests)
 ```text
@@ -2622,7 +2622,7 @@ node:internal/modules/cjs/loader:766
       throw e;
       ^
 
-Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: Package subpath './package.json' is not defined by "exports" in /Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/node_modules/eslint-config-next/package.json
+Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: Package subpath './package.json' is not defined by "exports" in ./node_modules/eslint-config-next/package.json
     at exportsNotFound (node:internal/modules/esm/resolve:315:10)
     at packageExportsResolve (node:internal/modules/esm/resolve:663:9)
     at resolveExports (node:internal/modules/cjs/loader:759:36)
@@ -2870,7 +2870,7 @@ Imported at 2026-10-03T02:44:47+00:00; original UTC timestamps retained.
 
 # Dependency review agent command log
 
-Worktree: `/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers`.
+Worktree: `.`.
 
 Read-only scope; no repository edits, commits, environment-file reads, package installs, remote queries or tests were performed by this agent. The only write is this parent-authorized temporary handoff log. Timestamps are UTC tool-clock snapshots for command batches, not fabricated per-process start times. Each batch also called `clock.curr_time({})`, successfully, at its listed UTC time. The final log-write clock reading is 2026-10-03 02:44:12 UTC.
 
@@ -2880,7 +2880,7 @@ Read-only scope; no repository edits, commits, environment-file reads, package i
 pwd && git worktree list && git remote get-url origin && git branch --show-current && git status --short
 ```
 
-Exit 0. Correct worktree /Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers; sole worktree at 2a08522, branch qa/2026-10-02-fixes; origin https://github.com/PetrefiedThunder/Chrissellers.git; clean.
+Exit 0. Correct worktree .; sole worktree at 2a08522, branch qa/2026-10-02-fixes; origin https://github.com/PetrefiedThunder/Chrissellers.git; clean.
 
 ## 2. 2026-10-03T02:38:37Z
 
@@ -2940,7 +2940,7 @@ Exit 0. Production captured audit: one Critical Next finding. Full captured audi
 ## 7. 2026-10-03T02:38:52Z
 
 ```sh
-cat /Users/sellers/.codex/skills/review-pr/SKILL.md
+cat ~/.codex/skills/review-pr/SKILL.md
 ```
 
 Exit 0. Applied read-only regression/security review skill; informed parent.

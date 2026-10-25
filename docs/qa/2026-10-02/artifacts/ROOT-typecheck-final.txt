@@ -1,5 +1,0 @@
-Started: 2026-10-03T01:26:37+00:00
-Command: node node_modules/typescript/bin/tsc --noEmit
-
-
-- 2026-10-03T01:26:38+00:00 [ROOT] END `typecheck-final`: exit 0; elapsed 0.9s.

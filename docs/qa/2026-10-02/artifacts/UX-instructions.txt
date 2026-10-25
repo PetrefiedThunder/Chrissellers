@@ -1,5 +1,0 @@
-Started: 2026-10-03T01:22:24+00:00
-Command: rg --files -g AGENTS.md -g '!node_modules' -g '!docs/qa/**'
-
-
-- 2026-10-03T01:22:24+00:00 [UX] END `instructions`: exit 1; elapsed 0.0s.

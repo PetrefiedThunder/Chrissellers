@@ -1,9 +1,0 @@
-Started: 2026-10-03T01:31:08+00:00
-Command: node -e 'for(const name of ["playwright","axe-core","@fontsource-variable/inter","@fontsource-variable/space-grotesk"]){console.log(name,require("/private/tmp/chrissellers-qa-20261002-tools/node_modules/"+name+"/package.json").version)}'
-
-playwright 1.63.0
-axe-core 4.13.0
-@fontsource-variable/inter 5.3.0
-@fontsource-variable/space-grotesk 5.3.0
-
-- 2026-10-03T01:31:08+00:00 [ROOT] END `tool-font-versions`: exit 0; elapsed 0.0s.

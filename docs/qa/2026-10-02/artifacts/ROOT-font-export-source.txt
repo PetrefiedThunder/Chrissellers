@@ -1,5 +1,0 @@
-Started: 2026-10-03T01:23:44+00:00
-Command: rg -n 'MOCKED_RESPONSES|mockedResponses' node_modules/next/dist -g '*.js' -g '!*.map'
-
-
-- 2026-10-03T01:23:44+00:00 [ROOT] END `font-export-source`: exit 1; elapsed 0.1s.

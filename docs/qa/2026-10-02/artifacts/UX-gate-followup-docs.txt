@@ -1,7 +1,0 @@
-Started: 2026-10-03T01:31:43+00:00
-Command: python3 -c 'import json;from pathlib import Path;qa=Path("docs/qa/2026-10-02");d=json.loads((qa/"artifacts/ux/ux-report.json").read_text());assert sum(c["status"]=="passed" for c in d["checks"])==21;assert sum(c["status"]=="expected-failure" for c in d["checks"])==2;p=qa/"UX-FINDINGS.md";s=p.read_text().replace("19 passed checks", "21 passed checks"); s=s.replace("Final browser session: **2026-10-03T01:27:11Z–01:27:22Z**.", "Final browser session after gate review: **"+d["startedAt"]+"–"+d["finishedAt"]+"**. Gate follow-up added hard HTTP-404 and 404 axe assertions, plus an explicit valid skip-target requirement for UX-002.");p.write_text(s);print("UX final: 21 passed checks, 2 expected failures. Browser complete. Session:",d["startedAt"],d["finishedAt"]);print("404 status/axe strict assertions and targetExists predicate verified; findings unchanged.")'
-
-UX final: 21 passed checks, 2 expected failures. Browser complete. Session: 2026-10-03T01:31:25.554Z 2026-10-03T01:31:36.380Z
-404 status/axe strict assertions and targetExists predicate verified; findings unchanged.
-
-- 2026-10-03T01:31:43+00:00 [UX] END `gate-followup-docs`: exit 0; elapsed 0.0s.

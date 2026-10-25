@@ -9,7 +9,7 @@
 
 - 2026-10-03T01:22:24+00:00 [UX] START `git remote get-url origin`; output: `artifacts/UX-remote.txt`
 
-- 2026-10-03T01:22:24+00:00 [UX] START `cat /Users/sellers/.codex/skills/playwright/SKILL.md`; output: `artifacts/UX-playwright-skill.txt`
+- 2026-10-03T01:22:24+00:00 [UX] START `cat ~/.codex/skills/playwright/SKILL.md`; output: `artifacts/UX-playwright-skill.txt`
 
 - 2026-10-03T01:22:24+00:00 [UX] START `rg --files -g AGENTS.md -g '!node_modules' -g '!docs/qa/**'`; output: `artifacts/UX-instructions.txt`
 

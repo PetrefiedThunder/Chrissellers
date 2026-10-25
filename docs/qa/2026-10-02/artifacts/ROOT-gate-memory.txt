@@ -1,9 +1,0 @@
-Started: 2026-10-03T01:26:46+00:00
-Command: rg -n 'Chrissellers|zero-client' /Users/sellers/.codex/memories/MEMORY.md
-
-1199:# Task Group: Chrissellers portfolio rebuild and Vercel deployment
-1202:applies_to: cwd=/Users/sellers/Documents/GitHub/Chrissellers; reuse_rule=reuse architecture/cleanup checks in this checkout; domain/deployment status must be re-verified.
-1212:- Chrissellers, zero-client-JS, src/content/profile.ts, opengraph-image.tsx, metadataBase, chrissellers.vercel.app, HostGator, iCloud duplicates, opacity: 0
-1220:- Keep server-rendered/zero-client-JS; edit copy in `src/content/*.ts`. Verify Vercel project/deployments, live HTTP, and DNS; keep `siteUrl=https://chrissellers.vercel.app` until custom domain connects. [Task 1]
-
-- 2026-10-03T01:26:46+00:00 [ROOT] END `gate-memory`: exit 0; elapsed 0.0s.

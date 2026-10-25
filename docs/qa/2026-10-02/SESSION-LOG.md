@@ -7,11 +7,11 @@ All subsequent subprocess commands use `run_logged.py`; lane logs preserve indep
 The first batch completed at the observed UTC clock 01:20:38. Later bootstrap commands occurred before the first automatic log at 01:21:47. Exact bootstrap command timestamps were not captured; these bounds replace preliminary minute estimates.
 
 - 2026-10-03T01:20:38Z: `pwd && git worktree list && git branch --show-current && git remote get-url origin && git status --short && rg --files -g 'AGENTS.md' -g 'package.json' -g '*lock*' -g 'pyproject.toml' -g 'README*' -g '*test*' -g '*config*' -g '!node_modules' -g '!.git' -g '!.env*' -g '!**/.env*'` — exit 0, correct clean branch; one content suite.
-- 2026-10-03T01:20:38Z: `rg -n -i 'Chrissellers|portfolio rebuild' /Users/sellers/.codex/memories/MEMORY.md` — exit 0; prior architecture guidance only, verified against current source. No production verification performed.
-- 2026-10-03T01:20:38Z: `cat /Users/sellers/.codex/skills/review-pr/SKILL.md /Users/sellers/.codex/skills/playwright/SKILL.md` — exit 0; read relevant workflow instructions. Tool inventory searched; no external application tools invoked. UTC clock read.
-- 2026-10-03T01:20:38Z–01:21:47Z (bounded bootstrap interval): `git ls-files && cat package.json jest.config.js tsconfig.json next.config.js eslint.config.mjs README.md && rg --files -g 'AGENTS.md' -g '!node_modules' -g '!.git' /Users/sellers/Projects/qa-sweep-2026-10-02 2>/dev/null && command -v npx && node --version && npm --version && sed -n '1199,1224p' /Users/sellers/.codex/memories/MEMORY.md` — exit 0; no local AGENTS, Node 26.7.0/npm 11.19.0, CI uses Node 20. Adjacent instruction filenames discovered but not applied to this repo.
+- 2026-10-03T01:20:38Z: `rg -n -i 'Chrissellers|portfolio rebuild' ~/.codex/memories/MEMORY.md` — exit 0; prior architecture guidance only, verified against current source. No production verification performed.
+- 2026-10-03T01:20:38Z: `cat ~/.codex/skills/review-pr/SKILL.md ~/.codex/skills/playwright/SKILL.md` — exit 0; read relevant workflow instructions. Tool inventory searched; no external application tools invoked. UTC clock read.
+- 2026-10-03T01:20:38Z–01:21:47Z (bounded bootstrap interval): `git ls-files && cat package.json jest.config.js tsconfig.json next.config.js eslint.config.mjs README.md && rg --files -g 'AGENTS.md' -g '!node_modules' -g '!.git' .. 2>/dev/null && command -v npx && node --version && npm --version && sed -n '1199,1224p' ~/.codex/memories/MEMORY.md` — exit 0; no local AGENTS, Node 26.7.0/npm 11.19.0, CI uses Node 20. Adjacent instruction filenames discovered but not applied to this repo.
 - 2026-10-03T01:20:38Z–01:21:47Z (bounded bootstrap interval): `cat app/layout.tsx app/page.tsx app/opengraph-image.tsx app/globals.css src/components/*.tsx src/content/*.ts __tests__/content.test.ts .github/workflows/ci.yml .gitignore && test -d node_modules && test -f node_modules/next/package.json` — exit 1 after successful source read; dependencies absent. No environment or credential files read.
-- 2026-10-03T01:20:38Z–01:21:47Z (bounded bootstrap interval): `cat /Users/sellers/.agents/skills/code-review/SKILL.md /Users/sellers/.agents/skills/verification-loop/SKILL.md` — exit 0; cloud review excluded under user network restrictions, local verification workflow applied without product fixes.
+- 2026-10-03T01:20:38Z–01:21:47Z (bounded bootstrap interval): `cat ~/.agents/skills/code-review/SKILL.md ~/.agents/skills/verification-loop/SKILL.md` — exit 0; cloud review excluded under user network restrictions, local verification workflow applied without product fixes.
 - 2026-10-03T01:20:38Z–01:21:47Z (bounded bootstrap interval): tool file edit creates PLAN.md, this log and command logger. Only QA files added.
 
 - 2026-10-03T01:21:47+00:00 [ROOT] START `npm ci --ignore-scripts --no-audit --no-fund`; output: `artifacts/ROOT-install.txt`
@@ -46,7 +46,7 @@ The first batch completed at the observed UTC clock 01:20:38. Later bootstrap co
 
 - 2026-10-03T01:22:14+00:00 [BE] END `source-read`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:22:15+00:00 [FE] START `python3 -c 'from pathlib import Path; import subprocess; print("Earlier unwrapped pwd confirmed /Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers"); print(subprocess.run(["git","worktree","list"],capture_output=True,text=True).stdout); print(subprocess.run(["git","remote","get-url","origin"],capture_output=True,text=True).stdout); print(subprocess.run(["git","branch","--show-current"],capture_output=True,text=True).stdout); print(Path("docs/qa/2026-10-02/PLAN.md").read_text()); print(Path("package.json").read_text()); print(subprocess.run(["rg","--files","-g","AGENTS.md","-g","!node_modules"],capture_output=True,text=True).stdout)'`; output: `artifacts/FE-fe-initial-inspection.txt`
+- 2026-10-03T01:22:15+00:00 [FE] START `python3 -c 'from pathlib import Path; import subprocess; print("Earlier unwrapped pwd confirmed ."); print(subprocess.run(["git","worktree","list"],capture_output=True,text=True).stdout); print(subprocess.run(["git","remote","get-url","origin"],capture_output=True,text=True).stdout); print(subprocess.run(["git","branch","--show-current"],capture_output=True,text=True).stdout); print(Path("docs/qa/2026-10-02/PLAN.md").read_text()); print(Path("package.json").read_text()); print(subprocess.run(["rg","--files","-g","AGENTS.md","-g","!node_modules"],capture_output=True,text=True).stdout)'`; output: `artifacts/FE-fe-initial-inspection.txt`
 
 - 2026-10-03T01:22:15+00:00 [FE] END `fe-initial-inspection`: exit 0; elapsed 0.1s.
 
@@ -58,7 +58,7 @@ The first batch completed at the observed UTC clock 01:20:38. Later bootstrap co
 
 - 2026-10-03T01:22:19+00:00 [UX] END `identity`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:22:23+00:00 [FE] START `python3 -c 'from pathlib import Path; import subprocess; paths = [Path("/Users/sellers/.codex/skills/playwright/SKILL.md"), Path("jest.config.cjs"), Path("jest.setup.js"), Path("tsconfig.json")] + sorted(Path("src").rglob("*.tsx")) + sorted(Path("src/content").glob("*.ts")) + sorted(Path("__tests__").glob("*")) + [Path("app/page.tsx"),Path("app/globals.css")]; print(subprocess.run(["rg","--files","-g","*jest*","-g","!node_modules"],capture_output=True,text=True).stdout); [(print("FILE: "+str(p)),print(p.read_text())) for p in paths if p.is_file()]'`; output: `artifacts/FE-fe-source-review.txt`
+- 2026-10-03T01:22:23+00:00 [FE] START `python3 -c 'from pathlib import Path; import subprocess; paths = [Path("~/.codex/skills/playwright/SKILL.md"), Path("jest.config.cjs"), Path("jest.setup.js"), Path("tsconfig.json")] + sorted(Path("src").rglob("*.tsx")) + sorted(Path("src/content").glob("*.ts")) + sorted(Path("__tests__").glob("*")) + [Path("app/page.tsx"),Path("app/globals.css")]; print(subprocess.run(["rg","--files","-g","*jest*","-g","!node_modules"],capture_output=True,text=True).stdout); [(print("FILE: "+str(p)),print(p.read_text())) for p in paths if p.is_file()]'`; output: `artifacts/FE-fe-source-review.txt`
 
 - 2026-10-03T01:22:23+00:00 [FE] END `fe-source-review`: exit 0; elapsed 0.0s.
 
@@ -68,7 +68,7 @@ The first batch completed at the observed UTC clock 01:20:38. Later bootstrap co
 
 - 2026-10-03T01:22:24+00:00 [UX] START `git remote get-url origin`; output: `artifacts/UX-remote.txt`
 
-- 2026-10-03T01:22:24+00:00 [UX] START `cat /Users/sellers/.codex/skills/playwright/SKILL.md`; output: `artifacts/UX-playwright-skill.txt`
+- 2026-10-03T01:22:24+00:00 [UX] START `cat ~/.codex/skills/playwright/SKILL.md`; output: `artifacts/UX-playwright-skill.txt`
 
 - 2026-10-03T01:22:24+00:00 [UX] START `rg --files -g AGENTS.md -g '!node_modules' -g '!docs/qa/**'`; output: `artifacts/UX-instructions.txt`
 
@@ -134,7 +134,7 @@ The first batch completed at the observed UTC clock 01:20:38. Later bootstrap co
 
 - 2026-10-03T01:22:37+00:00 [UX] END `copy-review`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:22:38+00:00 [BE] START `cat /Users/sellers/.codex/skills/security-best-practices/SKILL.md`; output: `artifacts/BE-security-skill.txt`
+- 2026-10-03T01:22:38+00:00 [BE] START `cat ~/.codex/skills/security-best-practices/SKILL.md`; output: `artifacts/BE-security-skill.txt`
 
 - 2026-10-03T01:22:38+00:00 [BE] END `security-skill`: exit 0; elapsed 0.0s.
 
@@ -146,7 +146,7 @@ The first batch completed at the observed UTC clock 01:20:38. Later bootstrap co
 
 - 2026-10-03T01:22:42+00:00 [UX] END `runner-review`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:22:44+00:00 [BE] START `rg --files /Users/sellers/.codex/skills/security-best-practices/references`; output: `artifacts/BE-security-reference-list.txt`
+- 2026-10-03T01:22:44+00:00 [BE] START `rg --files ~/.codex/skills/security-best-practices/references`; output: `artifacts/BE-security-reference-list.txt`
 
 - 2026-10-03T01:22:44+00:00 [BE] END `security-reference-list`: exit 0; elapsed 0.0s.
 
@@ -158,11 +158,11 @@ The first batch completed at the observed UTC clock 01:20:38. Later bootstrap co
 
 - 2026-10-03T01:22:44+00:00 [ROOT] END `tools-versions`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:22:47+00:00 [BE] START `cat /Users/sellers/.codex/skills/security-best-practices/references/javascript-typescript-react-web-frontend-security.md`; output: `artifacts/BE-security-reference-0.txt`
+- 2026-10-03T01:22:47+00:00 [BE] START `cat ~/.codex/skills/security-best-practices/references/javascript-typescript-react-web-frontend-security.md`; output: `artifacts/BE-security-reference-0.txt`
 
-- 2026-10-03T01:22:47+00:00 [BE] START `cat /Users/sellers/.codex/skills/security-best-practices/references/javascript-general-web-frontend-security.md`; output: `artifacts/BE-security-reference-2.txt`
+- 2026-10-03T01:22:47+00:00 [BE] START `cat ~/.codex/skills/security-best-practices/references/javascript-general-web-frontend-security.md`; output: `artifacts/BE-security-reference-2.txt`
 
-- 2026-10-03T01:22:47+00:00 [BE] START `cat /Users/sellers/.codex/skills/security-best-practices/references/javascript-typescript-nextjs-web-server-security.md`; output: `artifacts/BE-security-reference-1.txt`
+- 2026-10-03T01:22:47+00:00 [BE] START `cat ~/.codex/skills/security-best-practices/references/javascript-typescript-nextjs-web-server-security.md`; output: `artifacts/BE-security-reference-1.txt`
 
 - 2026-10-03T01:22:47+00:00 [BE] END `security-reference-2`: exit 0; elapsed 0.0s.
 
@@ -174,7 +174,7 @@ The first batch completed at the observed UTC clock 01:20:38. Later bootstrap co
 
 - 2026-10-03T01:22:49+00:00 [BE] END `static-server-contracts`: exit 0; elapsed 0.1s.
 
-- 2026-10-03T01:22:54+00:00 [BE] START `sed -n 1,230p /Users/sellers/.codex/skills/security-best-practices/references/javascript-typescript-nextjs-web-server-security.md`; output: `artifacts/BE-next-security-guidance.txt`
+- 2026-10-03T01:22:54+00:00 [BE] START `sed -n 1,230p ~/.codex/skills/security-best-practices/references/javascript-typescript-nextjs-web-server-security.md`; output: `artifacts/BE-next-security-guidance.txt`
 
 - 2026-10-03T01:22:54+00:00 [BE] END `next-security-guidance`: exit 0; elapsed 0.0s.
 
@@ -224,7 +224,7 @@ The first batch completed at the observed UTC clock 01:20:38. Later bootstrap co
 
 - 2026-10-03T01:23:33+00:00 [ROOT] END `baseline-shell-failure-note`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:23:33+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build.txt`
+- 2026-10-03T01:23:33+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build.txt`
 
 - 2026-10-03T01:23:35+00:00 [ROOT] END `build`: exit 1; elapsed 1.9s.
 
@@ -264,7 +264,7 @@ The first batch completed at the observed UTC clock 01:20:38. Later bootstrap co
 
 - 2026-10-03T01:24:08+00:00 [BE] END `metadata-tests-retry`: exit 0; elapsed 0.6s.
 
-- 2026-10-03T01:24:18+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-retry.txt`
+- 2026-10-03T01:24:18+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-retry.txt`
 
 - 2026-10-03T01:24:20+00:00 [ROOT] END `build-retry`: exit 1; elapsed 1.8s.
 
@@ -280,7 +280,7 @@ The first batch completed at the observed UTC clock 01:20:38. Later bootstrap co
 
 - 2026-10-03T01:24:28+00:00 [UX] END `source-heuristics`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:24:32+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build -- --webpack`; output: `artifacts/ROOT-build-webpack.txt`
+- 2026-10-03T01:24:32+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs npm run build -- --webpack`; output: `artifacts/ROOT-build-webpack.txt`
 
 - 2026-10-03T01:24:36+00:00 [ROOT] END `build-webpack`: exit 1; elapsed 3.8s.
 
@@ -318,7 +318,7 @@ The first batch completed at the observed UTC clock 01:20:38. Later bootstrap co
 
 - 2026-10-03T01:25:15+00:00 [FE] END `fe-browser-syntax`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:25:16+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-turbopack-local-font-server.txt`
+- 2026-10-03T01:25:16+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-turbopack-local-font-server.txt`
 
 - 2026-10-03T01:25:18+00:00 [ROOT] END `build-turbopack-local-font-server`: exit 1; elapsed 2.4s.
 
@@ -342,7 +342,7 @@ The first batch completed at the observed UTC clock 01:20:38. Later bootstrap co
 
 - 2026-10-03T01:25:36+00:00 [FE] END `fe-harness-record`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:25:39+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-final.txt`
+- 2026-10-03T01:25:39+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-final.txt`
 
 - 2026-10-03T01:25:41+00:00 [ROOT] START `npm test -- --ci --runInBand --coverage --coverageDirectory=docs/qa/2026-10-02/artifacts/coverage-after --coverageReporters=json-summary --coverageReporters=text --coverageReporters=json '--collectCoverageFrom=src/**/*.{ts,tsx}' '--collectCoverageFrom=app/**/*.{ts,tsx}'`; output: `artifacts/ROOT-final-coverage.txt`
 
@@ -410,13 +410,13 @@ The first batch completed at the observed UTC clock 01:20:38. Later bootstrap co
 
 - 2026-10-03T01:26:46+00:00 [ROOT] START `git worktree list`; output: `artifacts/ROOT-gate-worktrees.txt`
 
-- 2026-10-03T01:26:46+00:00 [ROOT] START `cat /Users/sellers/.agents/skills/code-review/SKILL.md`; output: `artifacts/ROOT-gate-review-skill.txt`
+- 2026-10-03T01:26:46+00:00 [ROOT] START `cat ~/.agents/skills/code-review/SKILL.md`; output: `artifacts/ROOT-gate-review-skill.txt`
 
 - 2026-10-03T01:26:46+00:00 [ROOT] START `git remote get-url origin`; output: `artifacts/ROOT-gate-origin.txt`
 
 - 2026-10-03T01:26:46+00:00 [ROOT] START `rg --files -g AGENTS.md -g '!node_modules' -g '!docs/qa/2026-10-02/artifacts/**'`; output: `artifacts/ROOT-gate-files.txt`
 
-- 2026-10-03T01:26:46+00:00 [ROOT] START `rg -n 'Chrissellers|zero-client' /Users/sellers/.codex/memories/MEMORY.md`; output: `artifacts/ROOT-gate-memory.txt`
+- 2026-10-03T01:26:46+00:00 [ROOT] START `rg -n 'Chrissellers|zero-client' ~/.codex/memories/MEMORY.md`; output: `artifacts/ROOT-gate-memory.txt`
 
 - 2026-10-03T01:26:46+00:00 [ROOT] END `gate-review-skill`: exit 0; elapsed 0.0s.
 
@@ -668,7 +668,7 @@ text="# Consolidated QA findings\n\nPR: opened by orchestrator\n\nCI status: pen
 
 - 2026-10-03T01:31:46+00:00 [ROOT] END `handoff-record`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:31:54+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs /private/tmp/chrissellers-qa-node20/node_modules/node/bin/node node_modules/next/dist/bin/next build`; output: `artifacts/ROOT-node20-build.txt`
+- 2026-10-03T01:31:54+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs /private/tmp/chrissellers-qa-node20/node_modules/node/bin/node node_modules/next/dist/bin/next build`; output: `artifacts/ROOT-node20-build.txt`
 
 - 2026-10-03T01:31:55+00:00 [ROOT] START `python3 -c 'from pathlib import Path; p=Path("docs/qa/2026-10-02/SESSION-LOG.md"); rows=p.read_text().splitlines(); print("\n".join(l for l in rows if ("START `npm test" in l or "START `rg -n" in l or "retrospective interval" in l or "tool-install-retry" in l)))'`; output: `artifacts/ROOT-final-log-times.txt`
 

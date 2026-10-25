@@ -1,6 +1,0 @@
-Started: 2026-10-03T01:25:05+00:00
-Command: python3 -c 'from pathlib import Path; p = Path("__tests__/components.qa.test.tsx"); s = p.read_text(); s = "import \"@testing-library/jest-dom\"\n" + s.replace(", exact: true", ""); p.write_text(s); print("Added Jest DOM matcher types; removed unsupported getByRole exact option (string role-name matching already exact).")'
-
-Added Jest DOM matcher types; removed unsupported getByRole exact option (string role-name matching already exact).
-
-- 2026-10-03T01:25:05+00:00 [FE] END `fe-type-compatibility`: exit 0; elapsed 0.0s.

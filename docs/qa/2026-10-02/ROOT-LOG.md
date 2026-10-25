@@ -47,7 +47,7 @@
 
 - 2026-10-03T01:23:33+00:00 [ROOT] END `baseline-shell-failure-note`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:23:33+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build.txt`
+- 2026-10-03T01:23:33+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build.txt`
 
 - 2026-10-03T01:23:35+00:00 [ROOT] END `build`: exit 1; elapsed 1.9s.
 
@@ -55,11 +55,11 @@
 
 - 2026-10-03T01:23:44+00:00 [ROOT] END `font-export-source`: exit 1; elapsed 0.1s.
 
-- 2026-10-03T01:24:18+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-retry.txt`
+- 2026-10-03T01:24:18+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-retry.txt`
 
 - 2026-10-03T01:24:20+00:00 [ROOT] END `build-retry`: exit 1; elapsed 1.8s.
 
-- 2026-10-03T01:24:32+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build -- --webpack`; output: `artifacts/ROOT-build-webpack.txt`
+- 2026-10-03T01:24:32+00:00 [ROOT] START `env NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs npm run build -- --webpack`; output: `artifacts/ROOT-build-webpack.txt`
 
 - 2026-10-03T01:24:36+00:00 [ROOT] END `build-webpack`: exit 1; elapsed 3.8s.
 
@@ -77,7 +77,7 @@
 
 - 2026-10-03T01:25:03+00:00 [ROOT] START `python3 -m http.server 3977 --bind 127.0.0.1 --directory /private/tmp/chrissellers-qa-20261002-tools/node_modules`; output: `artifacts/ROOT-font-fixture-server.txt`
 
-- 2026-10-03T01:25:16+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-turbopack-local-font-server.txt`
+- 2026-10-03T01:25:16+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-turbopack-local-font-server.txt`
 
 - 2026-10-03T01:25:18+00:00 [ROOT] END `build-turbopack-local-font-server`: exit 1; elapsed 2.4s.
 
@@ -85,7 +85,7 @@
 
 - 2026-10-03T01:25:22+00:00 [ROOT] END `baseline-coverage-summary`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:25:39+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-final.txt`
+- 2026-10-03T01:25:39+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs npm run build`; output: `artifacts/ROOT-build-final.txt`
 
 - 2026-10-03T01:25:41+00:00 [ROOT] START `npm test -- --ci --runInBand --coverage --coverageDirectory=docs/qa/2026-10-02/artifacts/coverage-after --coverageReporters=json-summary --coverageReporters=text --coverageReporters=json '--collectCoverageFrom=src/**/*.{ts,tsx}' '--collectCoverageFrom=app/**/*.{ts,tsx}'`; output: `artifacts/ROOT-final-coverage.txt`
 
@@ -117,13 +117,13 @@
 
 - 2026-10-03T01:26:46+00:00 [ROOT] START `git worktree list`; output: `artifacts/ROOT-gate-worktrees.txt`
 
-- 2026-10-03T01:26:46+00:00 [ROOT] START `cat /Users/sellers/.agents/skills/code-review/SKILL.md`; output: `artifacts/ROOT-gate-review-skill.txt`
+- 2026-10-03T01:26:46+00:00 [ROOT] START `cat ~/.agents/skills/code-review/SKILL.md`; output: `artifacts/ROOT-gate-review-skill.txt`
 
 - 2026-10-03T01:26:46+00:00 [ROOT] START `git remote get-url origin`; output: `artifacts/ROOT-gate-origin.txt`
 
 - 2026-10-03T01:26:46+00:00 [ROOT] START `rg --files -g AGENTS.md -g '!node_modules' -g '!docs/qa/2026-10-02/artifacts/**'`; output: `artifacts/ROOT-gate-files.txt`
 
-- 2026-10-03T01:26:46+00:00 [ROOT] START `rg -n 'Chrissellers|zero-client' /Users/sellers/.codex/memories/MEMORY.md`; output: `artifacts/ROOT-gate-memory.txt`
+- 2026-10-03T01:26:46+00:00 [ROOT] START `rg -n 'Chrissellers|zero-client' ~/.codex/memories/MEMORY.md`; output: `artifacts/ROOT-gate-memory.txt`
 
 - 2026-10-03T01:26:46+00:00 [ROOT] END `gate-review-skill`: exit 0; elapsed 0.0s.
 
@@ -297,7 +297,7 @@ text="# Consolidated QA findings\n\nPR: opened by orchestrator\n\nCI status: pen
 
 - 2026-10-03T01:31:46+00:00 [ROOT] END `handoff-record`: exit 0; elapsed 0.0s.
 
-- 2026-10-03T01:31:54+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers/docs/qa/2026-10-02/font-responses.cjs /private/tmp/chrissellers-qa-node20/node_modules/node/bin/node node_modules/next/dist/bin/next build`; output: `artifacts/ROOT-node20-build.txt`
+- 2026-10-03T01:31:54+00:00 [ROOT] START `env QA_FONT_ORIGIN=http://127.0.0.1:3977 NEXT_FONT_GOOGLE_MOCKED_RESPONSES=./docs/qa/2026-10-02/font-responses.cjs /private/tmp/chrissellers-qa-node20/node_modules/node/bin/node node_modules/next/dist/bin/next build`; output: `artifacts/ROOT-node20-build.txt`
 
 - 2026-10-03T01:31:55+00:00 [ROOT] START `python3 -c 'from pathlib import Path; p=Path("docs/qa/2026-10-02/SESSION-LOG.md"); rows=p.read_text().splitlines(); print("\n".join(l for l in rows if ("START `npm test" in l or "START `rg -n" in l or "retrospective interval" in l or "tool-install-retry" in l)))'`; output: `artifacts/ROOT-final-log-times.txt`
 

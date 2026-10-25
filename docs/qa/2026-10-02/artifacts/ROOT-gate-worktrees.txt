@@ -1,6 +1,0 @@
-Started: 2026-10-03T01:26:46+00:00
-Command: git worktree list
-
-/Users/sellers/Projects/qa-sweep-2026-10-02/Chrissellers 0632a6b [qa/2026-10-02-sweep]
-
-- 2026-10-03T01:26:46+00:00 [ROOT] END `gate-worktrees`: exit 0; elapsed 0.0s.

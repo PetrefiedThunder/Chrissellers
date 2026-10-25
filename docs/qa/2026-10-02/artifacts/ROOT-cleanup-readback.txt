@@ -1,9 +1,0 @@
-Started: 2026-10-03T01:34:09+00:00
-Command: python3 -c 'import subprocess,datetime; from pathlib import Path; outcomes={};
-for port in [3017,3977]:
- result=subprocess.run(["lsof","-tiTCP:"+str(port),"-sTCP:LISTEN"],capture_output=True,text=True); outcomes[port]=result.stdout.strip() or "no listener"
-print(outcomes); assert all(value=="no listener" for value in outcomes.values()); q=Path("docs/qa/2026-10-02"); stamp=datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"); note="\n- "+stamp+" [ROOT] Cleanup tool actions: write_stdin Ctrl-C to application session22113 returned130 and font session26068 returned241; both were deliberate termination. Final lsof confirms no listeners on3017/3977. Sandbox denied ps and os.kill attempts; tool-owned session interruption succeeded. Orchestrator browser server was not stopped.\n"; (q/"SESSION-LOG.md").open("a").write(note); (q/"ROOT-LOG.md").open("a").write(note)'
-
-{3017: 'no listener', 3977: 'no listener'}
-
-- 2026-10-03T01:34:09+00:00 [ROOT] END `cleanup-readback`: exit 0; elapsed 0.2s.
