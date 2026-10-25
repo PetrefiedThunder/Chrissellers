@@ -4,6 +4,8 @@ PR: opened by orchestrator
 
 CI status: pending at time of writing
 
+Note: raw artifacts under `artifacts/` were removed from the repo and are not committed; references to them below are historical.
+
 The PR line above is the required orchestrator handoff marker. This agent did not commit, push, open a PR, query remote CI, deploy, or contact production. All QA additions are uncommitted on `qa/2026-10-02-sweep`; no PR URL exists in this local handoff.
 
 Counts: Critical=1 High=0 Medium=2 Low=1
@@ -19,7 +21,7 @@ Counts: Critical=1 High=0 Medium=2 Low=1
 
 There are **four confirmed findings**. The fifth item is a clearly identified verification gap, not an invented finding.
 
-1. **BE-001 — Critical:** Installed Next.js 16.3.3 matches a Critical `next/og` remote-code-execution advisory; this application uses `ImageResponse`. Upgrade to a supported patched release at least 16.3.6, review advisory conditions, and rerun the audit/PNG/build/browser checks. Severity follows the registry; remote exploitability was not demonstrated.
+1. **BE-001 — Critical:** Resolved on main. `origin/main` already ships `next` `^16.4.1` resolving to 16.4.1 in `package-lock.json`, above the patched 16.3.6 for the Critical `next/og` RCE advisory GHSA-vcvr-r3jv-pc5j. This PR does not upgrade Next.js; it only pins the dependency exactly (`"^16.4.1"` → `"16.4.1"` in `package.json` and the lockfile manifest entry) and adds a regression test asserting the manifest equals the lockfile resolved version. Severity follows the registry; remote exploitability was not demonstrated.
 2. **UX-001 — Medium:** At a 375px viewport with 200% root text preference, navigation and the contact address run offscreen into a 612px-wide document. Allow constrained navigation and long text to wrap, then repeat both narrow-viewport and text-size checks.
 3. **BE-002 — Medium:** Development glob parsers have denial-of-service advisories. Update compatible dependency chains and rerun tooling. The audit's 40 High package entries are dependency propagation, not 40 independent application vulnerabilities.
 4. **UX-002 — Low:** The 404 page's only link points to a missing main region and offers no Home recovery. Add an accessible custom not-found page.
