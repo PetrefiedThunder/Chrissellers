@@ -19,7 +19,7 @@ The baseline ran before either new test file existed. Both instrumented runs use
 | Legacy src functions | 0% (0) | 100% (15) | 15 |
 | Legacy src lines | 15.38% (4) | 100% (26) | 26 |
 
-Raw comparable reports: [before summary](artifacts/coverage-before/coverage-summary.json), [before detailed counters](artifacts/coverage-before/coverage-final.json), [after summary](artifacts/coverage-after/coverage-summary.json), [after detailed counters](artifacts/coverage-after/coverage-final.json). Execution logs: [baseline](artifacts/ROOT-baseline-retry.txt), [final](artifacts/ROOT-final-coverage.txt).
+Raw comparable reports: before summary (artifact removed from repo), before detailed counters (artifact removed from repo), after summary (artifact removed from repo), after detailed counters (artifact removed from repo). Execution logs: baseline (artifact removed from repo), final (artifact removed from repo).
 
 ## Added checks
 
@@ -29,7 +29,7 @@ Raw comparable reports: [before summary](artifacts/coverage-before/coverage-summ
 | Backend metadata unit contracts | None | 9 added: metadata identity/base, five real public URL parses, language/skip structure, image descriptors, renderer input. |
 | Frontend component contracts | None | 9 added: complete page, anchor targets, contact consistency, external-link safety, visible content, absent optional content, default link label, text escaping, undated education. |
 | Backend local HTTP | None in repo | **14 responses checked**: HTML/metadata, GET/HEAD PNG, real PNG signature/dimensions, image POST 405, no reflected markup, unknown paths/noindex, five consistent parallel image reads. |
-| Browser flows | None in repo | Chromium full journey + no-JS + 404; Firefox and WebKit navigation smokes. Actual browser versions in [report](artifacts/frontend/runtime-report.json). |
+| Browser flows | None in repo | Chromium full journey + no-JS + 404; Firefox and WebKit navigation smokes. Actual browser versions in report (artifact removed from repo). |
 | UX/browser | None in repo | Nine homepage scenarios and one 404 axe scan; keyboard/ARIA/reflow checks, with `UX-001` and `UX-002` explicitly recorded as expected failures. See [UX pass](UX-FINDINGS.md) for latest check count. |
 | Static/supply chain | Existing lint/CI | Local lint/types/build; production/full npm audits; local redacted secret checks. Independent QA harness review and negative control. |
 

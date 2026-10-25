@@ -35,7 +35,7 @@ The relevant baseline is the completed sweep, not its earlier pre-QA 11-test run
 
 | Check | Sweep baseline | Fix-pass baseline / negative control | Final retained state |
 | --- | --- | --- | --- |
-| Full Jest suite | 29 pass / 0 fail / 0 xfail / 0 skip; 3 suites | Reproduced 29/0/0/0 before edits. BE-001 tests separately failed 2/2 on original dependencies. | **31 pass / 0 fail / 0 xfail / 0 skip; 4 suites**, Node 20.19.6 after clean npm ci. |
+| Full Jest suite | 29 pass / 0 fail / 0 xfail / 0 skip; 3 suites | Reproduced 29/0/0/0 before edits. BE-001 tests separately failed 2/2 on original dependencies. | **30 pass / 0 fail / 0 xfail / 0 skip; 4 suites**, Node 20.19.6 after clean npm ci. |
 | Comparable app + src coverage | 100% statements, branches, functions, lines | No production source added or removed | **100%** for all four metrics; 46 instrumented lines, same source patterns. Excludes CSS/framework internals/deployment. |
 | Local HTTP/PNG contracts | 14 checked responses; pass | BE-001 post-patch: 14 pass | **14 pass / 0 fail / 0 xfail / 0 skip** after final rebuild, including actual PNG signature and 1200×630 dimensions, HEAD, POST 405, 404/noindex and consistent parallel image reads. |
 | Frontend browser journeys | Chromium, Firefox and WebKit passed; no-JS passed | Attempted unchanged runner against the patched loopback server | **BLOCKED before first journey**: Chromium process startup denied by macOS sandbox (`MachPortRendezvousServer`, permission denied 1100). No valid final browser pass/fail assertion counts; the runner failure is environmental. |

@@ -38,13 +38,13 @@ The build uses QA-only local responses containing actual Inter and Space Grotesk
 
 ## Evidence and limitations
 
-- [Runtime report](artifacts/frontend/runtime-report.json): exact engine versions, navigation outcomes, destinations, console/network arrays and Resource/Performance API entries.
-- [Desktop arrival](artifacts/frontend/desktop-home.png), [desktop contact](artifacts/frontend/desktop-contact.png), [JavaScript-disabled contact](artifacts/frontend/no-js-contact.png). Arrival/contact screenshots were visually inspected; content and navigation were readable at the captured desktop viewport.
-- [Targeted component result](artifacts/FE-fe-component-tests-typed.txt), [browser command result](artifacts/FE-fe-browser-gate-rerun.txt), [performance aggregation](artifacts/FE-fe-performance-summary.txt).
+- Runtime report (artifact removed from repo): exact engine versions, navigation outcomes, destinations, console/network arrays and Resource/Performance API entries.
+- Desktop arrival (artifact removed from repo), desktop contact (artifact removed from repo), JavaScript-disabled contact (artifact removed from repo). Arrival/contact screenshots were visually inspected; content and navigation were readable at the captured desktop viewport.
+- Targeted component result (artifact removed from repo), browser command result (artifact removed from repo), performance aggregation (artifact removed from repo).
 - [Repeatable browser script](browser/frontend.mjs) takes isolated QA tools path and localhost base URL; it never launches browsers and blocks non-loopback HTTP requests.
 
 No production URLs, services, credentials, databases, billing, deployment or live email delivery were tested. Browser coverage is a desktop smoke across three engines; physical-device behavior and browser extensions remain untested. Accessibility, keyboard, mobile and 404 recovery are covered separately by the UX pass. No frontend expected-failure tests were necessary because this pass did not reproduce a frontend defect.
 
 ## Independent QA harness review
 
-GATE-001 identified that a Firefox/WebKit assertion failure after a successful connection could be mislabeled as an unavailable engine. The QA runner now propagates such failures to an overall failed result and process exit 1. All three engine smokes passed after this correction. A temporary-copy negative control deliberately expected HTTP 201 from Firefox instead of the real HTTP 200: the browser runner exited 1 and wrote outcome `fail`, as required. This was an injected QA harness failure, not a product defect; the source product was unchanged. See [negative-control log](artifacts/FE-fe-browser-gate-negative-control.txt) and [isolated negative-control report](artifacts/frontend-gate-negative/runtime-report.json).
+GATE-001 identified that a Firefox/WebKit assertion failure after a successful connection could be mislabeled as an unavailable engine. The QA runner now propagates such failures to an overall failed result and process exit 1. All three engine smokes passed after this correction. A temporary-copy negative control deliberately expected HTTP 201 from Firefox instead of the real HTTP 200: the browser runner exited 1 and wrote outcome `fail`, as required. This was an injected QA harness failure, not a product defect; the source product was unchanged. See negative-control log (artifact removed from repo) and isolated negative-control report (artifact removed from repo).

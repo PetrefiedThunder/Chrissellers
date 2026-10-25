@@ -12,7 +12,7 @@ The default code-review skill was read, but its CodeRabbit cloud upload is exclu
 
 ## Checks completed
 
-- Independently executed both new Jest files: **2 suites, 18 tests passed**, zero snapshots. See [gate-added-tests](artifacts/ROOT-gate-added-tests.txt).
+- Independently executed both new Jest files: **2 suites, 18 tests passed**, zero snapshots. See gate-added-tests (artifact removed from repo).
 - Checked application imports, fixture restoration, metadata assertions and the mocked image renderer. Unit image tests assert renderer inputs; separate localhost contracts prove the real PNG dimensions/output. Tests do not change application behavior.
 - Verified production/product paths are unchanged with `git diff --exit-code HEAD -- app src package.json package-lock.json next.config.ts next.config.js next-env.d.ts tsconfig.json jest.config.js .github` (exit 0).
 - Verified before/after coverage uses the identical denominator: 46 lines, 54 statements, 18 functions, five branches. The reported 8.69% to 100% line coverage is source execution coverage for app/src TS/TSX, not CSS, framework internals, production hosting, visual correctness or security assurance.
@@ -26,8 +26,8 @@ The default code-review skill was read, but its CodeRabbit cloud upload is exclu
 
 | ID | Scope | Issue | Disposition and evidence |
 | --- | --- | --- | --- |
-| GATE-001 | QA harness only | Alternate-browser assertion/navigation errors were caught as engine unavailability, allowing a green overall outcome. | **Resolved.** Matching-engine smoke failures now reach the outer failure handler. All three real engine smokes pass again. A deliberate Firefox expected-201/actual-200 negative control returns child exit 1 and report outcome fail: [negative-control command](artifacts/FE-fe-browser-gate-negative-control.txt), [report](artifacts/frontend-gate-negative/runtime-report.json). This intentionally injected QA failure is not a product finding. |
-| GATE-002 | QA harness only | Initial UX script merely collected defects without explicit expected-failure records. Its 404 checks also did not fully enforce the advertised status, axe and skip-target contract. | **Resolved.** Final UX run records 21 passed checks plus explicit expected failures UX-001/UX-002. HTTP 404, zero 404 axe violations and the valid #main target condition are now enforced. Readback confirms the report and source agree; see [final UX evidence](artifacts/ux/ux-report.json). |
+| GATE-001 | QA harness only | Alternate-browser assertion/navigation errors were caught as engine unavailability, allowing a green overall outcome. | **Resolved.** Matching-engine smoke failures now reach the outer failure handler. All three real engine smokes pass again. A deliberate Firefox expected-201/actual-200 negative control returns child exit 1 and report outcome fail: negative-control command (artifact removed from repo), report (artifact removed from repo). This intentionally injected QA failure is not a product finding. |
+| GATE-002 | QA harness only | Initial UX script merely collected defects without explicit expected-failure records. Its 404 checks also did not fully enforce the advertised status, axe and skip-target contract. | **Resolved.** Final UX run records 21 passed checks plus explicit expected failures UX-001/UX-002. HTTP 404, zero 404 axe violations and the valid #main target condition are now enforced. Readback confirms the report and source agree; see final UX evidence (artifact removed from repo). |
 
 ## Aggregate review and limits
 
